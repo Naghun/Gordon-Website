@@ -1,0 +1,30 @@
+{% extends "admin/index.html" %}
+
+{% block content_title %}
+  <div class="dashboard-welcome">
+    <span class="welcome-label">GORDON DIGITAL MARKETING</span>
+    <h1>Dobrodošli, {{ user.get_short_name|default:user.username }}.</h1>
+    <p>Upravljajte porukama, sadržajem i korisnicima na jednom mjestu.</p>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <a class="dashboard-notification-card" href="{% url 'admin_notifications' %}">
+    <span class="dashboard-notification-icon" aria-hidden="true">!</span>
+    <span>
+      <small>ADMIN OBAVIJESTI</small>
+      <strong>Provjerite nove razgovore i kontakt poruke</strong>
+    </span>
+    <b class="admin-notification-count dashboard-notification-count" hidden>0</b>
+    <i aria-hidden="true">→</i>
+  </a>
+  <a class="dashboard-seo-card" href="{% url 'admin:website_seopage_changelist' %}">
+    <span class="dashboard-seo-icon" aria-hidden="true">SEO</span>
+    <span>
+      <small>SEO MANAGER</small>
+      <strong>Upravljajte keywordima, meta podacima i indeksiranjem</strong>
+    </span>
+    <i aria-hidden="true">→</i>
+  </a>
+  {{ block.super }}
+{% endblock %}

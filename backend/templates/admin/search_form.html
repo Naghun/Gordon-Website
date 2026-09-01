@@ -1,0 +1,20 @@
+{% load i18n %}
+{% if cl.search_fields %}
+  <div id="toolbar">
+    <h2 id="changelist-search-form" class="visually-hidden">Pretraga</h2>
+    <form id="changelist-search" method="get" role="search" aria-labelledby="changelist-search-form">
+      <div>
+        <label for="searchbar" class="visually-hidden">Pretraga</label>
+        <input type="text" size="40" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar" placeholder="{% if cl.opts.model_name == 'user' %}Pretraži korisnika{% else %}Pretraži{% endif %}"{% if cl.search_help_text %} aria-describedby="searchbar_helptext"{% endif %}>
+        <input type="submit" value="Pretraga">
+        {% if show_result_count %}
+          <span class="small quiet">{{ cl.result_count }} rezultata (<a href="?">Prikaži sve</a>)</span>
+        {% endif %}
+        {% for pair in cl.params.items %}
+          {% if pair.0 != search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}">{% endif %}
+        {% endfor %}
+      </div>
+      {% if cl.search_help_text %}<div class="help" id="searchbar_helptext">{{ cl.search_help_text }}</div>{% endif %}
+    </form>
+  </div>
+{% endif %}

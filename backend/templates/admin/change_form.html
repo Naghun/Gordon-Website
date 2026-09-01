@@ -1,0 +1,11 @@
+{% extends "admin/change_form.html" %}
+
+{% block content_title %}
+  <h1>
+    {% if add %}
+      Dodaj {% if opts.model_name == 'user' %}korisnika{% else %}{{ opts.verbose_name|lower }}{% endif %}
+    {% else %}
+      Izmijeni {% if opts.model_name == 'user' %}korisnika{% else %}{{ opts.verbose_name|lower }}{% endif %}
+    {% endif %}
+  </h1>
+{% endblock %}

@@ -1,0 +1,280 @@
+GORDONDM — TRENUTNI SADRŽAJ POČETNE STRANICE
+Datum izvlačenja: 24.08.2026.
+URL: https://gordondm.com/
+
+Ovaj dokument je radna osnova za on-page SEO optimizaciju.
+Tekstovi su složeni redoslijedom kojim se pojavljuju na stranici.
+
+==================================================
+0. TRENUTNI SEO PODACI
+==================================================
+
+Primarni keyword iz SEO Managera:
+digitalna agencija Sarajevo
+
+Sekundarni keywordi:
+- digitalna agencija BiH
+- agencija za digitalni marketing Sarajevo
+- digitalna rješenja za firme
+- tehnološka agencija BiH
+
+SEO title:
+Digitalna agencija Sarajevo | AI, softver i marketing | GordonDM
+
+Meta description:
+GordonDM je digitalna agencija iz Sarajeva za AI automatizaciju, poslovni softver, web rješenja, SEO i digitalni marketing usmjeren na rast.
+
+Search intent:
+Lokalni / komercijalni
+
+==================================================
+1. GLAVNA NAVIGACIJA
+==================================================
+
+- AI Automatizacija
+- Softver rješenja
+- Marketing
+- Kripto
+- Konsulting
+- Kontakt
+
+Logo alt tekst:
+GordonDM – digitalni marketing, AI i softverska rješenja
+
+==================================================
+2. HERO SLIDER — DIGITALNI MARKETING
+==================================================
+
+Oznaka:
+DIGITALNI MARKETING
+
+H1:
+Pažnju pretvaramo u rast.
+
+Opis:
+Strategija, sadržaj i kampanje koje vašem brendu donose prave ljude i mjerljive rezultate.
+
+CTA 1:
+Saznaj više
+
+CTA 2:
+Pokrenimo projekat
+
+==================================================
+3. HERO SLIDER — SOFTVER RJEŠENJA
+==================================================
+
+Oznaka:
+SOFTVER RJEŠENJA
+
+H1:
+Softver skrojen prema vama.
+
+Opis:
+Web aplikacije i poslovni sistemi koji prate vaš način rada, umjesto da vi pratite njih.
+
+CTA 1:
+Saznaj više
+
+CTA 2:
+Pokrenimo projekat
+
+==================================================
+4. HERO SLIDER — AI AUTOMATIZACIJA
+==================================================
+
+Oznaka:
+AI AUTOMATIZACIJA
+
+H1:
+Manje rutine. Više napretka.
+
+Opis:
+Pametni procesi i AI asistenti koji štede vrijeme, povezuju alate i ubrzavaju svakodnevni posao.
+
+CTA 1:
+Saznaj više
+
+CTA 2:
+Pokrenimo projekat
+
+==================================================
+5. HERO SLIDER — KRIPTO I WEB3
+==================================================
+
+Oznaka:
+KRIPTO & WEB3
+
+H1:
+Nova tehnologija, jasan smjer.
+
+Opis:
+Web3 i blockchain rješenja razvijena promišljeno, sigurno i s konkretnom poslovnom svrhom.
+
+CTA 1:
+Saznaj više
+
+CTA 2:
+Pokrenimo projekat
+
+==================================================
+6. HERO SLIDER — DIGITALNI KONSULTING
+==================================================
+
+Oznaka:
+DIGITALNI KONSULTING
+
+H1:
+Prava odluka prije razvoja.
+
+Opis:
+Strategija koja povezuje vaše poslovne ciljeve, tehnologiju i realan plan realizacije.
+
+CTA 1:
+Saznaj više
+
+CTA 2:
+Pokrenimo projekat
+
+Dodatni tekst hero sekcije:
+Istraži
+
+==================================================
+7. SEKCIJA NAŠE EKSPERTIZE
+==================================================
+
+Oznaka sekcije:
+NAŠE EKSPERTIZE
+
+Kartica 1 — H2:
+AI AUTOMATIZACIJA
+
+Opis:
+Pretvaramo ponavljajuće zadatke u pouzdane AI procese koji rade dok se vi bavite rastom.
+
+Kartica 2 — H2:
+SOFTVER RJEŠENJA
+
+Opis:
+Web aplikacije, platforme i interni alati razvijeni prema stvarnim potrebama vašeg poslovanja.
+
+Kartica 3 — H2:
+DIGITALNI MARKETING
+
+Opis:
+Strategija, sadržaj i kampanje koje grade prepoznatljiv brend i dovode kvalitetne klijente.
+
+Kartica 4 — H2:
+KRIPTO & WEB3
+
+Opis:
+Pomažemo kompanijama da razumiju, planiraju i razvijaju održiva Web3 i blockchain rješenja.
+
+Kartica 5 — H2:
+DIGITALNI KONSULTING
+
+Opis:
+Povezujemo poslovne ciljeve i tehnologiju u realan plan s jasnim prioritetima.
+
+==================================================
+8. SEKCIJA PARTNERI
+==================================================
+
+Oznaka sekcije:
+NAŠI PARTNERI
+
+H2:
+Povjerenje koje prolazi iz industrije u industriju.
+
+Opis:
+S vodećim timovima gradimo jasna digitalna iskustva koja povezuju brend i publiku.
+
+Brendovi i oznake industrija:
+- Binance — Kripto i Web3
+- Solana — Blockchain tehnologija
+- ASA BANKA — Bankarstvo i finansije
+- Inter Cars — Automobilska industrija
+- Suzuki — Automobilska industrija
+- KORPA — Dostava i e-commerce
+- Opel — Automobilska industrija
+- Halal — Certifikacija i standardi
+
+==================================================
+9. GORDON DIGITAL MARKETING / MANIFEST
+==================================================
+
+Oznaka:
+GORDON DIGITAL MARKETING
+
+Uvodni opis:
+Strategija, kreativnost i tehnologija u istom timu — od prve odluke do gotovog rješenja.
+
+Velike poruke:
+- Razmišljamo.
+- Dizajniramo.
+- Gradimo.
+
+Prateći tekst:
+Ne dodajemo tehnologiju radi tehnologije.
+
+H3:
+Pravimo ono što vašem poslu daje prednost.
+
+CTA:
+Razgovarajmo
+
+==================================================
+10. KONTAKT SEKCIJA
+==================================================
+
+Oznaka:
+IMATE IDEJU?
+
+H2:
+Hajde da napravimo njen sljedeći korak.
+
+Opis:
+Opišite nam projekat, izazov ili cilj. Javit ćemo vam se s konkretnim prijedlogom.
+
+Polja forme:
+- Ime i prezime
+- Email adresa
+- Kompanija
+- Opišite projekat ili izazov
+
+CTA:
+Pošalji upit
+
+Statusne poruke forme:
+- Šaljemo...
+- Hvala! Vaša poruka je uspješno poslana.
+- Poruka nije potvrđena. Pokušajte ponovo ili nas kontaktirajte direktno.
+
+==================================================
+11. FOOTER
+==================================================
+
+Linkovi:
+- AI
+- Software
+- Marketing
+- Web3
+- Consulting
+
+Copyright:
+© 2026 GordonDM
+
+Footer logo alt tekst:
+GordonDM – AI automatizacija, softver i digitalni marketing
+
+==================================================
+12. SEO NAPOMENE ZA SLJEDEĆI KORAK
+==================================================
+
+1. Početna trenutno u hero slideru ima pet različitih H1 naslova.
+2. Za SEO bi trebalo odrediti jedan glavni H1 za početnu stranicu.
+3. Ostali naslovi hero slajdova mogu postati vizuelni naslovi bez H1 oznake ili H2 naslovi.
+4. Primarni keyword „digitalna agencija Sarajevo” trenutno nije vidljiv u glavnom sadržaju stranice.
+5. Sekundarne keyworde treba prirodno rasporediti kroz ekspertize, manifest i kontakt sekciju.
+6. Ne treba ubacivati svih 153 keyworda na početnu stranicu.
+7. Početna treba pokrivati brend i glavne usluge, dok specifični keywordi pripadaju zasebnim landing stranicama.

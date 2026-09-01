@@ -1,0 +1,3606 @@
+/* CRYPTO PAGE — styles are isolated by page-specific class prefixes. */
+
+.crypto-page {
+  overflow: hidden;
+  background: #050708;
+  color: #f7f8f7;
+}
+.crypto-hero {
+  position: relative;
+  min-height: 980px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(570px, 0.9fr);
+  align-items: center;
+  gap: 45px;
+  padding: 175px 7vw 110px;
+  background:
+    radial-gradient(
+      circle at 80% 25%,
+      rgba(46, 211, 211, 0.16),
+      transparent 31%
+    ),
+    linear-gradient(rgba(46, 211, 211, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 211, 211, 0.04) 1px, transparent 1px),
+    #040708;
+  background-size:
+    auto,
+    64px 64px,
+    64px 64px,
+    auto;
+}
+.crypto-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 145, 32, 0.055),
+    transparent 27%
+  );
+}
+.crypto-hero-copy {
+  position: relative;
+  z-index: 3;
+}
+.crypto-hero-copy .eyebrow,
+.crypto-section-title .eyebrow,
+.crypto-learn .eyebrow,
+.crypto-invest .eyebrow {
+  color: #2ed3d3;
+}
+.crypto-hero-copy h1 {
+  margin: 30px 0;
+  font: 760 clamp(62px, 6.4vw, 118px)/0.89 Manrope;
+  letter-spacing: -0.078em;
+}
+.crypto-hero-copy h1 em {
+  color: #2ed3d3;
+  font-style: normal;
+}
+.crypto-hero-copy > p:not(.eyebrow) {
+  max-width: 730px;
+  color: rgba(255, 255, 255, 0.57);
+  font-size: 18px;
+  line-height: 1.72;
+}
+.crypto-hero-copy > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-top: 38px;
+}
+.crypto-hero-copy a {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 16px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 99px;
+  color: #fff;
+  font-weight: 800;
+  transition: 0.2s ease;
+}
+.crypto-hero-copy a:first-child {
+  border-color: #2ed3d3;
+  background: #2ed3d3;
+  color: #061011;
+}
+.crypto-hero-copy a:hover {
+  background: #fff;
+  border-color: #fff;
+  color: #061011;
+  transform: translateY(-2px);
+}
+.crypto-hero-copy > small {
+  display: block;
+  margin-top: 48px;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+.crypto-network {
+  position: relative;
+  z-index: 2;
+  width: min(620px, 44vw);
+  aspect-ratio: 1;
+  justify-self: end;
+}
+.crypto-network > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: rgba(46, 211, 211, 0.18);
+  stroke-width: 1;
+  animation: cryptoSpin 45s linear infinite;
+}
+.crypto-network > svg path {
+  stroke-dasharray: 5 10;
+}
+.crypto-core {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 50%;
+  width: 126px;
+  height: 126px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(46, 211, 211, 0.7);
+  border-radius: 28px;
+  background: linear-gradient(145deg, #2ed3d3, #087d80);
+  color: #061011;
+  box-shadow: 0 0 75px rgba(46, 211, 211, 0.3);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.crypto-core svg,
+.crypto-core span {
+  transform: rotate(-45deg);
+}
+.crypto-core svg {
+  width: 35px;
+}
+.crypto-core span {
+  position: absolute;
+  bottom: 16px;
+  font: 850 10px Manrope;
+  letter-spacing: 0.15em;
+}
+.crypto-node {
+  position: absolute;
+  z-index: 3;
+  width: 91px;
+  height: 91px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(46, 211, 211, 0.3);
+  border-radius: 50%;
+  background: rgba(4, 8, 9, 0.88);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+.crypto-node i {
+  position: absolute;
+  top: 13px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2ed3d3;
+  box-shadow: 0 0 13px #2ed3d3;
+}
+.crypto-node span {
+  color: rgba(255, 255, 255, 0.68);
+  font: 800 10px Manrope;
+  letter-spacing: 0.08em;
+}
+.crypto-node.node-1 {
+  left: 43%;
+  top: 3%;
+}
+.crypto-node.node-2 {
+  right: 3%;
+  top: 24%;
+}
+.crypto-node.node-3 {
+  right: 8%;
+  bottom: 19%;
+}
+.crypto-node.node-4 {
+  left: 44%;
+  bottom: 2%;
+}
+.crypto-node.node-5 {
+  left: 6%;
+  bottom: 20%;
+}
+.crypto-node.node-6 {
+  left: 1%;
+  top: 25%;
+}
+.crypto-ticker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 25px;
+  overflow: hidden;
+  border-top: 1px solid rgba(46, 211, 211, 0.18);
+  background: rgba(0, 0, 0, 0.3);
+}
+.crypto-ticker span {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+.crypto-ticker i {
+  color: #2ed3d3;
+  font-style: normal;
+}
+.crypto-events {
+  padding: 140px 7vw;
+  background: #eff3f2;
+  color: #071011;
+}
+.crypto-section-title {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 55px;
+  align-items: end;
+}
+.crypto-section-title .eyebrow {
+  grid-column: 1/-1;
+}
+.crypto-section-title h2 {
+  margin: 0;
+  font: 730 clamp(52px, 5.8vw, 96px)/0.94 Manrope;
+  letter-spacing: -0.065em;
+}
+.crypto-section-title h2 em {
+  color: #07999d;
+  font-style: normal;
+}
+.crypto-section-title > p:last-child {
+  color: rgba(7, 16, 17, 0.58);
+  line-height: 1.7;
+}
+.crypto-event-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-top: 85px;
+}
+.crypto-event-grid article {
+  overflow: hidden;
+  border: 1px solid rgba(7, 16, 17, 0.15);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 25px 65px rgba(7, 16, 17, 0.07);
+  transition: 0.25s ease;
+}
+.crypto-event-grid article:hover {
+  transform: translateY(-7px);
+  border-color: rgba(7, 153, 157, 0.42);
+  box-shadow: 0 35px 75px rgba(7, 16, 17, 0.12);
+}
+.crypto-event-grid article > img,
+.crypto-event-placeholder {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+}
+.crypto-event-placeholder {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 70% 30%,
+      rgba(46, 211, 211, 0.4),
+      transparent 22%
+    ),
+    linear-gradient(145deg, #071011, #0c3435);
+  color: #2ed3d3;
+}
+.crypto-event-placeholder::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: 1px solid rgba(46, 211, 211, 0.22);
+  transform: rotate(45deg);
+}
+.crypto-event-placeholder svg {
+  width: 68px;
+  height: 68px;
+}
+.crypto-event-placeholder span {
+  position: absolute;
+  left: 25px;
+  bottom: 22px;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+}
+.crypto-event-grid article > div:last-child {
+  padding: 27px;
+}
+.crypto-event-grid article > div > span {
+  color: #078f93;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+.crypto-event-grid h3 {
+  margin: 15px 0 12px;
+  font: 680 31px/1.1 Manrope;
+}
+.crypto-event-grid p {
+  min-height: 50px;
+  color: rgba(7, 16, 17, 0.58);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.crypto-event-grid a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  color: #071011;
+  font-weight: 800;
+}
+.crypto-event-grid a svg {
+  width: 17px;
+}
+.crypto-event-grid small {
+  display: block;
+  margin-top: 18px;
+  color: rgba(7, 16, 17, 0.35);
+  font-size: 9px;
+}
+
+.crypto-learn {
+  display: grid;
+  grid-template-columns: minmax(350px, 0.8fr) minmax(580px, 1.2fr);
+  gap: clamp(70px, 10vw, 170px);
+  padding: 145px 7vw;
+  background: #070b0c;
+}
+.crypto-learn-intro h2 {
+  margin: 26px 0;
+  font: 720 clamp(50px, 5vw, 84px)/0.95 Manrope;
+  letter-spacing: -0.06em;
+}
+.crypto-learn-intro > p:not(.eyebrow) {
+  max-width: 580px;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.7;
+}
+.crypto-learn-intro > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 35px;
+}
+.crypto-learn-intro > div span {
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 99px;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 8px;
+}
+.crypto-lessons {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+.crypto-lessons article {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+.crypto-lessons article > button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 40px 1fr 32px;
+  gap: 17px;
+  align-items: center;
+  padding: 25px 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+.crypto-lessons button > span {
+  color: #2ed3d3;
+  font: 800 9px Manrope;
+}
+.crypto-lessons button > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.crypto-lessons button small {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 8px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.crypto-lessons button strong {
+  font: 600 clamp(17px, 1.5vw, 23px) Manrope;
+}
+.crypto-lessons button > i {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  color: #2ed3d3;
+  font-size: 20px;
+  font-style: normal;
+}
+.crypto-lessons article.open button > i {
+  border-color: #2ed3d3;
+  background: #2ed3d3;
+  color: #071011;
+}
+.crypto-lessons article > div {
+  overflow: hidden;
+}
+.crypto-lessons article > div p {
+  margin: 0;
+  padding: 0 47px 27px 57px;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.crypto-invest {
+  padding: 140px 7vw;
+  background: #2ed3d3;
+  color: #071011;
+}
+.crypto-invest > div:first-child {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 60px;
+  align-items: end;
+}
+.crypto-invest .eyebrow {
+  grid-column: 1/-1;
+  color: #071011;
+}
+.crypto-invest h2 {
+  margin: 0;
+  font: 730 clamp(50px, 5.4vw, 90px)/0.94 Manrope;
+  letter-spacing: -0.065em;
+}
+.crypto-invest h2 em {
+  color: #fff;
+  font-style: normal;
+}
+.crypto-invest > div:first-child > p:last-child {
+  color: rgba(7, 16, 17, 0.65);
+  line-height: 1.7;
+}
+.crypto-invest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 80px;
+  border: 1px solid rgba(7, 16, 17, 0.25);
+}
+.crypto-invest-grid article {
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  padding: 27px;
+  border-right: 1px solid rgba(7, 16, 17, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  transition: 0.22s ease;
+}
+.crypto-invest-grid article:last-child {
+  border-right: 0;
+}
+.crypto-invest-grid article:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-5px);
+}
+.crypto-invest-grid article > span {
+  align-self: flex-end;
+  color: rgba(7, 16, 17, 0.45);
+  font-size: 9px;
+}
+.crypto-invest-grid svg {
+  width: 42px;
+  height: 42px;
+  margin: 45px 0 70px;
+}
+.crypto-invest-grid h3 {
+  margin: 0 0 12px;
+  font: 700 29px Manrope;
+}
+.crypto-invest-grid p {
+  color: rgba(7, 16, 17, 0.64);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.crypto-invest > small {
+  display: block;
+  margin-top: 22px;
+  color: rgba(7, 16, 17, 0.57);
+  font-size: 10px;
+}
+
+.crypto-contact {
+  display: grid;
+  grid-template-columns: minmax(430px, 0.9fr) minmax(530px, 1.1fr);
+  gap: clamp(60px, 9vw, 150px);
+  padding: 145px 7vw;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(46, 211, 211, 0.17),
+      transparent 30%
+    ),
+    #050809;
+}
+.crypto-wallet {
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  padding: 31px;
+  border: 1px solid rgba(46, 211, 211, 0.26);
+  border-radius: 27px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.085),
+    rgba(255, 255, 255, 0.018)
+  );
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(18px);
+}
+.crypto-wallet header {
+  position: static;
+  inset: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  background: transparent;
+}
+.crypto-wallet header > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.crypto-wallet header svg {
+  width: 39px;
+  height: 39px;
+  padding: 9px;
+  border-radius: 12px;
+  background: #2ed3d3;
+  color: #071011;
+}
+.crypto-wallet header span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.crypto-wallet header b {
+  font: 750 13px Manrope;
+}
+.crypto-wallet header small {
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+}
+.crypto-wallet header > i {
+  color: #2ed3d3;
+  font-size: 8px;
+  font-style: normal;
+}
+.crypto-wallet-balance {
+  margin: auto 0;
+}
+.crypto-wallet-balance small {
+  color: rgba(255, 255, 255, 0.37);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+}
+.crypto-wallet-balance strong {
+  display: block;
+  margin: 20px 0 30px;
+  font: 720 clamp(45px, 4vw, 68px)/0.95 Manrope;
+  letter-spacing: -0.06em;
+}
+.crypto-wallet-balance strong em {
+  color: #2ed3d3;
+  font-style: normal;
+}
+.crypto-wallet-balance span {
+  display: inline-flex;
+  padding: 9px 11px;
+  border: 1px solid rgba(46, 211, 211, 0.25);
+  border-radius: 99px;
+  color: #2ed3d3;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+.crypto-wallet-chain {
+  display: flex;
+  align-items: center;
+}
+.crypto-wallet-chain i {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: rgba(46, 211, 211, 0.25);
+}
+.crypto-wallet-chain i::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #2ed3d3;
+  border-radius: 50%;
+  background: #071011;
+  transform: translateY(-50%);
+}
+.crypto-wallet > p {
+  margin: 28px 0 0;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 9px;
+}
+.crypto-contact > form {
+  align-self: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 29px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 21px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.crypto-form-head,
+.crypto-contact form h2,
+.crypto-interest,
+.crypto-contact textarea,
+.crypto-contact form button,
+.crypto-contact form > small {
+  grid-column: 1/-1;
+}
+.crypto-form-head {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.38);
+  font:
+    700 8px Consolas,
+    monospace;
+}
+.crypto-form-head b {
+  color: #2ed3d3;
+}
+.crypto-contact form h2 {
+  margin: 20px 0 10px;
+  font: 720 clamp(38px, 3.8vw, 63px)/0.96 Manrope;
+  letter-spacing: -0.06em;
+}
+.crypto-contact form h2 em {
+  color: #2ed3d3;
+  font-style: normal;
+}
+.crypto-interest {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.crypto-interest label {
+  cursor: pointer;
+}
+.crypto-interest input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.crypto-interest span {
+  min-height: 62px;
+  display: grid;
+  place-items: center;
+  padding: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  text-align: center;
+  transition: 0.18s ease;
+}
+.crypto-interest label:hover span {
+  border-color: rgba(46, 211, 211, 0.55);
+  background: rgba(46, 211, 211, 0.06);
+}
+.crypto-interest label:has(input:checked) span {
+  border-color: #2ed3d3;
+  background: rgba(46, 211, 211, 0.15);
+  color: #fff;
+}
+.crypto-contact form > input,
+.crypto-contact textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  outline: none;
+  background: #0c1112;
+  color: #fff;
+  font: inherit;
+}
+.crypto-contact form > input:focus,
+.crypto-contact textarea:focus {
+  border-color: #2ed3d3;
+  box-shadow: 0 0 0 3px rgba(46, 211, 211, 0.08);
+}
+.crypto-contact form button {
+  min-height: 53px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  border: 1px solid #2ed3d3;
+  border-radius: 10px;
+  background: #2ed3d3;
+  color: #071011;
+  font-weight: 850;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+.crypto-contact form button:hover {
+  border-color: #fff;
+  background: #fff;
+}
+.crypto-contact form > small {
+  color: #2ed3d3;
+}
+.crypto-event-state {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  gap: 20px;
+  padding: 180px 7vw;
+  background: #06090a;
+  color: #fff;
+}
+.crypto-event-state a {
+  color: #2ed3d3;
+}
+.crypto-event-page {
+  min-height: 100vh;
+  padding: 160px 7vw 130px;
+  background: #070b0c;
+  color: #fff;
+}
+.crypto-event-page > a {
+  color: #2ed3d3;
+  font-size: 12px;
+}
+.crypto-event-page > header {
+  position: static;
+  inset: auto;
+  display: grid;
+  grid-template-columns: 1fr 270px;
+  gap: 60px;
+  align-items: end;
+  margin: 65px 0;
+  padding: 0;
+  background: transparent;
+}
+.crypto-event-page header h1 {
+  margin: 22px 0;
+  font: 750 clamp(55px, 6.5vw, 110px)/0.9 Manrope;
+  letter-spacing: -0.075em;
+}
+.crypto-event-page header p:not(.eyebrow) {
+  max-width: 850px;
+  color: rgba(255, 255, 255, 0.53);
+  font-size: 17px;
+  line-height: 1.7;
+}
+.crypto-event-page header aside {
+  display: grid;
+  gap: 8px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+}
+.crypto-event-page header aside span {
+  margin-top: 10px;
+  color: #2ed3d3;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+}
+.crypto-event-page header aside strong {
+  font: 600 14px Manrope;
+}
+.crypto-event-gallery > div {
+  position: relative;
+  height: min(680px, 65vw);
+  overflow: hidden;
+  border-radius: 22px;
+  background: #020405;
+}
+.crypto-event-gallery > div img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: 0.45s ease;
+}
+.crypto-event-gallery > div img.active {
+  opacity: 1;
+}
+.crypto-event-gallery nav {
+  display: flex;
+  gap: 9px;
+  margin-top: 12px;
+  overflow-x: auto;
+}
+.crypto-event-gallery nav button {
+  width: 120px;
+  height: 78px;
+  flex: none;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 9px;
+  background: #111;
+  cursor: pointer;
+}
+.crypto-event-gallery nav button.active {
+  border-color: #2ed3d3;
+}
+.crypto-event-gallery nav img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.crypto-event-content {
+  width: min(900px, 100%);
+  margin: 80px auto 0;
+}
+.crypto-event-content p {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 17px;
+  line-height: 1.85;
+}
+@media (max-width: 1100px) {
+  .crypto-hero {
+    grid-template-columns: 1fr;
+    padding-top: 155px;
+  }
+  .crypto-network {
+    width: min(620px, 88vw);
+    justify-self: center;
+  }
+  .crypto-section-title,
+  .crypto-invest > div:first-child {
+    grid-template-columns: 1fr;
+  }
+  .crypto-learn,
+  .crypto-contact {
+    grid-template-columns: 1fr;
+  }
+  .crypto-event-page > header {
+    grid-template-columns: 1fr;
+  }
+  .crypto-contact > form {
+    width: min(760px, 100%);
+  }
+}
+@media (max-width: 720px) {
+  .crypto-hero {
+    min-height: auto;
+    padding: 135px 6vw 110px;
+  }
+  .crypto-hero-copy h1 {
+    font-size: clamp(52px, 16vw, 80px);
+  }
+  .crypto-network {
+    margin: 60px 0;
+  }
+  .crypto-node {
+    width: 68px;
+    height: 68px;
+  }
+  .crypto-core {
+    width: 95px;
+    height: 95px;
+  }
+  .crypto-events,
+  .crypto-learn,
+  .crypto-invest,
+  .crypto-contact {
+    padding: 90px 6vw;
+  }
+  .crypto-event-grid {
+    grid-template-columns: 1fr;
+  }
+  .crypto-event-grid article > img,
+  .crypto-event-placeholder {
+    height: 270px;
+  }
+  .crypto-learn {
+    gap: 55px;
+  }
+  .crypto-invest-grid {
+    grid-template-columns: 1fr;
+  }
+  .crypto-invest-grid article {
+    min-height: 270px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(7, 16, 17, 0.25);
+  }
+  .crypto-invest-grid article:last-child {
+    border-bottom: 0;
+  }
+  .crypto-contact > form {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  .crypto-contact form > * {
+    grid-column: 1 !important;
+  }
+  .crypto-interest {
+    grid-template-columns: 1fr;
+  }
+  .crypto-wallet {
+    min-height: 540px;
+  }
+  .crypto-event-page {
+    padding: 135px 6vw 90px;
+  }
+  .crypto-event-page > header {
+    margin: 45px 0;
+  }
+  .crypto-event-gallery > div {
+    height: 62vw;
+  }
+  .crypto-section-title h2 {
+    font-size: clamp(48px, 13vw, 72px);
+  }
+}
+
+.web3-v2 {
+  overflow: hidden;
+  background: #050708;
+  color: #f7f8f7;
+}
+.web3-hero-v2 {
+  position: relative;
+  min-height: 980px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(550px, 0.9fr);
+  align-items: center;
+  gap: 60px;
+  padding: 175px 7vw 105px;
+  background:
+    radial-gradient(
+      circle at 78% 28%,
+      rgba(46, 211, 211, 0.16),
+      transparent 28%
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    #040708;
+  background-size:
+    auto,
+    70px 70px,
+    70px 70px,
+    auto;
+}
+.web3-hero-copy-v2 {
+  position: relative;
+  z-index: 3;
+}
+.web3-hero-copy-v2 .eyebrow,
+.web3-capabilities .eyebrow,
+.web3-events-v2 .eyebrow,
+.web3-academy-v2 .eyebrow,
+.web3-invest-v2 .eyebrow,
+.web3-contact-v2 .eyebrow {
+  color: #2ed3d3;
+}
+.web3-hero-copy-v2 h1 {
+  margin: 27px 0;
+  font: 760 clamp(64px, 6.3vw, 116px)/0.89 Manrope;
+  letter-spacing: -0.078em;
+}
+.web3-hero-copy-v2 h1 em,
+.web3-capabilities h2 em,
+.web3-events-v2 h2 em,
+.web3-academy-v2 h2 em,
+.web3-invest-v2 h2 em,
+.web3-contact-v2 h2 em {
+  color: #2ed3d3;
+  font-style: normal;
+}
+.web3-hero-copy-v2 > p:not(.eyebrow) {
+  max-width: 690px;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 18px;
+  line-height: 1.72;
+}
+.web3-hero-copy-v2 > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-top: 36px;
+}
+.web3-hero-copy-v2 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  padding: 16px 21px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 99px;
+  color: #fff;
+  font-weight: 800;
+  transition: 0.2s;
+}
+.web3-hero-copy-v2 a:first-child {
+  background: #2ed3d3;
+  border-color: #2ed3d3;
+  color: #071011;
+}
+.web3-hero-copy-v2 a:hover {
+  background: #fff;
+  border-color: #fff;
+  color: #071011;
+  transform: translateY(-2px);
+}
+.web3-hero-copy-v2 footer {
+  display: flex;
+  gap: 25px;
+  margin-top: 48px;
+}
+.web3-hero-copy-v2 footer span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.36);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+.web3-hero-copy-v2 footer svg {
+  color: #2ed3d3;
+}
+.web3-hero-machine {
+  position: relative;
+  z-index: 2;
+  min-height: 650px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 24px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.075),
+    rgba(255, 255, 255, 0.015)
+  );
+  box-shadow: 0 45px 120px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+}
+.web3-machine-top {
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.38);
+  font:
+    700 9px Consolas,
+    monospace;
+}
+.web3-machine-top i {
+  color: #2ed3d3;
+  font-style: normal;
+}
+.web3-coin-stage {
+  position: relative;
+  height: 440px;
+  display: grid;
+  place-items: center;
+}
+.web3-coin-stage > svg {
+  position: absolute;
+  inset: 5%;
+  width: 90%;
+  height: 90%;
+  fill: none;
+  stroke: rgba(46, 211, 211, 0.2);
+  stroke-width: 1;
+  stroke-dasharray: 5 8;
+  animation: cryptoSpin 35s linear infinite;
+}
+.web3-main-coin {
+  z-index: 3;
+  width: 170px;
+  height: 170px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(46, 211, 211, 0.7);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #69ffff,
+    #199ea1 42%,
+    #062e30 100%
+  );
+  box-shadow: 0 0 80px rgba(46, 211, 211, 0.35);
+  transform-style: preserve-3d;
+}
+.web3-main-coin svg {
+  font-size: 72px;
+  color: #061011;
+}
+.web3-coin {
+  position: absolute;
+  width: 82px;
+  height: 82px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  background: #0c1112;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+.web3-coin svg {
+  font-size: 31px;
+  color: #2ed3d3;
+}
+.web3-coin.ethereum {
+  left: 12%;
+  top: 18%;
+}
+.web3-coin.cube {
+  right: 12%;
+  bottom: 16%;
+}
+.web3-machine-data {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0 25px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+.web3-machine-data p {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin: 0;
+  padding: 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+.web3-machine-data p:last-child {
+  border: 0;
+}
+.web3-machine-data span {
+  color: rgba(255, 255, 255, 0.32);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+}
+.web3-machine-data b {
+  font: 650 12px Manrope;
+}
+.web3-machine-data b.active {
+  color: #2ed3d3;
+}
+.web3-marquee {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  overflow: hidden;
+}
+.web3-marquee span {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  color: rgba(255, 255, 255, 0.34);
+  font-size: 8px;
+  letter-spacing: 0.13em;
+}
+.web3-marquee i {
+  color: #2ed3d3;
+  font-style: normal;
+}
+.web3-capabilities {
+  padding: 82px 7vw 88px;
+  background: #edf2f1;
+  color: #071011;
+}
+.web3-capabilities header {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 50px;
+  align-items: end;
+}
+.web3-capabilities header .eyebrow {
+  grid-column: 1/-1;
+}
+.web3-capabilities h2 {
+  margin: 0;
+  font: 730 clamp(42px, 4.4vw, 72px)/0.94 Manrope;
+  letter-spacing: -0.065em;
+}
+.web3-capabilities > div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 38px;
+}
+.web3-capabilities article {
+  min-height: 268px;
+  display: flex;
+  flex-direction: column;
+  padding: 21px 23px;
+  border: 1px solid rgba(7, 16, 17, 0.14);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.67);
+  box-shadow: 0 20px 55px rgba(7, 16, 17, 0.05);
+  transition: 0.22s;
+}
+.web3-capabilities article:hover {
+  transform: translateY(-7px);
+  border-color: rgba(7, 153, 157, 0.5);
+  box-shadow: 0 30px 70px rgba(7, 16, 17, 0.1);
+}
+.web3-capabilities article > span {
+  align-self: flex-end;
+  color: rgba(7, 16, 17, 0.32);
+  font-size: 9px;
+}
+.web3-capabilities article > svg {
+  width: 42px;
+  height: 42px;
+  margin: 27px 0 auto;
+  color: #078f93;
+}
+.web3-capabilities h3 {
+  margin: 24px 0 9px;
+  font: 700 22px Manrope;
+}
+.web3-capabilities article p {
+  color: rgba(7, 16, 17, 0.57);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.web3-events-v2 {
+  padding: 145px 7vw;
+  background: #070b0c;
+}
+.web3-events-v2 > header {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  align-items: end;
+}
+.web3-events-v2 > header h2 {
+  margin: 25px 0 0;
+  font: 730 clamp(50px, 5.5vw, 90px)/0.94 Manrope;
+  letter-spacing: -0.065em;
+}
+.web3-events-v2 > header > p {
+  color: rgba(255, 255, 255, 0.48);
+  line-height: 1.7;
+}
+.web3-event-list {
+  margin-top: 80px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+.web3-event-list article {
+  display: grid;
+  grid-template-columns: 80px minmax(230px, 32%) 1fr;
+  gap: 28px;
+  align-items: center;
+  padding: 23px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  transition: 0.2s;
+}
+.web3-event-list article:hover {
+  padding-left: 12px;
+  background: rgba(46, 211, 211, 0.025);
+}
+.web3-event-number {
+  color: rgba(255, 255, 255, 0.27);
+  font: 650 12px Manrope;
+}
+.web3-event-media {
+  position: relative;
+  height: 180px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 13px;
+  background: radial-gradient(circle, #12494b, #081112);
+}
+.web3-event-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.web3-event-media > svg {
+  font-size: 52px;
+  color: #2ed3d3;
+}
+.web3-event-media > i {
+  position: absolute;
+  width: 135px;
+  height: 135px;
+  border: 1px solid rgba(46, 211, 211, 0.28);
+  transform: rotate(45deg);
+}
+.web3-event-copy > span {
+  color: #2ed3d3;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+.web3-event-copy h3 {
+  margin: 12px 0 9px;
+  font: 680 clamp(25px, 2.8vw, 43px)/1.05 Manrope;
+}
+.web3-event-copy p {
+  max-width: 720px;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.web3-event-copy a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #fff;
+  font-weight: 800;
+}
+.web3-event-copy small {
+  color: rgba(255, 255, 255, 0.27);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+.web3-academy-v2 {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(350px, 0.75fr) minmax(560px, 1.25fr);
+  gap: clamp(65px, 10vw, 160px);
+  padding: 145px 7vw;
+  background: #2ed3d3;
+  color: #071011;
+}
+.web3-academy-v2::after {
+  content: "QA";
+  position: absolute;
+  right: 1vw;
+  top: -5vw;
+  color: rgba(255, 255, 255, 0.19);
+  font: 900 25vw/0.8 Manrope;
+  letter-spacing: -0.1em;
+  pointer-events: none;
+}
+.web3-academy-v2 > * {
+  position: relative;
+  z-index: 1;
+}
+.web3-academy-v2 aside h2 {
+  margin: 25px 0;
+  font: 730 clamp(52px, 5.5vw, 92px)/0.91 Manrope;
+  letter-spacing: -0.07em;
+}
+.web3-academy-v2 aside h2 em {
+  color: #fff;
+}
+.web3-academy-v2 aside > svg {
+  font-size: 54px;
+  margin: 25px 0;
+}
+.web3-academy-v2 aside > p:last-child {
+  max-width: 500px;
+  color: rgba(7, 16, 17, 0.62);
+  line-height: 1.65;
+}
+.web3-academy-v2 .eyebrow {
+  color: #071011;
+}
+.web3-qa {
+  border-top: 1px solid rgba(7, 16, 17, 0.24);
+}
+.web3-qa article {
+  border-bottom: 1px solid rgba(7, 16, 17, 0.24);
+}
+.web3-qa button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 38px 1fr 34px;
+  gap: 16px;
+  align-items: center;
+  padding: 25px 0;
+  border: 0;
+  background: transparent;
+  color: #071011;
+  text-align: left;
+  cursor: pointer;
+}
+.web3-qa button > span {
+  font: 850 9px Manrope;
+}
+.web3-qa button > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.web3-qa button small {
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.web3-qa button strong {
+  font: 650 clamp(18px, 1.7vw, 25px) Manrope;
+}
+.web3-qa button > i {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid rgba(7, 16, 17, 0.35);
+  border-radius: 50%;
+  font-size: 20px;
+  font-style: normal;
+}
+.web3-qa article.open button > i {
+  background: #071011;
+  color: #fff;
+}
+.web3-qa article > div {
+  overflow: hidden;
+}
+.web3-qa article > div p {
+  margin: 0;
+  padding: 0 50px 27px 54px;
+  color: rgba(7, 16, 17, 0.65);
+  line-height: 1.72;
+}
+.web3-invest-v2 {
+  padding: 145px 7vw;
+  background: #edf2f1;
+  color: #071011;
+}
+.web3-invest-v2 > header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 55px;
+  align-items: end;
+}
+.web3-invest-v2 > header .eyebrow {
+  grid-column: 1/-1;
+}
+.web3-invest-v2 h2 {
+  margin: 0;
+  font: 730 clamp(52px, 5.5vw, 92px)/0.93 Manrope;
+  letter-spacing: -0.067em;
+}
+.web3-invest-v2 h2 em {
+  color: #078f93;
+}
+.web3-risk-board {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr 1fr;
+  gap: 12px;
+  margin-top: 80px;
+}
+.risk-score,
+.risk-matrix,
+.web3-risk-board aside {
+  min-height: 380px;
+  border: 1px solid rgba(7, 16, 17, 0.15);
+  border-radius: 18px;
+  background: #fff;
+}
+.risk-score {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.risk-score > svg {
+  font-size: 58px;
+  color: #078f93;
+}
+.risk-score strong {
+  margin: 26px 0 12px;
+  font: 750 34px/1 Manrope;
+}
+.risk-score span {
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  opacity: 0.45;
+}
+.risk-matrix {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  overflow: hidden;
+}
+.risk-matrix > i {
+  border-right: 1px solid rgba(7, 16, 17, 0.1);
+  border-bottom: 1px solid rgba(7, 16, 17, 0.1);
+  background: linear-gradient(
+    145deg,
+    rgba(46, 211, 211, 0.05),
+    rgba(46, 211, 211, 0.18)
+  );
+  transition: 0.25s;
+}
+.risk-matrix > i:nth-child(2),
+.risk-matrix > i:nth-child(4) {
+  border-right: 0;
+}
+.risk-matrix > i:nth-child(3),
+.risk-matrix > i:nth-child(4) {
+  border-bottom: 0;
+}
+.risk-matrix:hover > i:nth-child(1) {
+  background: rgba(46, 211, 211, 0.38);
+}
+.risk-matrix > span {
+  position: absolute;
+  font: 800 8px Manrope;
+  letter-spacing: 0.1em;
+}
+.risk-matrix > span:nth-of-type(1) {
+  left: 12%;
+  top: 12%;
+}
+.risk-matrix > span:nth-of-type(2) {
+  right: 12%;
+  top: 12%;
+}
+.risk-matrix > span:nth-of-type(3) {
+  left: 12%;
+  bottom: 12%;
+}
+.risk-matrix > span:nth-of-type(4) {
+  right: 12%;
+  bottom: 12%;
+}
+.web3-risk-board aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px;
+}
+.web3-risk-board aside p {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 13px;
+  align-items: center;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(7, 16, 17, 0.1);
+}
+.web3-risk-board aside p:last-child {
+  border: 0;
+}
+.web3-risk-board aside > p > svg {
+  font-size: 22px;
+  color: #078f93;
+}
+.web3-risk-board aside span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.web3-risk-board aside b {
+  font: 650 13px Manrope;
+}
+.web3-risk-board aside small {
+  color: rgba(7, 16, 17, 0.5);
+  font-size: 10px;
+}
+.web3-invest-v2 > small {
+  display: block;
+  margin-top: 20px;
+  color: rgba(7, 16, 17, 0.5);
+  font-size: 9px;
+}
+.web3-contact-v2 {
+  display: grid;
+  grid-template-columns: minmax(430px, 0.9fr) minmax(530px, 1.1fr);
+  gap: clamp(60px, 9vw, 150px);
+  padding: 145px 7vw;
+  background:
+    radial-gradient(
+      circle at 16% 22%,
+      rgba(46, 211, 211, 0.16),
+      transparent 29%
+    ),
+    #050809;
+}
+.web3-contact-card {
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  padding: 29px;
+  border: 1px solid rgba(46, 211, 211, 0.25);
+  border-radius: 25px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.075),
+    rgba(255, 255, 255, 0.015)
+  );
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.48);
+}
+.web3-contact-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.web3-contact-card-top > span {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.web3-contact-card-top svg {
+  width: 39px;
+  height: 39px;
+  padding: 10px;
+  border-radius: 11px;
+  background: #2ed3d3;
+  color: #071011;
+}
+.web3-contact-card-top b {
+  font: 750 11px Manrope;
+}
+.web3-contact-card-top > i {
+  color: #2ed3d3;
+  font-size: 8px;
+  font-style: normal;
+}
+.web3-contact-visual {
+  margin: auto 0;
+}
+.web3-contact-visual > svg {
+  font-size: 52px;
+  color: #2ed3d3;
+}
+.web3-contact-visual > p {
+  margin: 25px 0 45px;
+  color: rgba(255, 255, 255, 0.48);
+  font: 500 clamp(28px, 3vw, 47px)/1.1 Manrope;
+}
+.web3-contact-visual p strong {
+  color: #fff;
+}
+.web3-contact-visual > div {
+  display: flex;
+  align-items: center;
+}
+.web3-contact-visual > div span {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  place-items: center;
+  border: 1px solid #2ed3d3;
+  border-radius: 50%;
+  color: #2ed3d3;
+  font-size: 8px;
+}
+.web3-contact-visual > div i {
+  flex: 1;
+  height: 1px;
+  background: rgba(46, 211, 211, 0.35);
+}
+.web3-contact-card footer {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.33);
+  font:
+    700 8px Consolas,
+    monospace;
+}
+.web3-contact-v2 > form {
+  align-self: center;
+  display: grid;
+  gap: 12px;
+}
+.web3-contact-v2 form h2 {
+  margin: 20px 0;
+  font: 720 clamp(42px, 4vw, 67px)/0.95 Manrope;
+  letter-spacing: -0.06em;
+}
+.web3-contact-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.web3-contact-options label {
+  cursor: pointer;
+}
+.web3-contact-options input {
+  position: absolute;
+  opacity: 0;
+}
+.web3-contact-options span {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  transition: 0.18s;
+}
+.web3-contact-options label:hover span {
+  border-color: rgba(46, 211, 211, 0.55);
+  background: rgba(46, 211, 211, 0.06);
+}
+.web3-contact-options label:has(input:checked) span {
+  border-color: #2ed3d3;
+  background: rgba(46, 211, 211, 0.14);
+  color: #fff;
+}
+.web3-contact-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.web3-contact-fields textarea {
+  grid-column: 1/-1;
+}
+.web3-contact-fields input,
+.web3-contact-fields textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 10px;
+  outline: none;
+  background: #0c1112;
+  color: #fff;
+  font: inherit;
+}
+.web3-contact-fields input:focus,
+.web3-contact-fields textarea:focus {
+  border-color: #2ed3d3;
+}
+.web3-contact-v2 form > button {
+  min-height: 53px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid #2ed3d3;
+  border-radius: 10px;
+  background: #2ed3d3;
+  color: #071011;
+  font-weight: 850;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.web3-contact-v2 form > button:hover {
+  background: #fff;
+  border-color: #fff;
+}
+.web3-contact-v2 form > small {
+  color: #2ed3d3;
+}
+@media (max-width: 1100px) {
+  .web3-hero-v2 {
+    grid-template-columns: 1fr;
+  }
+  .web3-hero-machine {
+    width: min(760px, 100%);
+  }
+  .web3-capabilities > div {
+    grid-template-columns: 1fr 1fr;
+  }
+  .web3-events-v2 > header,
+  .web3-academy-v2,
+  .web3-invest-v2 > header,
+  .web3-contact-v2 {
+    grid-template-columns: 1fr;
+  }
+  .web3-risk-board {
+    grid-template-columns: 1fr;
+  }
+  .web3-contact-v2 > form {
+    width: min(760px, 100%);
+  }
+}
+@media (max-width: 700px) {
+  .web3-hero-v2 {
+    min-height: auto;
+    padding: 135px 6vw 100px;
+  }
+  .web3-hero-copy-v2 h1 {
+    font-size: clamp(53px, 16vw, 82px);
+  }
+  .web3-hero-machine {
+    min-height: 580px;
+  }
+  .web3-machine-data {
+    grid-template-columns: 1fr;
+  }
+  .web3-machine-data p {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .web3-coin-stage {
+    height: 330px;
+  }
+  .web3-capabilities,
+  .web3-events-v2,
+  .web3-academy-v2,
+  .web3-invest-v2,
+  .web3-contact-v2 {
+    padding: 90px 6vw;
+  }
+  .web3-capabilities > div {
+    grid-template-columns: 1fr;
+  }
+  .web3-event-list article {
+    grid-template-columns: 45px 1fr;
+  }
+  .web3-event-copy {
+    grid-column: 2;
+  }
+  .web3-event-media {
+    height: 150px;
+  }
+  .web3-academy-v2 {
+    gap: 55px;
+  }
+  .web3-risk-board {
+    margin-top: 55px;
+  }
+  .web3-contact-fields {
+    grid-template-columns: 1fr;
+  }
+  .web3-contact-fields textarea {
+    grid-column: 1;
+  }
+  .web3-contact-options {
+    grid-template-columns: 1fr;
+  }
+  .web3-contact-card {
+    min-height: 540px;
+  }
+  .web3-main-coin {
+    width: 125px;
+    height: 125px;
+  }
+  .web3-main-coin svg {
+    font-size: 55px;
+  }
+}
+
+/* Responsible Web3 approach — editorial cards instead of a stretched dashboard. */
+.web3-invest-v2 {
+  position: relative;
+  overflow: hidden;
+  padding: 145px 7vw 125px;
+  background:
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(46, 211, 211, 0.12),
+      transparent 26%
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    #060a0b;
+  background-size:
+    auto,
+    72px 72px,
+    72px 72px,
+    auto;
+  color: #fff;
+}
+.web3-invest-v2::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 7vw;
+  left: 7vw;
+  width: auto;
+  height: 1px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(90deg, #2ed3d3, rgba(46, 211, 211, 0.08));
+  box-shadow: none;
+}
+.web3-invest-v2 > header {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: clamp(65px, 9vw, 155px);
+  align-items: end;
+}
+.web3-invest-v2 > header > div {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 60px;
+  padding-top: 9px;
+}
+.web3-invest-v2 > header > div > p:last-child {
+  max-width: 470px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.web3-invest-v2 > header .eyebrow {
+  grid-column: auto;
+  padding: 0;
+  color: #2ed3d3;
+}
+.web3-invest-v2 h2 {
+  grid-column: auto;
+  max-width: none;
+  margin: 0;
+  color: #fff;
+  font: 730 clamp(57px, 6vw, 108px)/0.88 Manrope;
+  letter-spacing: -0.075em;
+}
+.web3-invest-v2 h2 em {
+  color: #2ed3d3;
+}
+.web3-risk-principles {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 95px;
+}
+.web3-risk-principles article {
+  min-height: 430px;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(12, 18, 19, 0.82);
+  box-shadow: 0 28px 65px rgba(0, 0, 0, 0.24);
+  transition:
+    transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.25s,
+    background 0.25s;
+}
+.web3-risk-principles article:hover {
+  transform: translateY(-9px);
+  border-color: rgba(46, 211, 211, 0.55);
+  background: rgba(15, 27, 28, 0.96);
+}
+.web3-risk-principles article > span {
+  color: rgba(255, 255, 255, 0.34);
+  font:
+    750 8px Consolas,
+    monospace;
+  letter-spacing: 0.14em;
+}
+.web3-risk-principles article > svg {
+  margin: 58px 0 auto;
+  color: #2ed3d3;
+  font-size: 42px;
+}
+.web3-risk-principles h3 {
+  margin: 52px 0 13px;
+  font: 680 clamp(23px, 2vw, 31px)/1.05 Manrope;
+  letter-spacing: -0.035em;
+}
+.web3-risk-principles p {
+  min-height: 67px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.web3-risk-principles article > i {
+  height: 2px;
+  margin-top: 25px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+.web3-risk-principles article > i > b {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: #2ed3d3;
+  transition: width 0.4s ease;
+}
+.web3-risk-principles article:hover > i > b {
+  width: 100%;
+}
+.web3-risk-note {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 20px 24px;
+  border: 1px solid rgba(46, 211, 211, 0.22);
+  border-radius: 13px;
+  background: rgba(46, 211, 211, 0.055);
+}
+.web3-risk-note > svg {
+  color: #2ed3d3;
+  font-size: 24px;
+}
+.web3-risk-note > span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.web3-risk-note b {
+  font: 750 9px Manrope;
+  letter-spacing: 0.1em;
+}
+.web3-risk-note small {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 9px;
+}
+.web3-risk-note > i {
+  color: rgba(255, 255, 255, 0.3);
+  font:
+    700 9px Consolas,
+    monospace;
+  font-style: normal;
+}
+
+/* Web3 project brief — wallet/pass visual paired with a transaction-like form. */
+.web3-contact-v2 {
+  position: relative;
+  grid-template-columns: minmax(440px, 0.9fr) minmax(560px, 1.1fr);
+  gap: clamp(55px, 8vw, 130px);
+  padding: 145px 7vw;
+  background:
+    radial-gradient(
+      circle at 18% 40%,
+      rgba(46, 211, 211, 0.13),
+      transparent 30%
+    ),
+    #020506;
+}
+.web3-contact-card {
+  position: relative;
+  min-height: 660px;
+  padding: 31px;
+  overflow: hidden;
+  border: 1px solid rgba(46, 211, 211, 0.28);
+  border-radius: 28px;
+  background: linear-gradient(
+    150deg,
+    rgba(46, 211, 211, 0.13),
+    rgba(255, 255, 255, 0.025) 48%,
+    rgba(255, 255, 255, 0.01)
+  );
+  box-shadow:
+    0 40px 110px rgba(0, 0, 0, 0.55),
+    inset 0 1px rgba(255, 255, 255, 0.08);
+}
+.web3-contact-card::before {
+  content: "";
+  position: absolute;
+  width: 430px;
+  height: 430px;
+  right: -190px;
+  bottom: -190px;
+  border: 1px solid rgba(46, 211, 211, 0.14);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 55px rgba(46, 211, 211, 0.025),
+    0 0 0 110px rgba(46, 211, 211, 0.018);
+}
+.web3-contact-card-top {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 14px;
+}
+.web3-contact-card-top svg {
+  width: 34px;
+  height: 34px;
+  padding: 8px;
+  border: 1px solid rgba(46, 211, 211, 0.35);
+  border-radius: 10px;
+  background: rgba(46, 211, 211, 0.1);
+  color: #2ed3d3;
+}
+.web3-contact-visual {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto 0;
+  text-align: center;
+}
+.web3-pass-orbit {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(46, 211, 211, 0.25);
+  border-radius: 50%;
+  box-shadow: 0 0 60px rgba(46, 211, 211, 0.1);
+}
+.web3-pass-orbit::before,
+.web3-pass-orbit::after {
+  content: "";
+  position: absolute;
+  border: 1px dashed rgba(46, 211, 211, 0.2);
+  border-radius: 50%;
+}
+.web3-pass-orbit::before {
+  inset: 20px;
+}
+.web3-pass-orbit::after {
+  inset: 43px;
+  background: #071011;
+}
+.web3-pass-orbit > i {
+  position: absolute;
+  z-index: 4;
+  top: 15px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2ed3d3;
+  box-shadow: 0 0 14px #2ed3d3;
+}
+.web3-pass-orbit > span {
+  position: relative;
+  z-index: 3;
+  color: #2ed3d3;
+  font-size: 29px;
+}
+.web3-pass-orbit > b {
+  position: absolute;
+  z-index: 3;
+  bottom: 50px;
+  color: rgba(255, 255, 255, 0.36);
+  font: 750 8px Manrope;
+  letter-spacing: 0.17em;
+}
+.web3-contact-visual > p {
+  margin: 27px 0 8px;
+  color: #2ed3d3;
+  font: 750 8px Manrope;
+  letter-spacing: 0.16em;
+}
+.web3-contact-visual > strong {
+  max-width: 420px;
+  color: #fff;
+  font: 620 clamp(25px, 2.3vw, 37px)/1.08 Manrope;
+  letter-spacing: -0.045em;
+}
+.web3-pass-data {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 46px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.web3-pass-data > span {
+  width: auto !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column;
+  gap: 7px;
+  padding: 17px 8px;
+  border: 0 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 !important;
+}
+.web3-pass-data > span:last-child {
+  border-right: 0 !important;
+}
+.web3-pass-data small {
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 7px;
+  letter-spacing: 0.11em;
+}
+.web3-pass-data b {
+  color: #fff;
+  font: 700 9px Manrope;
+}
+.web3-contact-v2 > form {
+  position: relative;
+  align-self: center;
+  gap: 13px;
+  padding: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  background: #0a0f10;
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.38);
+}
+.web3-form-step {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.35);
+  font:
+    700 8px Consolas,
+    monospace;
+  letter-spacing: 0.12em;
+}
+.web3-form-step > span:first-child {
+  color: #2ed3d3;
+}
+.web3-form-step > i {
+  height: 1px;
+  background: linear-gradient(90deg, #2ed3d3, rgba(46, 211, 211, 0.08));
+}
+.web3-contact-v2 form h2 {
+  margin: 16px 0 23px;
+}
+.web3-contact-options span {
+  background: #080c0d;
+}
+.web3-contact-fields input,
+.web3-contact-fields textarea {
+  background: #06090a;
+}
+
+@media (max-width: 1100px) {
+  .web3-invest-v2 > header {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .web3-invest-v2 > header > div {
+    gap: 28px;
+  }
+  .web3-risk-principles {
+    grid-template-columns: 1fr;
+  }
+  .web3-risk-principles article {
+    min-height: 330px;
+  }
+  .web3-contact-v2 {
+    grid-template-columns: 1fr;
+  }
+  .web3-contact-card,
+  .web3-contact-v2 > form {
+    width: 100%;
+    max-width: none;
+    justify-self: stretch;
+    box-sizing: border-box;
+  }
+}
+@media (max-width: 700px) {
+  .web3-invest-v2,
+  .web3-contact-v2 {
+    padding: 90px 6vw;
+  }
+  .web3-invest-v2 h2 {
+    font-size: clamp(51px, 15vw, 76px);
+  }
+  .web3-risk-principles {
+    margin-top: 55px;
+  }
+  .web3-risk-principles article {
+    min-height: 310px;
+    padding: 23px;
+  }
+  .web3-risk-principles article > svg {
+    margin-top: 40px;
+  }
+  .web3-risk-note {
+    grid-template-columns: 34px 1fr;
+  }
+  .web3-risk-note > i {
+    display: none;
+  }
+  .web3-contact-card {
+    min-height: 590px;
+    padding: 22px;
+  }
+  .web3-contact-v2 > form {
+    padding: 23px;
+  }
+  .web3-pass-orbit {
+    width: 150px;
+    height: 150px;
+  }
+  .web3-pass-data {
+    grid-template-columns: 1fr;
+  }
+  .web3-pass-data > span {
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  .web3-pass-data > span:last-child {
+    border-bottom: 0 !important;
+  }
+}
+.web3-v2 section > header {
+  position: static;
+  inset: auto;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  transform: none;
+}
+.web3-hero-machine {
+  background: #090d0e;
+  backdrop-filter: none;
+}
+.web3-coin-stage {
+  height: 440px;
+  padding: 54px 46px;
+  display: grid;
+  place-items: stretch;
+  grid-template-columns: repeat(3, 1fr);
+  align-content: center;
+  gap: 28px;
+  background: linear-gradient(
+    180deg,
+    rgba(46, 211, 211, 0.035),
+    transparent 68%
+  );
+}
+.web3-coin-stage::before {
+  content: "TRANSACTION  /  VERIFY  /  FINALIZE";
+  position: absolute;
+  top: 52px;
+  left: 46px;
+  color: rgba(255, 255, 255, 0.38);
+  font:
+    700 9px Consolas,
+    monospace;
+  letter-spacing: 0.16em;
+}
+.web3-coin-stage::after {
+  content: "BLOCK #18,492,026     HASH 0x71A...92F     ✓ FINALIZED";
+  position: absolute;
+  right: 46px;
+  bottom: 45px;
+  left: 46px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #2ed3d3;
+  font:
+    700 9px Consolas,
+    monospace;
+  letter-spacing: 0.08em;
+}
+.web3-coin-stage > svg {
+  display: none;
+}
+.web3-main-coin,
+.web3-coin {
+  position: relative;
+  inset: auto !important;
+  width: auto;
+  height: 112px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 13px;
+  background: #0d1314;
+  box-shadow: none;
+  transform: none !important;
+}
+.web3-main-coin::after,
+.web3-coin::after {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  color: rgba(255, 255, 255, 0.38);
+  font:
+    700 8px Consolas,
+    monospace;
+  letter-spacing: 0.1em;
+}
+.web3-main-coin::after {
+  content: "01 / REQUEST";
+}
+.web3-coin.ethereum::after {
+  content: "02 / VERIFY";
+}
+.web3-coin.cube::after {
+  content: "03 / CONFIRM";
+}
+.web3-main-coin {
+  border-color: rgba(46, 211, 211, 0.6);
+  background: rgba(46, 211, 211, 0.1);
+}
+.web3-main-coin svg,
+.web3-coin svg {
+  font-size: 27px;
+  color: #2ed3d3;
+}
+.web3-main-coin svg {
+  display: none;
+}
+.web3-main-coin::before {
+  content: "G";
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 1px solid #2ed3d3;
+  border-radius: 8px;
+  color: #2ed3d3;
+  font: 800 17px Manrope;
+}
+
+@media (max-width: 700px) {
+  .web3-coin-stage {
+    height: 390px;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 62px 24px 58px;
+  }
+  .web3-main-coin,
+  .web3-coin {
+    height: 72px;
+  }
+  .web3-coin-stage::before {
+    top: 27px;
+    left: 24px;
+  }
+  .web3-coin-stage::after {
+    right: 24px;
+    bottom: 24px;
+    left: 24px;
+    font-size: 7px;
+  }
+}
+.web3-capabilities article {
+  transform: translateY(0) scale(1);
+  transform-origin: center bottom;
+  transition:
+    transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.25s ease,
+    box-shadow 0.32s ease;
+}
+.web3-capabilities article:hover {
+  transform: translateY(-11px) scale(1.012);
+  border-color: rgba(7, 143, 147, 0.55);
+  box-shadow: 0 34px 75px rgba(7, 16, 17, 0.13);
+}
+.web3-invest-v2 {
+  position: relative;
+  overflow: hidden;
+  padding: 145px 7vw;
+  background: #e9efee;
+}
+.web3-invest-v2::before {
+  content: "";
+  position: absolute;
+  right: -130px;
+  top: -180px;
+  width: 520px;
+  height: 520px;
+  border: 1px solid rgba(7, 143, 147, 0.12);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 70px rgba(7, 143, 147, 0.035),
+    0 0 0 140px rgba(7, 143, 147, 0.025);
+}
+.web3-invest-v2 > header {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 0.42fr 1fr;
+  gap: 70px;
+  align-items: end;
+}
+.web3-invest-v2 > header .eyebrow {
+  grid-column: 1;
+  align-self: start;
+  padding-top: 12px;
+}
+.web3-invest-v2 h2 {
+  grid-column: 2;
+  max-width: 920px;
+  font-size: clamp(55px, 5.4vw, 96px);
+}
+.web3-risk-board {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 270px minmax(330px, 1fr) minmax(300px, 0.85fr);
+  gap: 0;
+  overflow: hidden;
+  margin-top: 85px;
+  border: 1px solid rgba(7, 16, 17, 0.17);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(7, 16, 17, 0.09);
+}
+.risk-score,
+.risk-matrix,
+.web3-risk-board aside {
+  min-height: 405px;
+  border: 0;
+  border-radius: 0;
+}
+.risk-score {
+  background: #071011;
+  color: #fff;
+}
+.risk-score > svg {
+  color: #2ed3d3;
+}
+.risk-score strong {
+  color: #fff;
+}
+.risk-score span {
+  color: rgba(255, 255, 255, 0.6);
+  opacity: 1;
+}
+.risk-matrix {
+  border-right: 1px solid rgba(7, 16, 17, 0.11);
+  background: #f7f9f9;
+}
+.risk-matrix > i {
+  background: rgba(46, 211, 211, 0.07);
+}
+.risk-matrix > i:nth-child(1) {
+  background: rgba(46, 211, 211, 0.31);
+}
+.risk-matrix > i:nth-child(2) {
+  background: rgba(46, 211, 211, 0.18);
+}
+.risk-matrix > i:nth-child(3) {
+  background: rgba(46, 211, 211, 0.11);
+}
+.risk-matrix > i:nth-child(4) {
+  background: rgba(46, 211, 211, 0.045);
+}
+.risk-matrix:hover > i:nth-child(1) {
+  background: rgba(46, 211, 211, 0.45);
+}
+.web3-risk-board aside {
+  padding: 36px;
+  background: #fff;
+}
+.web3-risk-board aside p {
+  margin: 0;
+  padding: 22px 0;
+}
+.web3-risk-board aside b {
+  font-size: 14px;
+}
+.web3-invest-v2 > small {
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+}
+
+@media (max-width: 1100px) {
+  .web3-invest-v2 > header {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .web3-invest-v2 > header .eyebrow,
+  .web3-invest-v2 h2 {
+    grid-column: 1;
+  }
+  .web3-risk-board {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .risk-score,
+  .risk-matrix,
+  .web3-risk-board aside {
+    min-height: 330px;
+  }
+  .risk-matrix {
+    border-right: 0;
+    border-bottom: 1px solid rgba(7, 16, 17, 0.11);
+  }
+}
+
+@media (max-width: 700px) {
+  .web3-invest-v2 {
+    padding: 90px 6vw;
+  }
+  .web3-risk-board {
+    margin-top: 52px;
+  }
+  .risk-score,
+  .risk-matrix,
+  .web3-risk-board aside {
+    min-height: 290px;
+  }
+  .web3-risk-board aside {
+    padding: 25px;
+  }
+}
+
+/* Live Binance market panel — final crypto hero treatment. */
+.web3-market-machine {
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  background:
+    linear-gradient(rgba(46, 211, 211, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 211, 211, 0.04) 1px, transparent 1px),
+    #090d0e;
+  background-size: 44px 44px;
+}
+.web3-market-machine .web3-machine-top i {
+  color: rgba(255, 255, 255, 0.42);
+}
+.web3-market-machine .web3-machine-top i.is-live {
+  color: #2ed3d3;
+}
+.web3-market-focus {
+  position: relative;
+  min-height: 225px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  align-items: end;
+  gap: 28px;
+  padding: 36px 30px 28px;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  background: radial-gradient(circle at 84% 20%, rgba(46, 211, 211, 0.13), transparent 34%);
+}
+.web3-market-focus > div:first-child {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  align-content: end;
+}
+.web3-market-symbol {
+  position: absolute;
+  right: -10px;
+  bottom: -18px;
+  color: rgba(46, 211, 211, 0.055);
+  font: 850 150px/0.8 Manrope;
+  letter-spacing: -0.1em;
+  pointer-events: none;
+}
+.web3-market-focus small {
+  position: relative;
+  z-index: 1;
+  color: #2ed3d3;
+  font: 750 9px Manrope;
+  letter-spacing: 0.15em;
+}
+.web3-market-focus strong {
+  position: relative;
+  z-index: 1;
+  margin-top: 7px;
+  color: #fff;
+  font: 700 clamp(44px, 4.5vw, 74px)/1 Manrope;
+  letter-spacing: -0.07em;
+}
+.web3-market-focus em,
+.web3-market-list em {
+  width: max-content;
+  margin-top: 10px;
+  color: #2ed3d3;
+  font: 750 12px Manrope;
+  font-style: normal;
+}
+.web3-market-focus em.negative,
+.web3-market-list em.negative {
+  color: #ff7777;
+}
+.web3-market-spark {
+  height: 115px;
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(46, 211, 211, 0.34);
+}
+.web3-market-spark i {
+  flex: 1;
+  min-width: 4px;
+  background: #2ed3d3;
+  transform: skewY(-10deg);
+  transform-origin: bottom;
+}
+.web3-market-spark.negative i {
+  background: #ff7777;
+}
+.web3-market-list {
+  display: grid;
+  padding: 8px 18px;
+}
+.web3-market-list button {
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr 0.55fr;
+  align-items: center;
+  gap: 14px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.075);
+  background: transparent;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.web3-market-list button:last-child {
+  border-bottom: 0;
+}
+.web3-market-list button:hover,
+.web3-market-list button.active {
+  background: rgba(46, 211, 211, 0.095);
+}
+.web3-market-list button.active {
+  box-shadow: inset 2px 0 #2ed3d3;
+}
+.web3-market-list button > span {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.web3-market-list b {
+  font: 750 12px Manrope;
+}
+.web3-market-list small {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 8px;
+}
+.web3-market-list button > strong {
+  font: 650 12px Manrope;
+  text-align: right;
+}
+.web3-market-list button > em {
+  margin: 0;
+  justify-self: end;
+  font-size: 10px;
+}
+.web3-market-footer {
+  min-height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-top: auto;
+  padding: 0 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.28);
+  font: 700 7px Manrope;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+@media (max-width: 700px) {
+  .web3-market-machine {
+    min-height: 600px;
+  }
+  .web3-market-focus {
+    grid-template-columns: 1fr;
+  }
+  .web3-market-spark {
+    position: absolute;
+    right: 20px;
+    bottom: 26px;
+    width: 120px;
+    opacity: 0.42;
+  }
+  .web3-market-list button {
+    grid-template-columns: 1fr 0.8fr 0.55fr;
+  }
+  .web3-market-list small {
+    display: none;
+  }
+  .web3-market-footer {
+    padding: 0 18px;
+  }
+}
+
+/* Spot-market simulation replacing the former candle illustration. */
+.web3-spot-panel {
+  width: 100%;
+  display: block !important;
+  align-items: initial !important;
+  overflow: hidden;
+  border: 1px solid rgba(46, 211, 211, 0.24);
+  border-radius: 14px;
+  background:
+    linear-gradient(rgba(46, 211, 211, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 211, 211, 0.035) 1px, transparent 1px),
+    #080d0e;
+  background-size: 28px 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+}
+.web3-contact-visual > .web3-spot-panel span {
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+}
+.web3-contact-visual > .web3-spot-panel i {
+  flex: initial;
+  height: auto;
+  background: transparent;
+}
+.web3-spot-panel > header {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+.web3-spot-panel > header span {
+  color: rgba(255, 255, 255, 0.48);
+  font: 700 10px Manrope;
+}
+.web3-spot-panel > header b {
+  color: #fff;
+  font-size: 13px;
+}
+.web3-spot-panel > header i {
+  color: #2ed3d3;
+  font: 750 7px Manrope;
+  font-style: normal;
+  letter-spacing: 0.14em;
+}
+.web3-spot-price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 18px 15px;
+}
+.web3-spot-price > span {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.web3-spot-price small {
+  color: rgba(255, 255, 255, 0.32);
+  font: 700 7px Manrope;
+  letter-spacing: 0.12em;
+}
+.web3-spot-price strong {
+  margin-top: 3px;
+  color: #fff;
+  font: 700 29px/1 Manrope;
+  letter-spacing: -0.055em;
+}
+.web3-spot-price em {
+  margin-top: 5px;
+  color: #43dab0;
+  font: 750 10px Manrope;
+  font-style: normal;
+}
+.web3-spot-price > div {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(67, 218, 176, 0.34);
+  border-radius: 50%;
+  background: rgba(67, 218, 176, 0.08);
+  color: #43dab0;
+}
+.web3-order-book {
+  padding: 0 12px;
+}
+.web3-order-book > div,
+.web3-order-book p {
+  min-height: 25px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin: 0;
+  padding: 0 8px;
+}
+.web3-order-book > div small {
+  color: rgba(255, 255, 255, 0.25);
+  font: 650 6px Manrope;
+  letter-spacing: 0.1em;
+}
+.web3-order-book > div small:last-child,
+.web3-order-book p b {
+  text-align: right;
+}
+.web3-order-book p {
+  position: relative;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.68);
+  font: 650 9px Consolas, monospace;
+}
+.web3-order-book p::before {
+  content: "";
+  position: absolute;
+  inset: 1px 0 1px auto;
+  z-index: 0;
+  width: var(--depth);
+  background: rgba(255, 100, 108, 0.085);
+  transform-origin: right;
+  animation: spotDepth 2.6s ease-in-out infinite alternate;
+}
+.web3-order-book p.buy::before {
+  background: rgba(67, 218, 176, 0.09);
+}
+.web3-order-book p.mark::before {
+  width: 100%;
+  background: rgba(46, 211, 211, 0.11);
+}
+.web3-order-book p > * {
+  position: relative;
+  z-index: 1;
+}
+.web3-order-book p.sell span {
+  color: #ff777e;
+}
+.web3-order-book p.buy span {
+  color: #43dab0;
+}
+.web3-order-book p.mark {
+  min-height: 30px;
+  color: #2ed3d3;
+  font-weight: 800;
+}
+.web3-trade-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 14px 18px;
+}
+.web3-trade-actions button {
+  min-height: 38px;
+  border: 1px solid #43dab0;
+  border-radius: 7px;
+  background: #43dab0;
+  color: #071011;
+  font: 800 9px Manrope;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.web3-trade-actions button:first-child:hover {
+  background: transparent;
+  color: #43dab0;
+}
+.web3-trade-actions button:last-child {
+  border-color: #ff6e78;
+  background: transparent;
+  color: #ff8189;
+}
+.web3-trade-actions button:last-child:hover {
+  background: #ff6e78;
+  color: #071011;
+}
+.web3-spot-panel > footer {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.27);
+  font: 650 6px Manrope;
+  letter-spacing: 0.09em;
+}
+@keyframes spotDepth {
+  from { transform: scaleX(0.82); opacity: 0.62; }
+  to { transform: scaleX(1); opacity: 1; }
+}
+
+/* Two-sided continuously updating order book. */
+.web3-order-book {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  padding: 0 18px 8px;
+}
+.web3-order-book > section {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  background: rgba(4, 8, 9, 0.7);
+}
+.web3-order-book > section > header {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 9px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.web3-order-book > section > header b {
+  color: #43dab0;
+  font: 800 8px Manrope;
+  letter-spacing: 0.08em;
+}
+.web3-order-book > section.sell-side > header b {
+  color: #ff777e;
+}
+.web3-order-book > section > header span {
+  color: rgba(255, 255, 255, 0.24) !important;
+  font: 650 5px Manrope;
+  letter-spacing: 0.07em;
+}
+.web3-order-book section p {
+  min-height: 26px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin: 0;
+  padding: 0 9px;
+  color: rgba(255, 255, 255, 0.63);
+  font: 650 8px Consolas, monospace;
+}
+.web3-order-book section p::before {
+  content: "";
+  position: absolute;
+  inset: 1px auto 1px 0;
+  z-index: 0;
+  width: var(--depth);
+  background: rgba(67, 218, 176, 0.085);
+  transform-origin: left;
+  animation: none;
+}
+.web3-order-book section.sell-side p::before {
+  inset: 1px 0 1px auto;
+  background: rgba(255, 100, 108, 0.085);
+  transform-origin: right;
+}
+.web3-order-book section p span,
+.web3-order-book section p b {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  border: 0;
+  color: #43dab0;
+  text-align: left;
+}
+.web3-order-book section.sell-side p span,
+.web3-order-book section.sell-side p b {
+  color: #ff777e;
+}
+.web3-order-book section p b {
+  color: rgba(255, 255, 255, 0.54);
+  text-align: right;
+}
+.web3-market-chart {
+  position: relative;
+  width: 100%;
+  display: block !important;
+  margin-top: 18px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.web3-market-chart header {
+  display: none;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.35);
+  font: 700 6px Manrope;
+  letter-spacing: 0.1em;
+}
+.web3-contact-visual > .web3-market-chart span {
+  display: inline;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+}
+.web3-market-chart header b {
+  color: #2ed3d3;
+  font: inherit;
+}
+.web3-market-chart svg {
+  width: 100%;
+  height: 115px;
+  margin-top: 7px;
+  overflow: visible;
+}
+.web3-market-chart img {
+  display: block;
+  width: 100%;
+  height: clamp(255px, 23vw, 390px);
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
+}
+.web3-market-chart .area {
+  fill: url(#marketArea);
+}
+.web3-market-chart .line {
+  fill: none;
+  stroke: #2ed3d3;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: marketLineDraw 3.5s ease-in-out infinite alternate;
+}
+.web3-contact-visual > .web3-market-chart > i {
+  flex: initial;
+  position: absolute;
+  top: 56px;
+  right: 13px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2ed3d3;
+  box-shadow: 0 0 15px #2ed3d3;
+  animation: marketPulse 1.2s ease-in-out infinite;
+}
+@keyframes marketLineDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes marketPulse {
+  50% { opacity: 0.35; transform: scale(0.65); }
+}
+@media (max-width: 520px) {
+  .web3-order-book {
+    padding-inline: 10px;
+  }
+  .web3-order-book section p {
+    padding-inline: 6px;
+    font-size: 7px;
+  }
+}
+
+/* Shared subtle turquoise lift used on service cards. */
+.web3-capabilities article {
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.web3-capabilities article:hover {
+  transform: translateY(-4px);
+  border-color: inherit;
+  background: rgba(255, 255, 255, 0.34);
+  box-shadow: none;
+}
+
+/* Keep 24h growth on the same baseline as the focused market price. */
+.web3-market-focus > div:first-child {
+  grid-template-columns: auto auto;
+  column-gap: 16px;
+  align-items: baseline;
+  justify-content: start;
+}
+.web3-market-focus > div:first-child > small {
+  grid-column: 1 / -1;
+}
+.web3-market-focus > div:first-child > strong {
+  grid-column: 1;
+}
+.web3-market-focus > div:first-child > em {
+  grid-column: 2;
+  margin-top: 0;
+}
+
+/* Compact candlestick signal inside the project wallet. */
+.web3-candle-panel {
+  width: 100%;
+  margin-top: 34px;
+  padding: 14px 16px 10px;
+  border: 1px solid rgba(46, 211, 211, 0.17);
+  border-radius: 12px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    rgba(2, 7, 8, 0.72);
+  background-size:
+    28px 28px,
+    28px 28px,
+    auto;
+}
+.web3-candle-head {
+  display: flex;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.32);
+  font:
+    700 7px Consolas,
+    monospace;
+  letter-spacing: 0.12em;
+}
+.web3-candle-head b {
+  color: #2ed3d3;
+  font: inherit;
+}
+.web3-candle-chart {
+  height: 145px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 12px 8px 7px;
+}
+.web3-candle-chart > i {
+  position: relative;
+  flex: 0 0 auto;
+  width: 10px;
+  height: var(--candle-height) !important;
+  max-height: 118px;
+  margin-top: var(--candle-shift);
+  border-radius: 1px;
+  background: #21c997;
+  color: #21c997;
+  box-shadow: 0 0 12px rgba(33, 201, 151, 0.18);
+}
+.web3-candle-chart > i::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(-1 * var(--wick-top));
+  bottom: calc(-1 * var(--wick-bottom));
+  width: 1px;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+.web3-candle-chart > i.down {
+  color: #ef5b67;
+  background: #ef5b67;
+  box-shadow: 0 0 10px rgba(239, 91, 103, 0.13);
+}
+.web3-candle-chart > i.up {
+  color: #21c997;
+}
+.web3-candle-chart > i.hollow {
+  width: 30px;
+  border: 0;
+  background: currentColor;
+  box-shadow: none;
+}
+.web3-candle-chart > i.hollow::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 12px;
+  border-top: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: translateX(-50%);
+}
+.web3-candle-chart > i.solid {
+  border: 0;
+}
+.web3-candle-chart > i > b {
+  display: none;
+}
+.web3-contact-card::before {
+  display: none;
+}
+.web3-candle-axis {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.25);
+  font:
+    700 6px Consolas,
+    monospace;
+  letter-spacing: 0.11em;
+}
+@media (max-width: 700px) {
+  .web3-candle-chart {
+    height: 125px;
+    gap: 4px;
+  }
+  .web3-candle-chart > i {
+    width: 5px;
+    transform: scaleY(0.8);
+    transform-origin: bottom;
+  }
+}
+
+/* Compact responsible approach — same visual rhythm as the capability cards. */
+.web3-invest-v2 {
+  padding: 72px 7vw 62px;
+}
+.web3-invest-v2 > header {
+  grid-template-columns: 0.55fr 1fr;
+  gap: 50px;
+}
+.web3-invest-v2 > header > div {
+  gap: 24px;
+  padding-bottom: 4px;
+}
+.web3-invest-v2 h2 {
+  font-size: clamp(42px, 4.4vw, 72px);
+  line-height: 0.94;
+}
+.web3-risk-principles {
+  gap: 12px;
+  margin-top: 38px;
+}
+.web3-risk-principles article {
+  min-height: 268px;
+  padding: 21px 23px;
+}
+.web3-risk-principles article > svg {
+  width: 42px;
+  height: 42px;
+  margin: 27px 0 auto;
+}
+.web3-risk-principles h3 {
+  margin: 24px 0 9px;
+  font-size: 22px;
+}
+.web3-risk-principles p {
+  min-height: 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.web3-risk-principles article > i {
+  margin-top: 18px;
+}
+.web3-risk-note {
+  margin-top: 18px;
+  padding: 15px 19px;
+}
+@media (max-width: 700px) {
+  .web3-invest-v2 {
+    padding: 90px 6vw;
+  }
+}
+
+/* Project brief transaction chain. */
+.web3-contact-v2 > form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.38;
+  background-image:
+    linear-gradient(rgba(46, 211, 211, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 211, 211, 0.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, #000, transparent 72%);
+}
+.web3-contact-v2 > form > * {
+  position: relative;
+  z-index: 1;
+}
+.web3-brief-chain {
+  display: grid;
+  grid-template-columns: 1fr 20px 1fr 20px 1fr;
+  gap: 7px;
+  align-items: center;
+  margin: 3px 0 16px;
+}
+.web3-brief-chain > span {
+  min-width: 0;
+  min-height: 82px;
+  display: grid;
+  grid-template-columns: 19px 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 5px 8px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid rgba(46, 211, 211, 0.18);
+  border-radius: 10px;
+  background: rgba(4, 9, 10, 0.86);
+}
+.web3-brief-chain span > i {
+  color: rgba(255, 255, 255, 0.28);
+  font:
+    700 7px Consolas,
+    monospace;
+  font-style: normal;
+}
+.web3-brief-chain span > svg {
+  justify-self: end;
+  color: #2ed3d3;
+  font-size: 17px;
+}
+.web3-brief-chain span > b {
+  grid-column: 1/-1;
+  color: rgba(255, 255, 255, 0.66);
+  font: 750 8px Manrope;
+  letter-spacing: 0.08em;
+}
+.web3-brief-chain > em {
+  color: #2ed3d3;
+  font:
+    500 13px Consolas,
+    monospace;
+  font-style: normal;
+  text-align: center;
+  opacity: 0.55;
+}
+.web3-contact-fields {
+  position: relative;
+  padding-top: 26px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.web3-contact-fields::before {
+  content: "SIGNER / PROJECT DATA";
+  position: absolute;
+  top: 8px;
+  left: 0;
+  color: rgba(255, 255, 255, 0.27);
+  font:
+    700 7px Consolas,
+    monospace;
+  letter-spacing: 0.13em;
+}
+.web3-contact-fields input,
+.web3-contact-fields textarea {
+  border-radius: 7px;
+  border-color: rgba(46, 211, 211, 0.14);
+  background: rgba(3, 7, 8, 0.94);
+}
+.web3-contact-v2 form > button {
+  border-radius: 7px;
+  letter-spacing: 0.015em;
+}
+.web3-form-hash {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.28);
+  font:
+    700 7px Consolas,
+    monospace;
+  letter-spacing: 0.1em;
+}
+.web3-form-hash b {
+  color: #2ed3d3;
+  font: inherit;
+}
+
+@media (max-width: 700px) {
+  .web3-brief-chain {
+    grid-template-columns: 1fr;
+  }
+  .web3-brief-chain > em {
+    transform: rotate(90deg);
+  }
+  .web3-brief-chain > span {
+    min-height: 67px;
+  }
+  .web3-form-hash {
+    flex-direction: column;
+  }
+}
+
+/* Final isolation guard: legacy risk-board rules above cannot repaint the new section. */
+.web3-invest-v2 {
+  padding: 145px 7vw 125px;
+  background:
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(46, 211, 211, 0.12),
+      transparent 26%
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    #060a0b;
+  background-size:
+    auto,
+    72px 72px,
+    72px 72px,
+    auto;
+  color: #fff;
+}
+.web3-invest-v2::before {
+  top: 0;
+  right: 7vw;
+  left: 7vw;
+  width: auto;
+  height: 1px;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(90deg, #2ed3d3, rgba(46, 211, 211, 0.08));
+  box-shadow: none;
+}
+.web3-invest-v2 > header {
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: clamp(65px, 9vw, 155px);
+}
+.web3-invest-v2 > header .eyebrow {
+  grid-column: auto;
+  padding: 0;
+  color: #2ed3d3;
+}
+.web3-invest-v2 h2 {
+  grid-column: auto;
+  max-width: none;
+  color: #fff;
+  font-size: clamp(57px, 6vw, 108px);
+}
+@media (max-width: 1100px) {
+  .web3-invest-v2 > header {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+@media (max-width: 700px) {
+  .web3-invest-v2 {
+    padding: 90px 6vw;
+  }
+  .web3-invest-v2 h2 {
+    font-size: clamp(51px, 15vw, 76px);
+  }
+}
+
+/* Final compact sizing for the live Responsible Approach component. */
+.web3-invest-v2 {
+  padding: 82px 7vw 88px;
+}
+.web3-invest-v2 > header {
+  grid-template-columns: 0.55fr 1fr;
+  gap: 50px;
+}
+.web3-invest-v2 > header > div {
+  gap: 24px;
+  padding-bottom: 4px;
+}
+.web3-invest-v2 h2 {
+  font-size: clamp(42px, 4.4vw, 72px);
+  line-height: 0.94;
+}
+.web3-risk-principles {
+  gap: 12px;
+  margin-top: 38px;
+}
+.web3-risk-principles article {
+  min-height: 268px;
+  padding: 21px 23px;
+}
+.web3-risk-principles article > svg {
+  width: 42px;
+  height: 42px;
+  margin: 27px 0 auto;
+}
+.web3-risk-principles h3 {
+  margin: 24px 0 9px;
+  font-size: 22px;
+}
+.web3-risk-principles p {
+  min-height: 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.web3-risk-principles article > i {
+  margin-top: 18px;
+}
+.web3-risk-note {
+  margin-top: 18px;
+  padding: 15px 19px;
+}
+@media (max-width: 1100px) {
+  .web3-invest-v2 > header {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+@media (max-width: 700px) {
+  .web3-invest-v2 {
+    padding: 76px 6vw;
+  }
+  .web3-invest-v2 h2 {
+    font-size: clamp(45px, 13vw, 68px);
+  }
+}

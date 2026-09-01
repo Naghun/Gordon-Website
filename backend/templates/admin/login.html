@@ -1,0 +1,33 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block bodyclass %}{{ block.super }} login{% endblock %}
+{% block nav-breadcrumbs %}{% endblock %}
+{% block nav-sidebar %}{% endblock %}
+{% block content_title %}{% endblock %}
+
+{% block content %}
+{% if form.errors and not form.non_field_errors %}
+<p class="errornote">Unesite ispravno korisničko ime i lozinku za administratorski račun. Obratite pažnju na velika i mala slova.</p>
+{% endif %}
+{% if form.non_field_errors %}
+<p class="errornote">Unesite ispravno korisničko ime i lozinku za administratorski račun. Obratite pažnju na velika i mala slova.</p>
+{% endif %}
+
+<div id="content-main">
+  <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+    <div class="form-row">
+      <label for="id_username">Korisničko ime:</label>
+      <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" value="{{ form.username.value|default:'' }}">
+    </div>
+    <div class="form-row">
+      <label for="id_password">Lozinka:</label>
+      <input type="password" name="password" autocomplete="current-password" required id="id_password">
+      <input type="hidden" name="next" value="{{ next }}">
+    </div>
+    <div class="submit-row">
+      <input type="submit" value="Prijava">
+    </div>
+  </form>
+</div>
+{% endblock %}

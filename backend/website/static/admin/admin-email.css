@@ -1,0 +1,56 @@
+body.app-website.model-adminemail.change-form .form-row.field-email_reader { width:100%; box-sizing:border-box; padding:10px!important; border:0!important; }
+body.app-website.model-adminemail.change-form .field-email_reader > div,
+body.app-website.model-adminemail.change-form .field-email_reader .flex-container,
+body.app-website.model-adminemail.change-form .field-email_reader .readonly { width:100%!important; max-width:none!important; box-sizing:border-box; }
+.admin-email-reader { width:100%; box-sizing:border-box; overflow:hidden; border:1px solid #d7dddd; border-radius:16px; background:#fff; color:#101415; box-shadow:none; font-family:Manrope,"Segoe UI",sans-serif; }
+.admin-email-reader header { display: grid; grid-template-columns: 48px minmax(0,1fr) auto; gap: 15px; align-items: start; padding: 24px 26px 20px; border-bottom: 1px solid #e2e7e7; }
+.admin-email-avatar { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; background: #071011; color: #fff; font-size: 14px; font-weight: 800; }
+.admin-email-reader h2 { margin: 0 0 12px; color: #090c0d; font-size: clamp(20px,2vw,30px); line-height: 1.15; letter-spacing: -.025em; }
+.admin-email-reader header p { margin: 3px 0; color: #667071; font-size: 12px; }
+.admin-email-reader header p strong { color: #111; }
+.admin-email-reader time { color: #6e7778; font-size: 11px; white-space: nowrap; }
+.admin-email-body { min-height: 230px; padding: 35px clamp(26px,4vw,65px) 48px; color: #222829; font: 400 15px/1.75 Georgia,"Times New Roman",serif; white-space: pre-wrap; overflow-wrap:anywhere; }
+.admin-email-disclaimer { margin:0 clamp(26px,4vw,65px) 30px; padding:20px 0 0; border-top:1px solid #e1e6e6; color:#7a8485; font:400 11px/1.55 "Segoe UI",sans-serif; white-space:pre-wrap; }
+.admin-email-disclaimer b { display:block; margin-bottom:8px; color:#505a5b; font-size:9px; letter-spacing:.1em; text-transform:uppercase; }
+body.app-website.model-adminemail.change-form .form-row.field-reply { width:100%; box-sizing:border-box; margin-top:18px; padding:10px!important; border:0!important; border-radius:0; background:transparent!important; box-shadow:none!important; }
+body.app-website.model-adminemail.change-form .form-row.field-reply > div,
+body.app-website.model-adminemail.change-form .form-row.field-reply .flex-container,
+body.app-website.model-adminemail.change-form .form-row.field-reply .fieldBox { width:100%!important; max-width:none!important; box-sizing:border-box; }
+body.app-website.model-adminemail.change-form .field-reply textarea { display:block; width:100%!important; max-width:none!important; min-height:150px; box-sizing:border-box; background:#fff!important; color:#111!important; border:1px solid #aeb8b9!important; }
+.email-reply-tools { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:10px; }
+.email-reply-tools span { color:#667071; font-size:9px; font-weight:850; letter-spacing:.12em; }
+.email-reply-tools button { padding:9px 18px; border:1px solid #0b0d0e; border-radius:8px; background:#0b0d0e; color:#fff!important; -webkit-text-fill-color:#fff!important; font:750 11px Manrope,sans-serif; cursor:pointer; }
+.email-reply-tools button:hover { background:#fff; color:#0b0d0e!important; -webkit-text-fill-color:#0b0d0e!important; }
+.admin-email-compose { max-width:980px; margin:0 auto; color:#101415; }
+.admin-email-compose > header { padding:20px 0 28px; border-bottom:1px solid #dce2e2; }
+.admin-email-compose > header span { color:#078f93; font-size:9px; font-weight:850; letter-spacing:.14em; }
+.admin-email-compose h1 { margin:10px 0 6px; color:#0b0d0e; font:750 clamp(38px,5vw,66px)/1 Manrope,sans-serif; letter-spacing:-.055em; }
+.admin-email-compose header p { margin:0; color:#697374; }
+.admin-email-compose form { display:grid; gap:16px; margin-top:24px; padding:28px; border:1px solid #d6dddd; border-radius:16px; background:#fff; box-shadow:0 18px 50px rgba(5,18,20,.07); }
+.admin-email-compose label { display:grid; gap:8px; color:#202627; font-weight:750; }
+.admin-email-compose input,.admin-email-compose textarea { box-sizing:border-box; width:100%; padding:14px 15px!important; border:1px solid #aeb8b9!important; border-radius:9px!important; background:#fff!important; color:#111!important; font:500 14px Manrope,sans-serif!important; }
+.admin-email-compose textarea { min-height:270px; resize:vertical; }
+.admin-email-compose button[type="submit"] { justify-self:start; padding:13px 20px; border:1px solid #0b0d0e; border-radius:9px; background:#0b0d0e; color:#fff; font-weight:800; cursor:pointer; }
+.admin-email-compose button[type="submit"]:hover { background:#fff; color:#0b0d0e; }
+@media(max-width:700px){.admin-email-reader header{grid-template-columns:42px 1fr;padding:18px}.admin-email-avatar{width:42px;height:42px}.admin-email-reader time{grid-column:2}.admin-email-body{padding:25px 20px 35px}}
+body.app-website.model-adminemail.change-list .object-tools a.email-refresh-button {
+  display:inline-flex!important; align-items:center; min-height:34px; box-sizing:border-box;
+  padding:8px 15px!important; border:1px solid #0b0d0e!important; border-radius:8px!important;
+  background:#0b0d0e!important; color:#fff!important; -webkit-text-fill-color:#fff!important;
+  font:800 11px Manrope,"Segoe UI",sans-serif!important; text-transform:none!important; letter-spacing:0!important;
+  box-shadow:none!important; transition:background .2s ease,color .2s ease,transform .2s ease;
+}
+body.app-website.model-adminemail.change-list .object-tools a.email-refresh-button,
+body.app-website.model-adminemail.change-list .object-tools a.addlink {
+  display:inline-flex!important; align-items:center!important; justify-content:center!important;
+  width:176px!important; min-width:176px!important; height:38px!important; min-height:38px!important;
+  box-sizing:border-box!important; padding:9px 15px!important;
+}
+body.app-website.model-adminemail.change-list .object-tools a.email-refresh-button:hover {
+  background:#fff!important; color:#0b0d0e!important; -webkit-text-fill-color:#0b0d0e!important;
+  transform:translateY(-1px);
+}
+body.app-website.model-adminemail .object-tools a.addlink::before {
+  display:inline-flex!important; align-items:center!important; justify-content:center!important;
+  height:1em!important; line-height:1!important; transform:translateY(-1px);
+}

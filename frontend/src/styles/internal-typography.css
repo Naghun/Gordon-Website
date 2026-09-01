@@ -1,0 +1,112 @@
+/* Unified display typography for every internal page. The homepage keeps its own scale. */
+:is(
+  .ai-page .ai-hero-copy,
+  .software-page .software-hero-copy,
+  .marketing-page .marketing-hero-copy,
+  .web3-v2 .web3-hero-copy-v2,
+  .consulting-page .consulting-hero-copy,
+  .contact-page .contact,
+  .crypto-event-page > header
+) h1 {
+  font-size: 96px !important;
+}
+
+:is(
+  .ai-solutions-head,
+  .ai-blueprint-title,
+  .ai-contact-copy,
+  .software-section-head,
+  .software-build-title,
+  .software-cta,
+  .software-contact-copy,
+  .marketing-section-head,
+  .marketing-funnel-copy,
+  .marketing-proof,
+  .web3-capabilities,
+  .web3-events-v2 > header,
+  .web3-academy-v2 > aside,
+  .web3-invest-v2,
+  .consulting-areas,
+  .consulting-process,
+  .consulting-contact,
+  .contact-team-heading,
+  .team-slider-top
+) h2 {
+  font-size: 80px !important;
+}
+
+@media (max-width: 900px) {
+  :is(
+    .ai-page .ai-hero-copy,
+    .software-page .software-hero-copy,
+    .marketing-page .marketing-hero-copy,
+    .web3-v2 .web3-hero-copy-v2,
+    .consulting-page .consulting-hero-copy,
+    .contact-page .contact,
+    .crypto-event-page > header
+  ) h1 {
+    font-size: clamp(48px, 11vw, 72px) !important;
+  }
+
+  :is(
+    .ai-solutions-head,
+    .ai-blueprint-title,
+    .ai-contact-copy,
+    .software-section-head,
+    .software-build-title,
+    .software-cta,
+    .software-contact-copy,
+    .marketing-section-head,
+    .marketing-funnel-copy,
+    .marketing-proof,
+    .web3-capabilities,
+    .web3-events-v2 > header,
+    .web3-academy-v2 > aside,
+    .web3-invest-v2,
+    .consulting-areas,
+    .consulting-process,
+    .consulting-contact,
+    .contact-team-heading,
+    .team-slider-top
+  ) h2 {
+    font-size: clamp(40px, 9vw, 62px) !important;
+  }
+}
+
+@media (max-width: 520px) {
+  :is(
+    .ai-page .ai-hero-copy,
+    .software-page .software-hero-copy,
+    .marketing-page .marketing-hero-copy,
+    .web3-v2 .web3-hero-copy-v2,
+    .consulting-page .consulting-hero-copy,
+    .contact-page .contact,
+    .crypto-event-page > header
+  ) h1 {
+    font-size: clamp(42px, 13vw, 60px) !important;
+  }
+
+  :is(
+    .ai-solutions-head,
+    .ai-blueprint-title,
+    .ai-contact-copy,
+    .software-section-head,
+    .software-build-title,
+    .software-cta,
+    .software-contact-copy,
+    .marketing-section-head,
+    .marketing-funnel-copy,
+    .marketing-proof,
+    .web3-capabilities,
+    .web3-events-v2 > header,
+    .web3-academy-v2 > aside,
+    .web3-invest-v2,
+    .consulting-areas,
+    .consulting-process,
+    .consulting-contact,
+    .contact-team-heading,
+    .team-slider-top
+  ) h2 {
+    font-size: clamp(36px, 11vw, 52px) !important;
+  }
+}

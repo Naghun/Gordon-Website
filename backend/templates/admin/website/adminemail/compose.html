@@ -1,0 +1,7 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'admin/admin-email.css' %}?v=2">{% endblock %}
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="{% url 'admin:index' %}">Početna</a> › <a href="{% url 'admin:website_adminemail_changelist' %}">Email poruke</a> › Napiši email</div>{% endblock %}
+{% block content %}
+<main class="admin-email-compose"><header><span>NOVA PORUKA</span><h1>Napiši email</h1><p>Pošaljite novu poruku direktno iz GordonDM administracije.</p></header><form method="post">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<label><span>{{ field.label }}</span>{{ field }}{{ field.errors }}</label>{% endfor %}<button type="submit">Pošalji email →</button></form></main>
+{% endblock %}

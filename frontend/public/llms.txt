@@ -1,0 +1,25 @@
+# GordonDM
+
+> GordonDM je tehnološki studio i partner za digitalni razvoj poslovanja iz Sarajeva, Bosna i Hercegovina.
+
+GordonDM razvija digitalna rješenja za firme kroz poslovni softver po mjeri, AI automatizaciju poslovanja, digitalni marketing, digitalni konsalting te blockchain i Web3 razvoj.
+
+## Glavne stranice
+
+- [Početna](https://gordon.ba/): Pregled digitalnih rješenja i ekspertiza GordonDM tima.
+- [AI automatizacija](https://gordon.ba/ai-automatizacija): AI automatizacija poslovanja, AI agenti, chatbotovi i automatizacija poslovnih procesa.
+- [Softver rješenja](https://gordon.ba/softver-rjesenja): Izrada poslovnog softvera, web aplikacija, CRM sistema i API integracija po mjeri.
+- [Digitalni marketing](https://gordon.ba/marketing): SEO optimizacija, Google Ads, Meta kampanje, content marketing i analitika u Sarajevu i BiH.
+- [Blockchain i Web3](https://gordon.ba/kripto): Blockchain razvoj, Web3 development, Solana razvoj, smart contract development, edukacija i sigurnost.
+- [Digitalni consulting](https://gordon.ba/konsulting): Digitalna transformacija poslovanja, digitalna strategija, analiza poslovnih procesa i tehnološko savjetovanje.
+- [Kontakt](https://gordon.ba/kontakt): Kontakt GordonDM tima u Sarajevu i pokretanje digitalnog projekta.
+- [Blog](https://gordon.ba/blog): Događaji, partnerstva i praktični sadržaji o softveru, marketingu, kriptu i Web3 tehnologiji.
+- [Binance Campus Montenegro u Budvi](https://gordon.ba/blog/binance-campus-montenegro-budva-gordondm): GordonDM priča i fotografije sa regionalnog Binance Campus događaja.
+
+## Tržište i jezici
+
+Primarno tržište su Bosna i Hercegovina, Sarajevo i zemlje regije. Web stranica je dostupna na bosanskom, engleskom i njemačkom jeziku.
+
+## Kontakt
+
+Za poslovne upite koristite zvaničnu kontakt formu: https://gordon.ba/kontakt

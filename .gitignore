@@ -1,0 +1,35 @@
+.venv/
+.npm-cache/
+.pnpm-store/
+frontend/node_modules/
+frontend/dist/
+frontend/.npm-cache/
+frontend/design-snapshots/
+backend/.env
+backend/.env.production
+frontend/.env
+frontend/.env.local
+backend/db.sqlite3
+backend/staticfiles/
+__pycache__/
+*.pyc
+
+# Local builds, deployment packages and raw source material
+/dist/
+/deployment/
+/event_sources/
+/GordonDM-paket-za-slanje/
+/GordonDM-paket-za-slanje-*.zip
+/qa_docx/
+/qa_docx_expanded/
+
+# Local logs and temporary analysis files
+*.log
+*.tmp
+*.temp
+a11y_expanded.json
+
+# Unrelated local working documents/scripts
+/Odgovori_Strateski_menadzment.docx
+/expand_answers.py
+/make_answers.py

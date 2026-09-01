@@ -1,0 +1,20 @@
+textarea.chat-message-input {
+  display: block;
+  width: 100%;
+  min-height: 38px;
+  height: 38px;
+  padding: 8px 10px;
+  resize: none;
+  overflow: hidden;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+.inline-group .tabular td.field-message { width: 72%; }
+
+.form-row.field-reply textarea.chat-message-input {
+  max-width: none;
+  background: #fff;
+  color: #090b0c;
+  border: 1px solid rgba(9,11,12,.28);
+  border-radius: 9px;
+}

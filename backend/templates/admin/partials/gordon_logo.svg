@@ -1,0 +1,9 @@
+<svg class="gordon-logo-svg" viewBox="0 0 820 180" role="img" aria-labelledby="gordon-logo-title">
+  <title id="gordon-logo-title">Gordon Digital Marketing</title>
+  <g class="gordon-logo-mark" transform="translate(8 8)">
+    <path d="M78 0c32 0 59 17 73 43l-34 20c-7-13-22-22-39-22-25 0-45 20-45 45s20 45 45 45c17 0 31-8 39-21H78V73h85v19c0 47-38 80-85 80S-7 134-7 86 31 0 78 0Z"/>
+    <path class="gordon-logo-accent" d="M112 0h31v16h-31z"/>
+  </g>
+  <text class="gordon-logo-word" x="190" y="108" font-family="Arial Black, Arial, sans-serif" font-size="92" font-weight="900" letter-spacing="-5">GORDON</text>
+  <text class="gordon-logo-tagline" x="305" y="153" font-family="Arial, sans-serif" font-size="25" font-weight="800" letter-spacing="4">DIGITAL MARKETING</text>
+</svg>

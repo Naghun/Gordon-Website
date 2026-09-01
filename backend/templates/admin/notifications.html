@@ -1,0 +1,69 @@
+{% extends "admin/base_site.html" %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs"><a href="{% url 'admin:index' %}">Početna</a> › Notifikacije</div>
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+  <main class="notifications-page">
+    <header>
+      <div>
+        <p>GORDONDM / ADMIN CENTAR</p>
+        <h1>Notifikacije</h1>
+      </div>
+      <span><b>{{ notification_count }}</b> novih stavki</span>
+    </header>
+    <div class="notifications-workspace">
+      <aside class="notifications-sidebar">
+        <p>VRSTA OBAVIJESTI</p>
+        <a href="?type=chat" class="{% if active_type == 'chat' %}active{% endif %}">
+          <span>Chat poruke</span><b>{{ notification_counts.chat }}</b>
+        </a>
+        <a href="?type=contact" class="{% if active_type == 'contact' %}active{% endif %}">
+          <span>Kontakt poruke</span><b>{{ notification_counts.contact }}</b>
+        </a>
+        <a href="?type=email" class="{% if active_type == 'email' %}active{% endif %}">
+          <span>Email poruke</span><b>{{ notification_counts.email }}</b>
+        </a>
+      </aside>
+      <section class="notifications-list">
+        <div class="notifications-list-title">
+          <span>{% if active_type == 'chat' %}Chat poruke{% elif active_type == 'contact' %}Kontakt poruke{% else %}Email poruke{% endif %}</span>
+          <div>
+            <a class="notifications-refresh" href="?type={{ active_type }}&refresh=1">Osvježi</a>
+            {% if active_type == 'email' and notifications %}
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="email">
+                <input type="hidden" name="action" value="read_all_emails">
+                <button type="submit">Označi sve pročitano</button>
+              </form>
+            {% endif %}
+            <b>{{ notifications|length }}</b>
+          </div>
+        </div>
+        {% for notification in notifications %}
+          <a class="notification-card notification-{{ notification.kind }}" href="{{ notification.url }}">
+            <span class="notification-icon">{% if notification.kind == "chat" %}⌁{% else %}✉{% endif %}</span>
+            <span class="notification-copy">
+              <small>{{ notification.title }}</small>
+              <strong>{{ notification.person }}</strong>
+              <p>{{ notification.preview }}</p>
+            </span>
+            <time>{{ notification.created_at|date:"d.m.Y. H:i" }}</time>
+            <i>→</i>
+          </a>
+        {% empty %}
+          <div class="notifications-empty">
+            <span>✓</span>
+            <h2>Sve je pregledano.</h2>
+            <p>Nova obavijest ove vrste pojavit će se ovdje automatski.</p>
+          </div>
+        {% endfor %}
+        {% if mail_sync_error and active_type == 'email' %}<p class="mail-sync-warning">{{ mail_sync_error }}</p>{% endif %}
+      </section>
+    </div>
+  </main>
+{% endblock %}

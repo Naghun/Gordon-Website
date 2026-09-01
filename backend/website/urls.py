@@ -1,0 +1,3 @@
+from django.urls import path
+from .views import BlogPostDetailView,BlogPostListView,ChatConversationView,ChatMessagesView,ContactView,ContentView,CryptoContentView,CryptoEventDetailView,CryptoMarketView,SEOPageListView
+urlpatterns=[path('content/',ContentView.as_view()),path('contact/',ContactView.as_view()),path('seo/',SEOPageListView.as_view()),path('blog/',BlogPostListView.as_view()),path('blog/<slug:slug>/',BlogPostDetailView.as_view()),path('crypto/',CryptoContentView.as_view()),path('crypto/market/',CryptoMarketView.as_view()),path('crypto/events/<slug:slug>/',CryptoEventDetailView.as_view()),path('chat/conversations/',ChatConversationView.as_view()),path('chat/conversations/<uuid:token>/messages/',ChatMessagesView.as_view())]

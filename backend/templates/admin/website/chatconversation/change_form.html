@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_modify %}
+
+{% block submit_buttons_bottom %}
+<div class="submit-row">
+  <button type="button" class="chat-refresh-button" onclick="window.location.reload()">Osvježi razgovor</button>
+  <input type="submit" value="Pošalji odgovor" class="default" name="_save">
+</div>
+{% endblock %}

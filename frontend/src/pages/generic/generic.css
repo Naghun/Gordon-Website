@@ -1,0 +1,350 @@
+/* GENERIC PAGE — styles are isolated by page-specific class prefixes. */
+
+.home-contact .page-icon {
+  color: #2ed3d3;
+}
+
+/* Contact page — Bosnian team presentation. */
+.contact-page {
+  overflow: hidden;
+  background: #080b0c;
+}
+
+.contact-page .contact {
+  min-height: 100vh;
+}
+
+.contact-team-intro,
+.contact-team-slider {
+  padding: 90px 8vw;
+}
+
+.contact-team-intro {
+  color: #081011;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(46, 211, 211, 0.2), transparent 28%),
+    #f1f5f4;
+}
+
+.contact-team-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
+  align-items: end;
+  gap: 8vw;
+  padding-bottom: 58px;
+  border-bottom: 1px solid rgba(7, 20, 21, 0.18);
+}
+
+.contact-team-heading .eyebrow,
+.team-slider-top .eyebrow {
+  margin-bottom: 20px;
+  color: #079b9e;
+}
+
+.contact-team-heading h2,
+.team-slider-top h2 {
+  margin: 0;
+  font: 750 clamp(42px, 5vw, 78px)/0.98 Manrope;
+  letter-spacing: -0.065em;
+}
+
+.contact-team-heading > p {
+  margin: 0;
+  color: #566061;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.contact-team-values {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 48px;
+  border-top: 1px solid rgba(7, 20, 21, 0.15);
+  border-bottom: 1px solid rgba(7, 20, 21, 0.15);
+}
+
+.contact-team-values article {
+  min-height: 205px;
+  padding: 32px 36px;
+  border-right: 1px solid rgba(7, 20, 21, 0.15);
+  transition:
+    background-color 0.24s ease,
+    transform 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.contact-team-values article:hover {
+  position: relative;
+  z-index: 1;
+  background: rgba(46, 211, 211, 0.1);
+  transform: translateY(-7px);
+  box-shadow: 0 18px 42px rgba(8, 80, 82, 0.09);
+}
+
+.contact-team-values article:last-child {
+  border-right: 0;
+}
+
+.contact-team-values span {
+  color: #079b9e;
+  font: 800 10px Manrope;
+  letter-spacing: 0.14em;
+}
+
+.contact-team-values strong {
+  display: block;
+  margin: 48px 0 12px;
+  font: 700 clamp(20px, 1.7vw, 28px) Manrope;
+}
+
+.contact-team-values p {
+  max-width: 330px;
+  margin: 0;
+  color: #667071;
+  line-height: 1.6;
+}
+
+.contact-team-slider {
+  color: #f7f8f4;
+  background:
+    linear-gradient(rgba(46, 211, 211, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 211, 211, 0.035) 1px, transparent 1px),
+    #080b0c;
+  background-size: 72px 72px;
+}
+
+.team-slider-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 55px;
+}
+
+.team-slider-top h2 {
+  max-width: 830px;
+}
+
+.team-slider-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.team-slider-controls button {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.22s ease;
+}
+
+.team-slider-controls button:hover {
+  border-color: #2ed3d3;
+  background: #2ed3d3;
+  color: #071011;
+}
+
+.team-slider-window {
+  overflow: hidden;
+  margin-top: -12px;
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+.team-slider-track {
+  display: flex;
+  gap: 34px;
+  width: max-content;
+}
+
+.team-card {
+  width: min(29vw, 370px);
+  flex: 0 0 min(29vw, 370px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 22px;
+  overflow: hidden;
+  background: #101516;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.team-card[aria-current="true"] {
+  border-color: rgba(46, 211, 211, 0.75);
+}
+
+.team-card:hover {
+  transform: translateY(-7px);
+  border-color: #2ed3d3;
+}
+
+.team-card-portrait {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 28px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #2ed3d3, #0e7477);
+}
+
+.team-card-portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.team-card-portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(3, 8, 9, 0.52));
+  pointer-events: none;
+}
+
+.team-card-portrait::before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  top: 38px;
+  right: -45px;
+  border: 1px solid rgba(5, 15, 16, 0.35);
+  border-radius: 50%;
+  box-shadow: 0 0 0 42px rgba(5, 15, 16, 0.06), 0 0 0 84px rgba(5, 15, 16, 0.035);
+}
+
+.team-card-portrait > * {
+  position: relative;
+  z-index: 1;
+}
+
+.team-card-portrait span {
+  font: 800 clamp(75px, 8vw, 125px)/0.8 Manrope;
+  letter-spacing: -0.1em;
+  color: #071011;
+}
+
+.team-card-portrait small {
+  margin-left: auto;
+  color: #071011;
+  font: 800 8px Manrope;
+  letter-spacing: 0.16em;
+}
+
+.team-card-dark .team-card-portrait {
+  background: linear-gradient(145deg, #34393a, #111516);
+}
+.team-card-dark .team-card-portrait span,
+.team-card-dark .team-card-portrait small {
+  color: #fff;
+}
+.team-card-portrait small {
+  color: #fff;
+}
+.team-card-blue .team-card-portrait {
+  background: linear-gradient(145deg, #4cdfe0, #125456);
+}
+.team-card-white .team-card-portrait {
+  background: linear-gradient(145deg, #f7f9f6, #b9c4c3);
+}
+
+.team-card-copy {
+  min-height: 200px;
+  padding: 28px;
+}
+
+.team-card-copy > p {
+  margin: 0 0 16px;
+  color: #2ed3d3;
+  font: 750 9px Manrope;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.team-card-copy h3 {
+  margin: 0 0 18px;
+  font: 700 25px Manrope;
+  letter-spacing: -0.04em;
+}
+
+.team-card-copy > span {
+  display: block;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.65;
+}
+
+.team-slider-progress {
+  display: flex;
+  gap: 8px;
+  margin-top: 34px;
+}
+
+.team-slider-progress button {
+  width: 38px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  background: rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.team-slider-progress button.active {
+  width: 74px;
+  background: #2ed3d3;
+}
+
+@media (max-width: 900px) {
+  .contact-team-heading {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .contact-team-values {
+    grid-template-columns: 1fr;
+  }
+  .contact-team-values article {
+    min-height: 180px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(7, 20, 21, 0.15);
+  }
+  .contact-team-values article:last-child {
+    border-bottom: 0;
+  }
+  .contact-team-values strong {
+    margin-top: 38px;
+  }
+  .team-card {
+    width: min(68vw, 380px);
+    flex-basis: min(68vw, 380px);
+  }
+  .team-slider-track {
+    /* Keep the mobile card stride aligned with the Framer Motion expression. */
+    gap: 26px;
+  }
+}
+
+@media (max-width: 620px) {
+  .contact-team-intro,
+  .contact-team-slider {
+    padding: 78px 6vw;
+  }
+  .team-slider-top {
+    display: grid;
+  }
+  .team-card {
+    width: 82vw;
+    flex-basis: 82vw;
+  }
+  .team-card-portrait {
+    height: 270px;
+  }
+}

@@ -1,0 +1,31 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | GordonDM administracija{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'admin/gordondm.css' %}?v=34">
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script defer src="{% static 'admin/notifications.js' %}?v=3"></script>
+{% endblock %}
+
+{% block branding %}
+  <div class="gordon-brand">
+    <span class="logo-surface"><img class="gordon-logo-png" src="{% static 'admin/logo-gordondm-dark.png' %}" alt="Gordon Digital Marketing"></span>
+    <span>Administracija</span>
+  </div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block userlinks %}
+  <a class="admin-notification-link" href="{% url 'admin_notifications' %}" aria-label="Otvori notifikacije">
+    <span>Notifikacije</span>
+    <b class="admin-notification-count" hidden>0</b>
+  </a>
+  {{ block.super }}
+{% endblock %}
