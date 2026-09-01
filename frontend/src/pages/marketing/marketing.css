@@ -879,10 +879,10 @@
   letter-spacing: -0.055em;
 }
 .marketing-ad-preview > i {
-  left: 38px;
-  right: 38px;
+  left: 58px;
+  right: 58px;
   bottom: 24px;
-  max-width: calc(100% - 76px);
+  max-width: calc(100% - 116px);
   font-size: 10px;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -898,9 +898,9 @@
 }
 @media (max-width: 620px) {
   .marketing-ad-preview > i {
-    left: 24px;
-    right: 24px;
-    max-width: calc(100% - 48px);
+    left: 44px;
+    right: 44px;
+    max-width: calc(100% - 88px);
   }
   .marketing-ad-top span {
     width: 160px;

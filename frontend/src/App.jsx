@@ -32,9 +32,12 @@ import {
   Code2,
   Coins,
   Lightbulb,
+  Mail,
+  MapPin,
   Menu,
   MessageCircle,
   MessageSquareText,
+  Phone,
   Send,
   Sparkles,
   Workflow,
@@ -61,6 +64,7 @@ import { BlogPage, BlogPostPage } from "./pages/blog/BlogPage";
 import FrontendTranslator from "./i18n/FrontendTranslator";
 import { translatePhrase } from "./i18n/translations";
 import "./styles/internal-typography.css";
+import "./styles/mobile-polish.css";
 
 let seoManagerPromise;
 function loadSEOManager() {
@@ -418,7 +422,7 @@ function ChatWidget() {
             {channel === "choose" ? (
               <div className="chat-channel-choice">
                 <p>Kako želite razgovarati s nama?</p>
-                <a href="https://wa.me/" target="_blank" rel="noreferrer">
+                <a href="https://wa.me/38761264263" target="_blank" rel="noreferrer" aria-label="Otvorite WhatsApp razgovor s GordonDM timom">
                   <b>W</b>
                   <span>
                     <strong>WhatsApp</strong>
@@ -426,7 +430,7 @@ function ChatWidget() {
                   </span>
                   <ArrowRight />
                 </a>
-                <a href="viber://chat">
+                <a href="viber://chat?number=%2B38761264263" aria-label="Otvorite Viber razgovor s GordonDM timom">
                   <b>V</b>
                   <span>
                     <strong>Viber</strong>
@@ -603,7 +607,11 @@ function Shell() {
               <img src="/logo-gordondm-dark.png" alt="GordonDM – AI automatizacija, softver i digitalni marketing" width="1000" height="211" loading="lazy" decoding="async" />
             </Link>
             <p>Tehnološki partner za poslovni softver, AI automatizaciju, digitalni marketing, consulting i blockchain razvoj.</p>
-            <span>Sarajevo · Bosna i Hercegovina</span>
+            <address className="footer-contact">
+              <a href="mailto:info@gordondm.com"><Mail /> info@gordondm.com</a>
+              <a href="tel:+38761264263"><Phone /> +387 61 264 263</a>
+              <a href="https://www.google.com/maps/search/?api=1&query=D%C5%BEemala+Bijedi%C4%87a+279L%2C+Sarajevo+71320" target="_blank" rel="noreferrer"><MapPin /> Džemala Bijedića 279L, Sarajevo 71320</a>
+            </address>
           </div>
           <nav className="footer-links" aria-label="Usluge">
             <strong>Usluge</strong>

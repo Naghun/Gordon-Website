@@ -1,0 +1,100 @@
+/* Final mobile rhythm shared by service cards and compact interactive panels. */
+@media (max-width: 780px) {
+  #root > header > button.menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #root > header > button.menu[aria-label="Zatvori navigaciju"] svg {
+    transform: translateY(2px);
+  }
+}
+
+@media (max-width: 700px) {
+  .compact-loader-slider .hero-orbit.compact-icon-loader {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .consulting-diagnostic.consulting-pathfinder {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .consulting-pathfinder .pathfinder-stage {
+    min-height: 0;
+    height: auto;
+    padding: 30px 20px 24px;
+  }
+  .consulting-pathfinder:has(.consulting-modal) .pathfinder-stage {
+    display: none;
+  }
+  .consulting-pathfinder .consulting-modal {
+    position: relative;
+    inset: auto;
+    min-height: 0;
+    padding: 12px;
+  }
+  .consulting-contact form.consulting-modal-card,
+  .consulting-pathfinder .consulting-modal-card {
+    min-height: 0;
+    height: auto;
+    overflow: hidden;
+    padding: 28px 18px 20px;
+    border: 1px solid rgba(46, 211, 211, 0.2);
+    border-radius: 14px;
+  }
+
+  .ai-capability-grid article,
+  .software-solution-grid article,
+  .marketing-channel-grid article,
+  .consulting-areas article,
+  .web3-capabilities article,
+  .web3-risk-principles article {
+    min-height: 0;
+    padding: 21px;
+  }
+  .ai-capability-grid svg,
+  .software-solution-grid article > svg,
+  .marketing-channel-grid article > svg,
+  .consulting-areas article > svg,
+  .web3-capabilities article > svg,
+  .web3-risk-principles article > svg {
+    margin-top: 22px;
+  }
+  .ai-capability-grid h3,
+  .software-solution-grid h3,
+  .marketing-channel-grid h3,
+  .consulting-areas h3,
+  .web3-capabilities h3,
+  .web3-risk-principles h3 {
+    margin-top: 24px;
+  }
+
+  .ai-process article {
+    min-height: 118px;
+    padding: 20px;
+  }
+  .ai-process article span {
+    margin-bottom: 28px;
+  }
+  .software-process article {
+    min-height: 210px;
+    padding: 22px;
+  }
+  .software-process article > i {
+    margin: 24px 0 38px;
+  }
+  .marketing-proof-grid article,
+  .contact-team-values article {
+    min-height: 0;
+    padding: 22px;
+  }
+  .marketing-proof-grid article strong,
+  .contact-team-values strong {
+    margin-top: 24px;
+  }
+
+  .footer-contact a {
+    width: 100%;
+  }
+}
