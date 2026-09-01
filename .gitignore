@@ -33,3 +33,6 @@ a11y_expanded.json
 /Odgovori_Strateski_menadzment.docx
 /expand_answers.py
 /make_answers.py
+
+# Deployment credentials are never committed
+/.deploy-keys/
