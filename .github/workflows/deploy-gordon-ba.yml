@@ -62,7 +62,7 @@ jobs:
 
       - name: Deploy only gordon.ba
         run: |
-          ssh -i ~/.ssh/gordon_ba_deploy -p 22 \
+          tar -C frontend/dist -czf - . | ssh -i ~/.ssh/gordon_ba_deploy -p 22 \
             -o BatchMode=yes \
             -o IdentitiesOnly=yes \
             gordondm@s3085.fra1.stableserver.net \

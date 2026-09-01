@@ -3,12 +3,6 @@ set -Eeuo pipefail
 
 umask 077
 
-export NVM_DIR="/home/gordondm/.nvm"
-if [[ -s "${NVM_DIR}/nvm.sh" ]]; then
-  # Node.js is provided by the existing Verpex NVM installation.
-  source "${NVM_DIR}/nvm.sh"
-fi
-
 readonly REPOSITORY_URL="https://github.com/Naghun/Gordon-Website.git"
 readonly REPOSITORY_DIR="/home/gordondm/gordon-ba-repository"
 readonly FRONTEND_ROOT="/home/gordondm/gordon.ba"
@@ -17,6 +11,7 @@ readonly PYTHON_BIN="/home/gordondm/virtualenv/gordon_backend_app/3.11/bin/pytho
 readonly PIP_BIN="/home/gordondm/virtualenv/gordon_backend_app/3.11/bin/pip"
 readonly DEPLOY_ROOT="/home/gordondm/gordon-ba-deployments"
 readonly LOCK_DIR="${DEPLOY_ROOT}/deploy.lock"
+readonly ARTIFACT_DIR="${DEPLOY_ROOT}/incoming"
 
 requested_command="${SSH_ORIGINAL_COMMAND:-${1:-}}"
 
@@ -39,7 +34,17 @@ if ! mkdir "${LOCK_DIR}" 2>/dev/null; then
   echo "Another gordon.ba deployment is already running."
   exit 75
 fi
-trap 'rmdir "${LOCK_DIR}" 2>/dev/null || true' EXIT
+rm -rf "${ARTIFACT_DIR}"
+mkdir -p "${ARTIFACT_DIR}"
+trap 'rm -rf "${ARTIFACT_DIR}"; rmdir "${LOCK_DIR}" 2>/dev/null || true' EXIT
+
+# GitHub Actions builds the frontend. Verpex only receives the ready artifact,
+# avoiding Node/Rolldown worker limits on shared hosting.
+tar -xzf - -C "${ARTIFACT_DIR}"
+if [[ ! -f "${ARTIFACT_DIR}/index.html" ]]; then
+  echo "Frontend artifact is missing index.html."
+  exit 66
+fi
 
 if [[ ! -d "${REPOSITORY_DIR}/.git" ]]; then
   git clone "${REPOSITORY_URL}" "${REPOSITORY_DIR}"
@@ -49,10 +54,6 @@ git -C "${REPOSITORY_DIR}" fetch origin main --prune
 git -C "${REPOSITORY_DIR}" cat-file -e "${commit_sha}^{commit}"
 git -C "${REPOSITORY_DIR}" merge-base --is-ancestor "${commit_sha}" origin/main
 git -C "${REPOSITORY_DIR}" reset --hard "${commit_sha}"
-
-cd "${REPOSITORY_DIR}/frontend"
-npm ci
-npm run build
 
 cd "${REPOSITORY_DIR}"
 "${PYTHON_BIN}" backend/manage.py check
@@ -84,7 +85,7 @@ rsync -a --delete \
   --exclude='backend/' \
   --exclude='.well-known/' \
   --exclude='cgi-bin/' \
-  "${REPOSITORY_DIR}/frontend/dist/" "${FRONTEND_ROOT}/"
+  "${ARTIFACT_DIR}/" "${FRONTEND_ROOT}/"
 
 mkdir -p "${BACKEND_ROOT}/config" "${BACKEND_ROOT}/website" "${BACKEND_ROOT}/templates" "${BACKEND_ROOT}/media"
 rsync -a --delete "${REPOSITORY_DIR}/backend/config/" "${BACKEND_ROOT}/config/"
