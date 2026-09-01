@@ -80,7 +80,7 @@ if [[ -f "${BACKEND_ROOT}/db.sqlite3" ]]; then
   cp -p "${BACKEND_ROOT}/db.sqlite3" "${backup_dir}/db.sqlite3"
 fi
 
-rsync -a --delete \
+rsync -a --delete --chmod=D755,F644 \
   --exclude='.htaccess' \
   --exclude='backend/' \
   --exclude='.well-known/' \
