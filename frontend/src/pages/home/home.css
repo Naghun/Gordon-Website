@@ -1251,11 +1251,7 @@
     flex-direction: column;
   }
 
-  .hero-orbit {
-    transform: scale(0.88);
-    margin-left: -5%;
-    margin-right: -5%;
-  }
+  .hero-orbit { transform: scale(0.88); }
 }
 .hero-orbit {
   width: min(39vw, 540px);
@@ -1689,7 +1685,7 @@
     align-self: center;
     width: min(94vw, 460px);
     height: min(94vw, 460px);
-    margin: 36px auto 70px;
+    margin: 36px 0 70px;
   }
 
   .compact-loader-dot {

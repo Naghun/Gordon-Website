@@ -142,6 +142,7 @@ const blogPages = [
   sections: [
     ["Regionalna Web3 zajednica", "GordonDM kroz događaje, intervjue i sadržaj povezuje ljude koji razvijaju blockchain projekte sa širom publikom u Sarajevu, Bosni i Hercegovini i na Balkanu."],
     ["Edukacija i odgovorna primjena kripta", "Fokus sadržaja je na znanju, sigurnosti, praktičnoj upotrebi tehnologije i saradnjama koje regionalnim talentima otvaraju prostor unutar globalnog Web3 ekosistema."],
+    ...(["gordondm-binance-saradnja", "gordondm-solana-saradnja", "binance-campus-montenegro-budva-gordondm"].includes(slug) ? [["Od regionalne ideje do konkretne vrijednosti", "Ovakve saradnje povezuju lokalno tržište s međunarodnim iskustvom te otvaraju prostor za nove edukativne programe, kvalitetan digitalni sadržaj, softverske projekte i dugoročna poslovna partnerstva."]] : []),
   ],
 }));
 

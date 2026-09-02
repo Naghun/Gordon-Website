@@ -632,7 +632,7 @@ function Shell() {
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/konsalting" element={<Navigate to="/konsulting" replace />} />
-            <Route path="/kontakt" element={<><Contact /><CategoryBlogSection category="general" /></>} />
+            <Route path="/kontakt" element={<><Contact /><CategoryBlogSection category="all" /></>} />
             <Route path="/faq" element={<><FAQPage /><CategoryBlogSection category="general" /></>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
