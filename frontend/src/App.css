@@ -25,6 +25,10 @@ header {
   backdrop-filter: blur(15px);
   border-bottom: 1px solid var(--line);
 }
+#root > header {
+  z-index: 2000;
+  isolation: isolate;
+}
 .brand {
   font: 800 21px Manrope;
   letter-spacing: -0.05em;

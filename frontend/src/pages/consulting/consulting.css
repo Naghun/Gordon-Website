@@ -136,6 +136,7 @@
 .consulting-map footer {
   justify-content: flex-start;
   gap: 8px;
+  border-top: 0;
 }
 .consulting-map footer i {
   width: 7px;
