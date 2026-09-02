@@ -37,6 +37,42 @@ const copy = {
   },
 };
 
+const sectionCopy = {
+  bs: {
+    eyebrow: "IZDVOJENO IZ BLOGA",
+    all: ["Novosti i ideje iz GordonDM bloga.", "Priče o projektima, tehnologiji i saradnjama koje povezuju poslovanje i digitalni razvoj."],
+    general: ["Još ideja za pametnije poslovanje.", "Praktični tekstovi o digitalnom razvoju, od prvog pitanja do održivog poslovnog sistema."],
+    crypto: ["Web3 priče iz Sarajeva i regije.", "Događaji, partnerstva i razgovori s ljudima koji razvijaju blockchain ekosistem na Balkanu."],
+    marketing: ["Marketing odluke zasnovane na podacima.", "SEO, sadržaj i kampanje objašnjeni kroz praktične uvide i iskustva s tržišta."],
+    software: ["Kako nastaju softverska rješenja koja traju.", "SaaS platforme, enterprise rješenja, web aplikacije i integracije posmatrane iz poslovne i tehničke perspektive."],
+    ai: ["AI automatizacija bez nepotrebne buke.", "Primjeri, procesi i odluke koje pomažu timovima da AI pretvore u mjerljivu poslovnu vrijednost."],
+    consulting: ["Jasniji smjer prije velikog ulaganja.", "Uvidi o digitalnoj strategiji, procesima i tehnologiji za sigurnije poslovne odluke."],
+    empty: "Pripremamo prvi članak za ovu kategoriju. Do tada možete pregledati sve objavljene GordonDM priče.",
+  },
+  en: {
+    eyebrow: "FEATURED FROM THE BLOG",
+    all: ["News and ideas from the GordonDM blog.", "Stories about projects, technology and partnerships connecting business with digital growth."],
+    general: ["More ideas for smarter business.", "Practical articles about digital growth, from the first question to a sustainable business system."],
+    crypto: ["Web3 stories from Sarajevo and the region.", "Events, partnerships and conversations with people building the Balkan blockchain ecosystem."],
+    marketing: ["Marketing decisions backed by data.", "SEO, content and campaigns explained through practical insights and market experience."],
+    software: ["How lasting software solutions are built.", "SaaS platforms, enterprise solutions, web applications and integrations viewed from business and technical perspectives."],
+    ai: ["AI automation without unnecessary noise.", "Examples, processes and decisions that turn AI into measurable business value."],
+    consulting: ["A clearer direction before a major investment.", "Insights into digital strategy, processes and technology for more confident business decisions."],
+    empty: "We are preparing the first article in this category. Until then, explore all published GordonDM stories.",
+  },
+  de: {
+    eyebrow: "AUSGEWÄHLT AUS DEM BLOG",
+    all: ["Neuigkeiten und Ideen aus dem GordonDM-Blog.", "Geschichten über Projekte, Technologie und Partnerschaften, die Unternehmen mit digitalem Wachstum verbinden."],
+    general: ["Mehr Ideen für intelligentere Unternehmen.", "Praxisnahe Beiträge über digitale Entwicklung – von der ersten Frage bis zum nachhaltigen Geschäftssystem."],
+    crypto: ["Web3-Geschichten aus Sarajevo und der Region.", "Events, Partnerschaften und Gespräche mit Menschen, die das Blockchain-Ökosystem auf dem Balkan entwickeln."],
+    marketing: ["Marketingentscheidungen auf Basis von Daten.", "SEO, Inhalte und Kampagnen erklärt durch praktische Einblicke und Markterfahrung."],
+    software: ["Wie langlebige Softwarelösungen entstehen.", "SaaS-Plattformen, Enterprise-Lösungen, Webanwendungen und Integrationen aus geschäftlicher und technischer Sicht."],
+    ai: ["KI-Automatisierung ohne unnötigen Lärm.", "Beispiele, Prozesse und Entscheidungen, die KI in messbaren Geschäftswert verwandeln."],
+    consulting: ["Eine klarere Richtung vor großen Investitionen.", "Einblicke in digitale Strategie, Prozesse und Technologie für fundiertere Geschäftsentscheidungen."],
+    empty: "Wir bereiten den ersten Artikel für diese Kategorie vor. Bis dahin können Sie alle veröffentlichten GordonDM-Geschichten entdecken.",
+  },
+};
+
 const dateLocales = { bs: "bs-BA", en: "en-GB", de: "de-DE" };
 const localizedLocation = (location, language) => {
   if (!location) return location;
@@ -121,6 +157,26 @@ export function HomeBlogSection() {
       <header><div><p className="eyebrow">{labels.homeEyebrow}</p><h2>{labels.homeTitle}</h2></div><p>{labels.homeDescription}</p></header>
       <BlogCards posts={posts.slice(0, 3)} compact language={language} labels={labels} />
       <Link className="blog-all-link" to="/blog">{labels.allBlogs} <ArrowRight /></Link>
+    </section>
+  );
+}
+
+export function CategoryBlogSection({ category = "all" }) {
+  const [language, labels] = useLanguage();
+  const posts = useBlogPosts(language);
+  const localized = sectionCopy[language] || sectionCopy.bs;
+  const [title, description] = localized[category] || localized.all;
+  const filtered = posts.filter((post) => category === "all" || post.category === category).slice(0, 2);
+  return (
+    <section className="home-blog-section page-blog-section" data-blog-category={category}>
+      <header><div><p className="eyebrow">{localized.eyebrow}</p><h2>{title}</h2></div><p>{description}</p></header>
+      {filtered.length ? <BlogCards posts={filtered} compact language={language} labels={labels} /> : (
+        <div className="blog-category-empty">
+          <p>{localized.empty}</p>
+          <Link className="blog-all-link" to="/blog">{labels.allBlogs} <ArrowRight /></Link>
+        </div>
+      )}
+      {filtered.length > 0 && <Link className="blog-all-link" to="/blog">{labels.allBlogs} <ArrowRight /></Link>}
     </section>
   );
 }

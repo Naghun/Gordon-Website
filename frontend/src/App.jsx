@@ -61,7 +61,7 @@ import {
 import { CryptoEventPage, CryptoPageV2 } from "./pages/crypto/CryptoPage";
 import { ConsultingPage } from "./pages/consulting/ConsultingPage";
 import { Contact, ServicePage } from "./pages/generic/GenericPages";
-import { BlogPage, BlogPostPage } from "./pages/blog/BlogPage";
+import { BlogPage, BlogPostPage, CategoryBlogSection } from "./pages/blog/BlogPage";
 import { FAQPage, NotFoundPage } from "./pages/static/StaticPages";
 import FrontendTranslator from "./i18n/FrontendTranslator";
 import { translatePhrase } from "./i18n/translations";
@@ -184,25 +184,51 @@ function SEO({ path, language = "bs" }) {
       schema.type = "application/ld+json";
       document.head.appendChild(schema);
     }
+    const organizationId = "https://gordon.ba/#organization";
+    const websiteId = "https://gordon.ba/#website";
+    const knowsAbout = managed
+      ? [managed.primary_keyword, ...String(managed.secondary_keywords || "").split(/[\n,]+/)].filter(Boolean)
+      : ["AI automatizacija", "SaaS platforme", "Enterprise rješenja", "Razvoj poslovnog softvera", "Web aplikacije", "Digitalni marketing", "Web3", "Digitalni konsalting"];
     schema.textContent = JSON.stringify({
       "@context": "https://schema.org",
-      "@type": managed?.schema_type || fallback.schemaType || (route === "/" ? "ProfessionalService" : "WebPage"),
-      name: "GordonDM",
-      alternateName: "Gordon Digital Marketing",
-      url: canonical,
-      logo: "https://gordon.ba/logo-gordondm-dark.png",
-      description,
-      publisher: {
-        "@type": "Organization",
-        "@id": "https://gordon.ba/#organization",
-        name: "GordonDM",
-        url: "https://gordon.ba",
-        logo: "https://gordon.ba/logo-gordondm-dark.png",
-      },
-      areaServed: { "@type": "Country", name: "Bosna i Hercegovina" },
-      knowsAbout: managed
-        ? [managed.primary_keyword, ...managed.secondary_keywords.split(/[\n,]+/)].filter(Boolean)
-        : ["AI automatizacija", "Razvoj poslovnog softvera", "Web aplikacije", "Digitalni marketing", "Web3", "Digitalni konsalting"],
+      "@graph": [
+        {
+          "@type": "LocalBusiness",
+          "@id": organizationId,
+          name: "GordonDM",
+          alternateName: "Gordon Digital Marketing",
+          url: "https://gordon.ba/",
+          logo: "https://gordon.ba/logo-gordondm-dark.png",
+          image: "https://gordon.ba/logo-gordondm-dark.png",
+          email: "info@gordondm.com",
+          telephone: "+38761264263",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Džemala Bijedića 279L",
+            addressLocality: "Sarajevo",
+            postalCode: "71320",
+            addressCountry: "BA",
+          },
+          areaServed: ["Sarajevo", "Bosna i Hercegovina", "Balkan"],
+          knowsAbout,
+        },
+        {
+          "@type": "WebSite",
+          "@id": websiteId,
+          url: "https://gordon.ba/",
+          name: "GordonDM",
+          publisher: { "@id": organizationId },
+        },
+        {
+          "@type": path.startsWith("/blog/") ? "BlogPosting" : "WebPage",
+          "@id": `${canonical}#webpage`,
+          url: canonical,
+          name: title,
+          description,
+          isPartOf: { "@id": websiteId },
+          publisher: { "@id": organizationId },
+        },
+      ],
     });
   }, [path, language, managedPages]);
   return null;
@@ -568,25 +594,34 @@ function Shell() {
                   path === "/ai-automatizacija" ? (
                     <>
                       <AIPage data={data} />
+                      <CategoryBlogSection category="ai" />
                       <AIContact />
                     </>
                   ) : path === "/softver-rjesenja" ? (
                     <>
                       <SoftwarePage />
                       <SoftwareStackSlider />
+                      <CategoryBlogSection category="software" />
                       <SoftwareContact />
                     </>
                   ) : path === "/marketing" ? (
                     <>
                       <MarketingPage />
+                      <CategoryBlogSection category="marketing" />
                       <div id="marketing-kontakt">
                         <MarketingContact />
                       </div>
                     </>
                   ) : path === "/kripto" ? (
-                    <CryptoPageV2 />
+                    <>
+                      <CryptoPageV2 />
+                      <CategoryBlogSection category="crypto" />
+                    </>
                   ) : path === "/konsulting" ? (
-                    <ConsultingPage />
+                    <>
+                      <ConsultingPage />
+                      <CategoryBlogSection category="consulting" />
+                    </>
                   ) : (
                     <ServicePage data={data} />
                   )
@@ -597,8 +632,8 @@ function Shell() {
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/konsalting" element={<Navigate to="/konsulting" replace />} />
-            <Route path="/kontakt" element={<Contact />} />
-            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/kontakt" element={<><Contact /><CategoryBlogSection category="general" /></>} />
+            <Route path="/faq" element={<><FAQPage /><CategoryBlogSection category="general" /></>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </motion.main>

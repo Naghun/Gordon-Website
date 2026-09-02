@@ -40,9 +40,9 @@ export function SoftwarePage() {
     },
     {
       icon: Workflow,
-      title: "CRM i poslovni sistemi",
-      text: "Razvoj CRM sistema, radnih naloga, portala i dashboarda prilagođenih stvarnom toku vašeg posla.",
-      tags: ["CRM", "ERP", "Dashboard"],
+      title: "SaaS i enterprise sistemi",
+      text: "Razvoj SaaS platformi, enterprise rješenja, CRM sistema i dashboarda prilagođenih stvarnom toku vašeg posla.",
+      tags: ["SaaS", "Enterprise", "CRM"],
     },
     {
       icon: BrainCircuit,
@@ -95,9 +95,9 @@ export function SoftwarePage() {
             <em>Radi kako vi radite.</em>
           </h1>
           <p>
-            Izrada poslovnog softvera, web aplikacija, CRM sistema i API
-            integracija prilagođenih vašim procesima — bez prisiljavanja tima
-            da se prilagođava pogrešnom alatu.
+            Izrada SaaS platformi, enterprise rješenja, poslovnog softvera,
+            web aplikacija, CRM sistema i API integracija prilagođenih vašim
+            procesima — bez prisiljavanja tima da se prilagođava pogrešnom alatu.
           </p>
           <div className="software-hero-actions">
             <Link to="/kontakt">

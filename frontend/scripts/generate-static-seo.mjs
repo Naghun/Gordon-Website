@@ -15,7 +15,7 @@ const pages = [
     h1: "Digitalna rješenja koja pokreću poslovanje.",
     intro: "GordonDM povezuje razvoj poslovnog softvera, AI automatizaciju, digitalni marketing, tehnološki konsalting i Web3 ekspertizu. Kompanijama u Sarajevu, Bosni i Hercegovini i regiji pomažemo da složene poslovne izazove pretvore u jasne, sigurne i mjerljive digitalne sisteme.",
     sections: [
-      ["Poslovni softver i web aplikacije po mjeri", "Razvijamo web aplikacije, CRM sisteme, interne portale, dashboarde i API integracije prema načinu na koji vaš tim stvarno radi. Prije razvoja mapiramo korisnike, procese, podatke i očekivani poslovni rezultat kako bi novo softversko rješenje smanjilo ručni rad i moglo rasti zajedno s kompanijom."],
+      ["SaaS, enterprise softver i web aplikacije po mjeri", "Razvijamo SaaS platforme, enterprise rješenja, web aplikacije, CRM sisteme, interne portale, dashboarde i API integracije prema načinu na koji vaš tim stvarno radi. Prije razvoja mapiramo korisnike, procese, podatke i očekivani poslovni rezultat kako bi novo softversko rješenje smanjilo ručni rad i moglo rasti zajedno s kompanijom."],
       ["AI automatizacija poslovnih procesa", "AI asistente i automatizovane tokove povezujemo s alatima koje tim već koristi. Automatizacija može ubrzati obradu upita i dokumenata, unos podataka, internu komunikaciju, izvještavanje i korisničku podršku, uz kontrolu ljudi tamo gdje je ona važna."],
       ["SEO i digitalni marketing usmjereni na rast", "Tehnički SEO, sadržaj, Google Ads, Meta kampanje i analitiku povezujemo u sistem koji povećava online vidljivost i dovodi kvalitetne poslovne upite. Odluke zasnivamo na pretragama, ponašanju korisnika i konverzijama, a ne samo na broju klikova."],
       ["Digitalni consulting, blockchain i Web3", "Pomažemo kompanijama da prije ulaganja definišu digitalnu strategiju, prioritete, tehnologiju i realan plan realizacije. Za blockchain i Web3 projekte procjenjujemo poslovnu svrhu, sigurnost, integracije i način na koji novu tehnologiju treba približiti korisnicima na Balkanu."],
@@ -37,13 +37,13 @@ const pages = [
   {
     path: "/softver-rjesenja",
     title: "Poslovni softver i web aplikacije po mjeri | GordonDM",
-    description: "Razvoj poslovnog softvera, web aplikacija, CRM sistema, portala, web shopova i API integracija prilagođenih procesima kompanije.",
+    description: "Razvoj SaaS platformi, enterprise rješenja, poslovnog softvera, web aplikacija, CRM sistema, portala, web shopova i API integracija.",
     eyebrow: "SOFTVER RJEŠENJA",
     h1: "Poslovni softver koji prati vaš način rada.",
-    intro: "GordonDM razvija web aplikacije, poslovne sisteme i digitalne platforme po mjeri. Od prve analize do produkcije fokus ostaje na korisniku, sigurnosti, brzini i rezultatu koji softver treba ostvariti.",
+    intro: "GordonDM razvija SaaS platforme, enterprise rješenja, web aplikacije, poslovne sisteme i digitalne proizvode po mjeri. Od prve analize do produkcije fokus ostaje na korisniku, sigurnosti, brzini i rezultatu koji softver treba ostvariti.",
     sections: [
       ["Web aplikacije, portali i web shopovi", "Gradimo brze i responzivne web aplikacije dostupne timu i klijentima na svakom uređaju. Korisničko iskustvo, administracija sadržaja i pouzdana tehnička arhitektura planiraju se kao jedna cjelina."],
-      ["CRM sistemi i interni alati", "CRM, radni nalozi, dashboardi, klijentski portali i sistemi za upravljanje dokumentima prilagođavaju se stvarnom toku posla umjesto da tim prisiljavaju na generičan proces."],
+      ["SaaS platforme i enterprise sistemi", "Projektujemo skalabilna SaaS rješenja za proizvode dostupne većem broju korisnika te enterprise sisteme koji povezuju složene procese, uloge i podatke unutar organizacije. CRM, radni nalozi, dashboardi i klijentski portali prilagođavaju se stvarnom toku posla umjesto da tim prisiljavaju na generičan proces."],
       ["API integracije i automatizacije", "Povezujemo postojeće servise i baze kako informacije ne bi ostajale u odvojenim sistemima. Nakon lansiranja pratimo korištenje, uklanjamo trenje i razvijamo proizvod zajedno s poslovanjem."],
     ],
   },
@@ -147,6 +147,10 @@ const blogPages = [
 
 pages.push(...blogPages);
 
+const staticBlogLinks = blogPages.map((post) => (
+  `<article><h3><a href="${post.path}">${post.h1}</a></h3><p>${post.description}</p></article>`
+)).join("");
+
 const escapeHtml = (value) => value
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
@@ -155,7 +159,8 @@ const escapeHtml = (value) => value
 
 function staticBody(page, notFound = false) {
   const sections = page.sections.map(([heading, text]) => `<section><h2>${escapeHtml(heading)}</h2><p>${escapeHtml(text)}</p></section>`).join("");
-  return `<main class="static-seo-shell" data-static-seo="true"><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.h1)}</h1><p>${escapeHtml(page.intro)}</p>${sections}<nav aria-label="Glavne stranice"><h2>${notFound ? "Nastavite pregled stranice" : "Istražite GordonDM usluge"}</h2><p><a href="/">Početna</a> · <a href="/ai-automatizacija">AI automatizacija</a> · <a href="/softver-rjesenja">Softver rješenja</a> · <a href="/marketing">Marketing</a> · <a href="/kripto">Web3</a> · <a href="/konsulting">Konsulting</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a> · <a href="/kontakt">Kontakt</a></p></nav></main>`;
+  const blogSection = notFound ? "" : `<section class="static-blog-links"><h2>Izdvojeno iz GordonDM bloga</h2><p>Pročitajte priče o partnerstvima, događajima, tehnologiji i ljudima koji povezuju Sarajevo i Balkan s globalnim Web3 ekosistemom.</p>${staticBlogLinks}</section>`;
+  return `<main class="static-seo-shell" data-static-seo="true"><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.h1)}</h1><p>${escapeHtml(page.intro)}</p>${sections}${blogSection}<nav aria-label="Glavne stranice"><h2>${notFound ? "Nastavite pregled stranice" : "Istražite GordonDM usluge"}</h2><p><a href="/">Početna</a> · <a href="/ai-automatizacija">AI automatizacija</a> · <a href="/softver-rjesenja">Softver rješenja</a> · <a href="/marketing">Marketing</a> · <a href="/kripto">Web3</a> · <a href="/konsulting">Konsulting</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a> · <a href="/kontakt">Kontakt</a></p></nav></main>`;
 }
 
 function renderDocument(page, { noindex = false, notFound = false } = {}) {
@@ -170,21 +175,57 @@ function renderDocument(page, { noindex = false, notFound = false } = {}) {
     .replace(/<meta property="og:url" content="[^"]*"\s*\/>/, `<meta property="og:url" content="${canonical}" />`)
     .replace('<div id="root"></div>', `<div id="root">${staticBody(page, notFound)}</div>`);
 
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": page.path === "/" ? "ProfessionalService" : page.path === "/faq" ? "FAQPage" : "WebPage",
+  const organizationId = "https://gordon.ba/#organization";
+  const websiteId = "https://gordon.ba/#website";
+  const pageSchema = {
+    "@type": page.path === "/faq" ? "FAQPage" : page.path.startsWith("/blog/") ? "BlogPosting" : "WebPage",
+    "@id": `${canonical}#webpage`,
     name: page.title,
     url: canonical,
     description: page.description,
-    publisher: { "@type": "Organization", name: "GordonDM", url: "https://gordon.ba/" },
+    isPartOf: { "@id": websiteId },
+    publisher: { "@id": organizationId },
   };
   if (page.path === "/faq") {
-    schema.mainEntity = page.sections.map(([question, answer]) => ({
+    pageSchema.mainEntity = page.sections.map(([question, answer]) => ({
       "@type": "Question",
       name: question,
       acceptedAnswer: { "@type": "Answer", text: answer },
     }));
   }
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": organizationId,
+        name: "GordonDM",
+        alternateName: "Gordon Digital Marketing",
+        url: "https://gordon.ba/",
+        logo: "https://gordon.ba/logo-gordondm-dark.png",
+        image: "https://gordon.ba/logo-gordondm-dark.png",
+        email: "info@gordondm.com",
+        telephone: "+38761264263",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Džemala Bijedića 279L",
+          addressLocality: "Sarajevo",
+          postalCode: "71320",
+          addressCountry: "BA",
+        },
+        areaServed: ["Sarajevo", "Bosna i Hercegovina", "Balkan"],
+        knowsAbout: ["AI automatizacija", "SaaS platforme", "Enterprise rješenja", "Poslovni softver", "Digitalni marketing", "Web3", "Digitalni konsalting"],
+      },
+      {
+        "@type": "WebSite",
+        "@id": websiteId,
+        url: "https://gordon.ba/",
+        name: "GordonDM",
+        publisher: { "@id": organizationId },
+      },
+      pageSchema,
+    ],
+  };
   html = html.replace("</head>", `<script id="gordondm-static-schema" type="application/ld+json">${JSON.stringify(schema).replaceAll("<", "\\u003c")}</script></head>`);
   return html;
 }
