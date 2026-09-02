@@ -331,7 +331,7 @@
     padding: 0;
   }
   .impact-words strong {
-    font-size: clamp(55px, 18vw, 90px);
+    font-size: clamp(50px, 14vw, 72px);
   }
   .impact-words > div:nth-child(2) {
     justify-content: flex-start;
@@ -630,6 +630,12 @@
 .glass-services .service-grid {
   gap: 18px;
   perspective: 1200px;
+}
+
+@media (min-width: 1051px) and (max-width: 1450px) {
+  .glass-services .service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 .glass-services .service-grid > div > a {
