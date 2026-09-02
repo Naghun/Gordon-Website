@@ -3,6 +3,7 @@ import {
   BrowserRouter,
   Link,
   NavLink,
+  Navigate,
   Route,
   Routes,
   useLocation,
@@ -61,6 +62,7 @@ import { CryptoEventPage, CryptoPageV2 } from "./pages/crypto/CryptoPage";
 import { ConsultingPage } from "./pages/consulting/ConsultingPage";
 import { Contact, ServicePage } from "./pages/generic/GenericPages";
 import { BlogPage, BlogPostPage } from "./pages/blog/BlogPage";
+import { FAQPage, NotFoundPage } from "./pages/static/StaticPages";
 import FrontendTranslator from "./i18n/FrontendTranslator";
 import { translatePhrase } from "./i18n/translations";
 import "./styles/internal-typography.css";
@@ -95,7 +97,7 @@ function SEO({ path, language = "bs" }) {
 
   useEffect(() => {
     const route = path.startsWith("/kripto/event/") ? "/kripto" : path.startsWith("/blog/") ? "/blog" : path;
-    const fallback = seoPages[route] || seoPages["/"];
+    const fallback = seoPages[route] || seoPages["/404"];
     const managed = managedPages[route];
     const languageKey = ["bs", "en", "de"].includes(language) ? language : "bs";
     const managedTitle = managed?.[`title_${languageKey}`] || managed?.title_bs;
@@ -128,7 +130,7 @@ function SEO({ path, language = "bs" }) {
     });
     setMeta('meta[name="robots"]', {
       name: "robots",
-      content: managed?.is_indexed === false
+      content: managed?.is_indexed === false || fallback.noindex
         ? "noindex, nofollow"
         : "index, follow, max-image-preview:large",
     });
@@ -184,7 +186,7 @@ function SEO({ path, language = "bs" }) {
     }
     schema.textContent = JSON.stringify({
       "@context": "https://schema.org",
-      "@type": managed?.schema_type || (route === "/" ? "ProfessionalService" : "WebPage"),
+      "@type": managed?.schema_type || fallback.schemaType || (route === "/" ? "ProfessionalService" : "WebPage"),
       name: "GordonDM",
       alternateName: "Gordon Digital Marketing",
       url: canonical,
@@ -594,9 +596,10 @@ function Shell() {
             <Route path="/kripto/event/:slug" element={<CryptoEventPage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
-            <Route path="/konsalting" element={<ConsultingPage />} />
+            <Route path="/konsalting" element={<Navigate to="/konsulting" replace />} />
             <Route path="/kontakt" element={<Contact />} />
-            <Route path="*" element={<Home />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </motion.main>
       </AnimatePresence>
@@ -622,6 +625,7 @@ function Shell() {
             <Link to="/">Početna</Link>
             <Link to="/kontakt">Kontakt</Link>
             <Link to="/blog">Blog</Link>
+            <Link to="/faq">FAQ</Link>
             <Link to="/kontakt" className="footer-cta">Pokrenimo projekat <ArrowRight /></Link>
           </nav>
         </div>

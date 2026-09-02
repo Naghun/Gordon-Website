@@ -1,0 +1,115 @@
+.static-page {
+  padding: 150px max(5vw, 32px) 100px;
+  background:
+    radial-gradient(circle at 80% 5%, rgba(46, 211, 211, 0.09), transparent 30%),
+    #f2f6f5;
+  color: #071011;
+}
+
+.static-page-hero {
+  width: min(1120px, 100%);
+  margin: 0 auto 68px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(7, 143, 147, 0.3);
+}
+
+.static-page-hero h1 {
+  max-width: 980px;
+  margin: 24px 0 30px;
+  font-size: clamp(52px, 7vw, 96px);
+  line-height: 0.93;
+  letter-spacing: -0.065em;
+}
+
+.static-page-hero > p:last-child {
+  max-width: 720px;
+  color: #536061;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.faq-list {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  border-top: 1px solid #bfcecc;
+}
+
+.faq-list details {
+  border-bottom: 1px solid #bfcecc;
+  transition: background 0.25s ease;
+}
+
+.faq-list details:hover,
+.faq-list details[open] {
+  background: rgba(46, 211, 211, 0.07);
+}
+
+.faq-list summary {
+  display: grid;
+  grid-template-columns: 60px 1fr 40px;
+  align-items: center;
+  gap: 20px;
+  min-height: 104px;
+  padding: 12px 25px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary span { color: #078f93; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; }
+.faq-list summary strong { font-size: clamp(18px, 2vw, 25px); letter-spacing: -0.03em; }
+.faq-list summary i { color: #078f93; font-size: 30px; font-style: normal; text-align: center; transition: transform 0.25s ease; }
+.faq-list details[open] summary i { transform: rotate(45deg); }
+.faq-list details > p { max-width: 820px; margin: -5px 65px 0 105px; padding: 0 0 34px; color: #526061; font-size: 16px; line-height: 1.75; }
+
+.static-page-cta {
+  width: min(1120px, 100%);
+  margin: 90px auto 0;
+  padding: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  border-radius: 24px;
+  background: #071011;
+  color: #fff;
+}
+
+.static-page-cta h2 { max-width: 680px; margin-top: 17px; font-size: clamp(32px, 4vw, 58px); line-height: 1; letter-spacing: -0.055em; }
+.static-page-cta a { display: inline-flex; align-items: center; gap: 15px; padding: 17px 21px; border: 1px solid #2ed3d3; border-radius: 8px; background: #2ed3d3; color: #061011; font-size: 13px; font-weight: 800; white-space: nowrap; transition: 0.22s ease; }
+.static-page-cta a:hover { background: transparent; color: #2ed3d3; transform: translateY(-3px); }
+.static-page-cta svg { width: 18px; }
+
+.not-found-page { min-height: 82vh; display: grid; place-items: center; }
+.not-found-panel { width: min(960px, 100%); padding: 70px; border: 1px solid rgba(7, 143, 147, 0.32); border-radius: 28px; background: rgba(255, 255, 255, 0.72); box-shadow: 0 30px 80px rgba(7, 30, 31, 0.08); text-align: center; }
+.not-found-code { display: flex; justify-content: center; align-items: center; color: #071011; font-size: clamp(90px, 16vw, 190px); font-weight: 850; line-height: 0.8; letter-spacing: -0.1em; }
+.not-found-code svg { width: clamp(76px, 11vw, 132px); height: clamp(76px, 11vw, 132px); margin: 0 12px; padding: 25px; border-radius: 50%; background: #2ed3d3; stroke-width: 1.4; }
+.not-found-panel h1 { margin: 26px auto 22px; max-width: 750px; font-size: clamp(38px, 5.5vw, 72px); line-height: 0.98; letter-spacing: -0.06em; }
+.not-found-panel > p:not(.eyebrow) { max-width: 640px; margin: 0 auto; color: #526061; font-size: 16px; line-height: 1.7; }
+.not-found-actions { display: flex; justify-content: center; gap: 12px; margin-top: 36px; }
+.not-found-actions a { display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 20px; border: 1px solid #071011; border-radius: 8px; font-size: 13px; font-weight: 800; transition: 0.22s ease; }
+.not-found-actions svg { width: 17px; }
+.not-found-primary { background: #071011; color: #fff; }
+.not-found-secondary { color: #071011; }
+.not-found-actions a:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(7, 30, 31, 0.12); }
+
+/* Content inserted at build time remains useful to crawlers without JavaScript. */
+.static-seo-shell { max-width: 1180px; margin: 0 auto; padding: 150px max(5vw, 30px) 90px; font-family: Arial, sans-serif; color: #071011; }
+.static-seo-shell h1 { max-width: 980px; margin: 0 0 32px; font-size: clamp(50px, 7vw, 96px); line-height: 0.95; letter-spacing: -0.055em; }
+.static-seo-shell h2 { margin: 48px 0 15px; font-size: clamp(28px, 4vw, 48px); letter-spacing: -0.04em; }
+.static-seo-shell p, .static-seo-shell li { max-width: 850px; color: #536061; font-size: 17px; line-height: 1.75; }
+.static-seo-shell a { color: #067f83; font-weight: 700; }
+
+@media (max-width: 700px) {
+  .static-page { padding: 115px 18px 70px; }
+  .static-page-hero { margin-bottom: 38px; padding-bottom: 30px; }
+  .static-page-hero h1 { margin-top: 17px; font-size: 48px; }
+  .static-page-hero > p:last-child { font-size: 15px; }
+  .faq-list summary { grid-template-columns: 35px 1fr 24px; gap: 8px; min-height: 86px; padding: 10px 8px; }
+  .faq-list details > p { margin: -2px 25px 0 43px; padding-bottom: 26px; font-size: 14px; }
+  .static-page-cta { margin-top: 60px; padding: 28px 22px; display: block; border-radius: 17px; }
+  .static-page-cta a { margin-top: 28px; }
+  .not-found-panel { padding: 45px 20px; border-radius: 20px; }
+  .not-found-actions { flex-direction: column; }
+  .not-found-actions a { justify-content: center; }
+}

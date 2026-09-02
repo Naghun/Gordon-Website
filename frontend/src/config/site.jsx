@@ -202,4 +202,14 @@ export const seoPages = {
     title: "Blog o softveru, AI, marketingu i Web3 | GordonDM",
     description: "GordonDM blog donosi novosti o saradnjama, poslovnom softveru, AI automatizaciji, digitalnom marketingu, blockchainu i Web3 tehnologiji.",
   },
+  "/faq": {
+    title: "Česta pitanja o digitalnim uslugama | GordonDM",
+    description: "Odgovori na česta pitanja o GordonDM razvoju poslovnog softvera, AI automatizaciji, SEO optimizaciji, digitalnom marketingu, konsultingu i Web3 uslugama.",
+    schemaType: "WebPage",
+  },
+  "/404": {
+    title: "Stranica nije pronađena | GordonDM",
+    description: "Tražena GordonDM stranica nije pronađena. Vratite se na početnu stranicu ili kontaktirajte naš tim.",
+    noindex: true,
+  },
 };

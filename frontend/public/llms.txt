@@ -14,6 +14,7 @@ GordonDM razvija digitalna rješenja za firme kroz poslovni softver po mjeri, AI
 - [Digitalni consulting](https://gordon.ba/konsulting): Digitalna transformacija poslovanja, digitalna strategija, analiza poslovnih procesa i tehnološko savjetovanje.
 - [Kontakt](https://gordon.ba/kontakt): Kontakt GordonDM tima u Sarajevu i pokretanje digitalnog projekta.
 - [Blog](https://gordon.ba/blog): Događaji, partnerstva i praktični sadržaji o softveru, marketingu, kriptu i Web3 tehnologiji.
+- [Česta pitanja](https://gordon.ba/faq): Odgovori o razvoju softvera, AI automatizaciji, marketingu, konsultingu, Web3 uslugama i početku saradnje.
 - [Binance Campus Montenegro u Budvi](https://gordon.ba/blog/binance-campus-montenegro-budva-gordondm): GordonDM priča i fotografije sa regionalnog Binance Campus događaja.
 
 ## Tržište i jezici

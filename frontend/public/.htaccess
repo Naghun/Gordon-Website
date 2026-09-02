@@ -1,0 +1,35 @@
+DirectoryIndex index.html
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Jedini javni kanonski host je HTTPS gordon.ba.
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\.gordon\.ba$ [NC]
+  RewriteRule ^ https://gordon.ba%{REQUEST_URI} [R=301,L,NE]
+
+  RewriteRule ^konsalting/?$ /konsulting [R=301,L]
+
+  # Django API, admin, statika i mediji imaju vlastitu aplikacijsku konfiguraciju.
+  RewriteRule ^backend(?:/|$) - [L]
+
+  # Svaka javna React ruta dobija vlastiti HTML, H1, meta podatke i tekst i bez JavaScripta.
+  RewriteRule ^(ai-automatizacija|softver-rjesenja|marketing|kripto|konsulting|kontakt|blog|faq)/?$ seo-pages/$1.html [L]
+  RewriteRule ^blog/(gordondm-binance-saradnja|gordondm-solana-saradnja|bitcoin-pizza-day-sarajevo|superteam-balkan-split-solana-event|binance-campus-montenegro-budva-gordondm)/?$ seo-pages/blog/$1.html [L]
+
+  # Postojeće datoteke i generisani direktoriji prolaze bez prepisivanja.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Sve druge rute su stvarno nepostojeće, a ne kopija početne stranice.
+  RewriteRule ^ - [R=404,L]
+</IfModule>
+
+ErrorDocument 404 /404.html
