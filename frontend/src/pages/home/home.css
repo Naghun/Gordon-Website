@@ -405,6 +405,57 @@
   margin-top: 34px;
 }
 
+.hero-auto-timer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 90%;
+  margin-top: 34px;
+}
+
+.hero-auto-timer > span {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.13);
+}
+
+.hero-auto-timer i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2ed3d3, #7cf5e8);
+  box-shadow: 0 0 16px rgba(46, 211, 211, 0.55);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: heroAutoFill 5s linear forwards;
+}
+
+.hero-auto-timer small {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+@keyframes heroAutoFill {
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-auto-timer i { animation: none; transform: scaleX(1); }
+}
+
+@media (max-width: 900px) {
+  .hero-auto-timer {
+    grid-template-columns: 3fr 2fr;
+    width: 100%;
+  }
+}
+
 .hero-primary,
 .hero-secondary {
   display: inline-flex;

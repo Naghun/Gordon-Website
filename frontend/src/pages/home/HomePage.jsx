@@ -44,16 +44,22 @@ const partners = [
 
 function ExperimentalHero() {
   const slides = heroSlides.slice(0, 5);
+  const slideDuration = 5000;
   const [step, setStep] = useState(0);
+  const [timerReset, setTimerReset] = useState(0);
   const active = ((step % slides.length) + slides.length) % slides.length;
   useEffect(() => {
-    const timer = setInterval(() => setStep((current) => current + 1), 3000);
-    return () => clearInterval(timer);
-  }, []);
+    const timer = window.setTimeout(
+      () => setStep((current) => current + 1),
+      slideDuration,
+    );
+    return () => window.clearTimeout(timer);
+  }, [step, timerReset]);
   const slide = slides[active];
   const selectSlide = (index) => {
     const forward = (index - active + slides.length) % slides.length;
     setStep((current) => current + forward);
+    setTimerReset((current) => current + 1);
   };
   return (
     <section className="hero-concept hero-slider compact-loader-slider">
@@ -81,6 +87,10 @@ function ExperimentalHero() {
             <Link className="hero-secondary" to="/kontakt">
               Pokrenimo projekat
             </Link>
+          </div>
+          <div className="hero-auto-timer" aria-hidden="true">
+            <span><i key={`${step}-${timerReset}`} /></span>
+            <small>SLJEDEĆA USLUGA</small>
           </div>
         </motion.div>
       </AnimatePresence>
@@ -113,6 +123,7 @@ function ExperimentalHero() {
                   "--dot-angle": `${index * 72}deg`,
                   "--icon-turn": `${(step - index) * 72}deg`,
                 }}
+                type="button"
                 onClick={() => selectSlide(index)}
                 aria-label={item.eyebrow}
                 aria-current={active === index ? "true" : undefined}

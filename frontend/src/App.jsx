@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBitcoin, faEthereum } from "@fortawesome/free-brands-svg-icons";
+import { faBitcoin, faEthereum, faFacebookF, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import {
   faArrowTrendUp,
   faCalendarDays,
@@ -480,7 +480,7 @@ function ChatWidget() {
             {channel === "choose" ? (
               <div className="chat-channel-choice">
                 <p>Kako želite razgovarati s nama?</p>
-                <a href="https://wa.me/38761264263" target="_blank" rel="noreferrer" aria-label="Otvorite WhatsApp razgovor s GordonDM timom">
+                <a href="https://wa.me/38761264263?text=Pozdrav%20GordonDM%2C%20%C5%BEelim%20vi%C5%A1e%20informacija." target="_blank" rel="noreferrer" aria-label="Otvorite WhatsApp razgovor s GordonDM timom">
                   <b>W</b>
                   <span>
                     <strong>WhatsApp</strong>
@@ -488,7 +488,7 @@ function ChatWidget() {
                   </span>
                   <ArrowRight />
                 </a>
-                <a href="viber://chat?number=%2B38761264263" aria-label="Otvorite Viber razgovor s GordonDM timom">
+                <a href="viber://chat?number=%2B38761264263" target="_blank" rel="noreferrer" aria-label="Otvorite Viber razgovor s GordonDM timom">
                   <b>V</b>
                   <span>
                     <strong>Viber</strong>
@@ -598,11 +598,11 @@ function Shell() {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, [loc.pathname]);
   const footerLinks = [
-    ["/ai-automatizacija", "AI"],
-    ["/softver-rjesenja", "Software"],
-    ["/marketing", "Marketing"],
-    ["/kripto", "Web3"],
-    ["/konsulting", "Consulting"],
+    ["/ai-automatizacija", "AI automatizacija"],
+    ["/softver-rjesenja", "Softverska rješenja"],
+    ["/marketing", "Digitalni marketing"],
+    ["/kripto", "Kripto & Web3"],
+    ["/konsulting", "Digitalni konsalting"],
   ];
   return (
     <>
@@ -676,11 +676,7 @@ function Shell() {
               <img src="/logo-gordondm-dark.png" alt="GordonDM – AI automatizacija, softver i digitalni marketing" width="1000" height="211" loading="lazy" decoding="async" />
             </Link>
             <p>Tehnološki partner za poslovni softver, AI automatizaciju, digitalni marketing, consulting i blockchain razvoj.</p>
-            <address className="footer-contact">
-              <a href="mailto:info@gordondm.com"><Mail /> info@gordondm.com</a>
-              <a href="tel:+38761264263"><Phone /> +387 61 264 263</a>
-              <a href="https://www.google.com/maps/search/?api=1&query=D%C5%BEemala+Bijedi%C4%87a+279L%2C+Sarajevo+71320" target="_blank" rel="noreferrer"><MapPin /> Džemala Bijedića 279L, Sarajevo 71320</a>
-            </address>
+            <Link to="/kontakt" className="footer-cta">Pokrenimo projekat <ArrowRight /></Link>
           </div>
           <nav className="footer-links" aria-label="Usluge">
             <strong>Usluge</strong>
@@ -689,11 +685,26 @@ function Shell() {
           <nav className="footer-company" aria-label="Kompanija">
             <strong>GordonDM</strong>
             <Link to="/">Početna</Link>
-            <Link to="/kontakt">Kontakt</Link>
             <Link to="/blog">Blog</Link>
             <Link to="/faq">FAQ</Link>
-            <Link to="/kontakt" className="footer-cta">Pokrenimo projekat <ArrowRight /></Link>
+            <Link to="/kontakt">Kontakt</Link>
           </nav>
+          <div className="footer-details">
+            <strong>Kontakt & mreže</strong>
+            <address className="footer-contact">
+              <a href="tel:+38761264263"><Phone /> +387 61 264 263</a>
+              <a href="https://www.google.com/maps/search/?api=1&query=D%C5%BEemala+Bijedi%C4%87a+279L%2C+Sarajevo+71320" target="_blank" rel="noreferrer"><MapPin /> <span>Džemala Bijedića 279L<br />Sarajevo 71320</span></a>
+            </address>
+            <div className="footer-socials" aria-label="GordonDM društvene mreže i kontakt">
+              <a href="mailto:info@gordondm.com" aria-label="Pošaljite email GordonDM timu"><Mail /><span>Email</span></a>
+              <a href="https://www.facebook.com/gordondm" target="_blank" rel="noreferrer" aria-label="GordonDM na Facebooku"><FontAwesomeIcon icon={faFacebookF} /><span>Facebook</span></a>
+              <a href="https://www.instagram.com/gordonkast" target="_blank" rel="noreferrer" aria-label="GordonDM na Instagramu"><FontAwesomeIcon icon={faInstagram} /><span>Instagram</span></a>
+            </div>
+            <div className="footer-messengers">
+              <a href="https://wa.me/38761264263?text=Pozdrav%20GordonDM%2C%20%C5%BEelim%20vi%C5%A1e%20informacija." target="_blank" rel="noreferrer">WhatsApp</a>
+              <a href="viber://chat?number=%2B38761264263" target="_blank" rel="noreferrer">Viber</a>
+            </div>
+          </div>
         </div>
         <div className="footer-bottom">
           <p>© 2026 GordonDM</p>
