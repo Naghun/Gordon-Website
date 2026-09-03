@@ -28,6 +28,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { API } from "../../config/site";
+import { trackLead } from "../../utils/analytics";
 import "./crypto.css";
 
 const marketFallback = [
@@ -195,6 +196,7 @@ function CryptoContactV2() {
       });
       if (!r.ok) throw new Error();
       form.reset();
+      trackLead("web3");
       setStatus("Poruka je potvrđena. GordonDM tim će vam se javiti.");
     } catch {
       setStatus("Poruka trenutno nije potvrđena. Pokušajte ponovo.");

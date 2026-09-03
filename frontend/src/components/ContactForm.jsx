@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { API } from "../config/site";
+import { trackLead } from "../utils/analytics";
 
 export default function ContactForm() {
   const [status, setStatus] = useState("");
@@ -20,6 +21,7 @@ export default function ContactForm() {
         throw new Error(details ? JSON.stringify(details) : `HTTP ${r.status}`);
       }
       form.reset();
+      trackLead("contact");
       setStatus("Hvala! Vaša poruka je uspješno poslana.");
     } catch (error) {
       console.error("Kontakt forma:", error);

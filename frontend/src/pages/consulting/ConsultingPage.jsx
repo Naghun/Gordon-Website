@@ -13,6 +13,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { API } from "../../config/site";
+import { trackLead } from "../../utils/analytics";
 import "./consulting.css";
 
 const areas = [
@@ -85,6 +86,7 @@ function ConsultingDiagnostic() {
       });
       if (!response.ok) throw new Error();
       form.reset();
+      trackLead("consulting");
       setStatus("Upit je zaprimljen. Javit ćemo vam se sa sljedećim korakom.");
     } catch {
       setStatus("Upit trenutno nije potvrđen. Pokušajte ponovo.");

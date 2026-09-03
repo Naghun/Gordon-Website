@@ -28,6 +28,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { API } from "../../config/site";
+import { trackLead } from "../../utils/analytics";
 import "./software.css";
 
 export function SoftwarePage() {
@@ -571,6 +572,7 @@ export function SoftwareContact() {
       });
       if (!r.ok) throw new Error();
       form.reset();
+      trackLead("software");
       setStatus("Hvala! Vaš softverski upit je uspješno poslan.");
     } catch {
       setStatus("Upit trenutno nije potvrđen. Pokušajte ponovo.");

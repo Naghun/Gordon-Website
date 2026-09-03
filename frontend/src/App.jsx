@@ -47,6 +47,7 @@ import {
 import "./App.css";
 import "./styles/shared.css";
 import { API, nav, pages, seoPages } from "./config/site";
+import { trackContactClick, trackPageView } from "./utils/analytics";
 import { Home } from "./pages/home/HomePage";
 import { AIContact, AIPage } from "./pages/ai/AIPage";
 import {
@@ -325,6 +326,35 @@ function Header() {
   );
 }
 
+function AnalyticsTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const timer = window.setTimeout(
+      () => trackPageView(`${location.pathname}${location.search}`),
+      0,
+    );
+    return () => window.clearTimeout(timer);
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    const trackLink = (event) => {
+      const link = event.target.closest?.("a[href]");
+      if (!link) return;
+      const url = link.getAttribute("href") || "";
+      if (url.startsWith("tel:")) trackContactClick("phone", url);
+      else if (url.startsWith("mailto:")) trackContactClick("email", url);
+      else if (url.includes("wa.me") || url.includes("whatsapp"))
+        trackContactClick("whatsapp", url);
+      else if (url.startsWith("viber:")) trackContactClick("viber", url);
+    };
+    document.addEventListener("click", trackLink);
+    return () => document.removeEventListener("click", trackLink);
+  }, []);
+
+  return null;
+}
+
 function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [channel, setChannel] = useState("choose");
@@ -577,6 +607,7 @@ function Shell() {
   return (
     <>
       <Header />
+      <AnalyticsTracker />
       <AnimatePresence mode="wait">
         <motion.main
           key={loc.pathname}

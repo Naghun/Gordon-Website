@@ -28,6 +28,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { API } from "../../config/site";
+import { trackLead } from "../../utils/analytics";
 import "./marketing.css";
 
 export function MarketingContact() {
@@ -44,6 +45,7 @@ export function MarketingContact() {
       });
       if (!r.ok) throw new Error();
       form.reset();
+      trackLead("marketing");
       setStatus("Brief je poslan. Javit ćemo vam se s prijedlogom kampanje.");
     } catch {
       setStatus("Brief trenutno nije potvrđen. Pokušajte ponovo.");
