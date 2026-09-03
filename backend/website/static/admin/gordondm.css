@@ -1671,6 +1671,81 @@ body .inline-group .add-row a:focus::before {
   -webkit-text-fill-color: #0b0d0e !important;
 }
 
+/* Full-screen login shell with a centered, contained form. */
+body.login {
+  min-height: 100dvh;
+  margin: 0;
+  background: radial-gradient(circle at 75% 12%, #144244, var(--gordon-black) 46%);
+}
+
+body.login #container {
+  width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.login #header,
+body.login #content {
+  width: min(calc(100% - 32px), 500px);
+  box-sizing: border-box;
+  margin-right: auto;
+  margin-left: auto;
+  background: #0b0d0e;
+}
+
+body.login #header {
+  margin-top: clamp(42px, 9vh, 88px);
+  border-radius: 18px 18px 0 0;
+}
+
+body.login #content {
+  margin-top: 0;
+  padding: 34px;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .35);
+}
+
+.dashboard-google-tools {
+  margin: 0 0 20px;
+  padding: 22px;
+  border: 1px solid rgba(7, 143, 147, .22);
+  border-radius: 15px;
+  background: linear-gradient(135deg, rgba(46, 211, 211, .1), #fff 58%);
+}
+
+.dashboard-google-heading span,
+.dashboard-google-grid small {
+  color: #078f93;
+  font-size: 8px;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+
+.dashboard-google-heading h2 { margin: 6px 0 4px; color: #0b0d0e; font-size: 22px; }
+.dashboard-google-heading p { margin: 0 0 18px; color: #667071; font-size: 12px; }
+.dashboard-google-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.dashboard-google-grid > a { display: grid; grid-template-columns: 43px minmax(0, 1fr) auto; align-items: center; gap: 11px; min-height: 68px; padding: 12px; border: 1px solid #dbe3e3; border-radius: 11px; background: #fff; color: #0b0d0e !important; text-decoration: none !important; transition: .2s ease; }
+.dashboard-google-grid > a:hover { transform: translateY(-2px); border-color: #078f93; box-shadow: 0 10px 28px rgba(8, 80, 82, .08); }
+.dashboard-google-grid > a > b { display: grid; width: 43px; height: 43px; place-items: center; border-radius: 9px; background: #0b0d0e; color: #2ed3d3; font-size: 11px; }
+.dashboard-google-grid span { min-width: 0; }
+.dashboard-google-grid small { display: block; margin-bottom: 4px; }
+.dashboard-google-grid strong { display: block; color: #202627; font-size: 11px; line-height: 1.35; }
+.dashboard-google-grid i { color: #078f93; font-size: 17px; font-style: normal; }
+
+@media (max-width: 900px) {
+  .dashboard-google-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  body.login #header { margin-top: 24px; }
+  body.login #header, body.login #content { width: calc(100% - 24px); }
+  body.login #content { padding: 26px 20px; }
+  .dashboard-google-tools { padding: 16px; }
+}
+
 /* Calendar and full-hour clock: light admin surface with GordonDM accent. */
 body .calendarbox,
 body .clockbox {
