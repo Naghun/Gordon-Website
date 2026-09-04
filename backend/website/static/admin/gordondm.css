@@ -1746,6 +1746,78 @@ body.login #content {
   .dashboard-google-tools { padding: 16px; }
 }
 
+/* Three-column dashboard workspace (local preview). */
+body.dashboard #content {
+  width: auto;
+  max-width: none;
+}
+
+body.dashboard .colMS {
+  margin-right: 0;
+}
+
+.dashboard-columns {
+  display: grid;
+  grid-template-columns: minmax(280px, .95fr) minmax(330px, 1.12fr) minmax(280px, .9fr);
+  align-items: start;
+  gap: 22px;
+}
+
+.dashboard-columns .dashboard-column {
+  min-width: 0;
+}
+
+.dashboard-columns #content-main,
+.dashboard-columns #content-related {
+  float: none;
+  width: auto;
+  margin: 0;
+}
+
+body.dashboard .dashboard-columns #content-main,
+body.dashboard .dashboard-columns #content-related {
+  float: none;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+body.dashboard .dashboard-columns #content-related .module {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-columns .dashboard-google-grid {
+  grid-template-columns: 1fr;
+}
+
+.dashboard-columns .dashboard-google-tools,
+.dashboard-columns .dashboard-notification-card,
+.dashboard-columns .dashboard-seo-card {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 1180px) {
+  .dashboard-columns {
+    grid-template-columns: repeat(2, minmax(300px, 1fr));
+  }
+
+  .dashboard-actions-column {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .dashboard-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-actions-column {
+    grid-column: auto;
+  }
+}
+
 /* Calendar and full-hour clock: light admin surface with GordonDM accent. */
 body .calendarbox,
 body .clockbox {

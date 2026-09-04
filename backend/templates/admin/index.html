@@ -1,4 +1,5 @@
 {% extends "admin/index.html" %}
+{% load i18n admin_filters log %}
 
 {% block content_title %}
   <div class="dashboard-welcome">
@@ -9,40 +10,79 @@
 {% endblock %}
 
 {% block content %}
-  <a class="dashboard-notification-card" href="{% url 'admin_notifications' %}">
-    <span class="dashboard-notification-icon" aria-hidden="true">!</span>
-    <span>
-      <small>ADMIN OBAVIJESTI</small>
-      <strong>Provjerite nove razgovore i kontakt poruke</strong>
-    </span>
-    <b class="admin-notification-count dashboard-notification-count" hidden>0</b>
-    <i aria-hidden="true">→</i>
-  </a>
-  <a class="dashboard-seo-card" href="{% url 'admin:website_seopage_changelist' %}">
-    <span class="dashboard-seo-icon" aria-hidden="true">SEO</span>
-    <span>
-      <small>SEO MANAGER</small>
-      <strong>Upravljajte keywordima, meta podacima i indeksiranjem</strong>
-    </span>
-    <i aria-hidden="true">→</i>
-  </a>
-  <section class="dashboard-google-tools" aria-labelledby="google-tools-title">
-    <div class="dashboard-google-heading">
-      <span>MJERENJE I OGLAŠAVANJE</span>
-      <h2 id="google-tools-title">Google analitika</h2>
-      <p>Brzi pristup podacima povezanim sa domenom gordon.ba.</p>
+  <div class="dashboard-columns">
+    <div class="dashboard-column dashboard-overview-column">
+      <a class="dashboard-notification-card" href="{% url 'admin_notifications' %}">
+        <span class="dashboard-notification-icon" aria-hidden="true">!</span>
+        <span>
+          <small>ADMIN OBAVIJESTI</small>
+          <strong>Provjerite nove razgovore i kontakt poruke</strong>
+        </span>
+        <b class="admin-notification-count dashboard-notification-count" hidden>0</b>
+        <i aria-hidden="true">→</i>
+      </a>
+      <a class="dashboard-seo-card" href="{% url 'admin:website_seopage_changelist' %}">
+        <span class="dashboard-seo-icon" aria-hidden="true">SEO</span>
+        <span>
+          <small>SEO MANAGER</small>
+          <strong>Upravljajte keywordima, meta podacima i indeksiranjem</strong>
+        </span>
+        <i aria-hidden="true">→</i>
+      </a>
+      <section class="dashboard-google-tools" aria-labelledby="google-tools-title">
+        <div class="dashboard-google-heading">
+          <span>MJERENJE I OGLAŠAVANJE</span>
+          <h2 id="google-tools-title">Google analitika</h2>
+          <p>Brzi pristup podacima povezanim sa domenom gordon.ba.</p>
+        </div>
+        <div class="dashboard-google-grid">
+          <a href="https://analytics.google.com/analytics/web/#/a406796134p552707694/reports/intelligenthome" target="_blank" rel="noopener noreferrer">
+            <b>GA4</b><span><small>GOOGLE ANALYTICS</small><strong>Posjete, korisnici i kontakt upiti</strong></span><i>↗</i>
+          </a>
+          <a href="https://search.google.com/search-console?resource_id=sc-domain%3Agordon.ba" target="_blank" rel="noopener noreferrer">
+            <b>SC</b><span><small>SEARCH CONSOLE</small><strong>Klikovi, pozicije i indeksiranje</strong></span><i>↗</i>
+          </a>
+          <a href="https://ads.google.com/aw/overview" target="_blank" rel="noopener noreferrer">
+            <b>ADS</b><span><small>GOOGLE ADS</small><strong>Kampanje, troškovi i konverzije</strong></span><i>↗</i>
+          </a>
+        </div>
+      </section>
     </div>
-    <div class="dashboard-google-grid">
-      <a href="https://analytics.google.com/analytics/web/#/a406796134p552707694/reports/intelligenthome" target="_blank" rel="noopener noreferrer">
-        <b>GA4</b><span><small>GOOGLE ANALYTICS</small><strong>Posjete, korisnici i kontakt upiti</strong></span><i>↗</i>
-      </a>
-      <a href="https://search.google.com/search-console?resource_id=sc-domain%3Agordon.ba" target="_blank" rel="noopener noreferrer">
-        <b>SC</b><span><small>SEARCH CONSOLE</small><strong>Klikovi, pozicije i indeksiranje</strong></span><i>↗</i>
-      </a>
-      <a href="https://ads.google.com/aw/overview" target="_blank" rel="noopener noreferrer">
-        <b>ADS</b><span><small>GOOGLE ADS</small><strong>Kampanje, troškovi i konverzije</strong></span><i>↗</i>
-      </a>
+
+    <div id="content-main" class="app-list dashboard-column dashboard-apps-column">
+      {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
     </div>
-  </section>
-  {{ block.super }}
+
+    <div id="content-related" class="dashboard-column dashboard-actions-column">
+      <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+        {% get_admin_log 10 as admin_log for_user user %}
+        {% if not admin_log %}
+          <p>{% translate 'None available' %}</p>
+        {% else %}
+          <ul class="actionlist">
+          {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+              <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span>
+              {% if entry.is_deletion or not entry.get_admin_url %}
+                {{ entry.object_repr|to_object_display_value }}
+              {% else %}
+                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr|to_object_display_value }}</a>
+              {% endif %}
+              <br>
+              {% if entry.content_type %}
+                <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+              {% else %}
+                <span class="mini quiet">{% translate 'Unknown content' %}</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
+
+{% block sidebar %}{% endblock %}

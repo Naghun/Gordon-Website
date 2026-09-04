@@ -88,9 +88,8 @@ function ExperimentalHero() {
               Pokrenimo projekat
             </Link>
           </div>
-          <div className="hero-auto-timer" aria-hidden="true">
+          <div className="hero-auto-timer hero-auto-timer-line" aria-hidden="true">
             <span><i key={`${step}-${timerReset}`} /></span>
-            <small>SLJEDEĆA USLUGA</small>
           </div>
         </motion.div>
       </AnimatePresence>

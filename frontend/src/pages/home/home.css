@@ -39,6 +39,38 @@
     black 75%,
     transparent
   );
+  animation: heroGridDrift 14s linear infinite;
+}
+
+.hero-concept::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: clamp(280px, 34vw, 620px);
+  aspect-ratio: 1;
+  left: 42%;
+  top: 22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46, 211, 211, 0.11), transparent 68%);
+  filter: blur(18px);
+  pointer-events: none;
+  animation: heroAmbientPulse 9s ease-in-out infinite alternate;
+}
+
+@keyframes heroGridDrift {
+  to { background-position: 72px 36px; }
+}
+
+@keyframes heroAmbientPulse {
+  0% { transform: translate3d(-7%, -5%, 0) scale(0.92); opacity: 0.45; }
+  100% { transform: translate3d(13%, 9%, 0) scale(1.14); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-concept-grid,
+  .hero-concept::after {
+    animation: none;
+  }
 }
 
 .hero-kicker {
@@ -439,6 +471,15 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   white-space: nowrap;
+}
+
+.hero-auto-timer-line {
+  display: block;
+}
+
+.hero-auto-timer-line > span {
+  display: block;
+  width: 100%;
 }
 
 @keyframes heroAutoFill {
