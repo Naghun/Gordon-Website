@@ -1,5 +1,4 @@
 {% extends "admin/index.html" %}
-{% load i18n admin_filters log %}
 
 {% block content_title %}
   <div class="dashboard-welcome">
@@ -10,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="dashboard-columns">
+  <div class="dashboard-primary-columns">
     <div class="dashboard-column dashboard-overview-column">
       <a class="dashboard-notification-card" href="{% url 'admin_notifications' %}">
         <span class="dashboard-notification-icon" aria-hidden="true">!</span>
@@ -48,41 +47,6 @@
         </div>
       </section>
     </div>
-
-    <div id="content-main" class="app-list dashboard-column dashboard-apps-column">
-      {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
-    </div>
-
-    <div id="content-related" class="dashboard-column dashboard-actions-column">
-      <div class="module" id="recent-actions-module">
-        <h2>{% translate 'Recent actions' %}</h2>
-        <h3>{% translate 'My actions' %}</h3>
-        {% get_admin_log 10 as admin_log for_user user %}
-        {% if not admin_log %}
-          <p>{% translate 'None available' %}</p>
-        {% else %}
-          <ul class="actionlist">
-          {% for entry in admin_log %}
-            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
-              <span class="visually-hidden">{% if entry.is_addition %}{% translate 'Added:' %}{% elif entry.is_change %}{% translate 'Changed:' %}{% elif entry.is_deletion %}{% translate 'Deleted:' %}{% endif %}</span>
-              {% if entry.is_deletion or not entry.get_admin_url %}
-                {{ entry.object_repr|to_object_display_value }}
-              {% else %}
-                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr|to_object_display_value }}</a>
-              {% endif %}
-              <br>
-              {% if entry.content_type %}
-                <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
-              {% else %}
-                <span class="mini quiet">{% translate 'Unknown content' %}</span>
-              {% endif %}
-            </li>
-          {% endfor %}
-          </ul>
-        {% endif %}
-      </div>
-    </div>
+    {{ block.super }}
   </div>
 {% endblock %}
-
-{% block sidebar %}{% endblock %}
