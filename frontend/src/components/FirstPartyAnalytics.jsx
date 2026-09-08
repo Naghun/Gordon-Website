@@ -12,24 +12,24 @@ const contactForm = el => el?.closest?.('form')?.querySelector('[name="message"]
 export default function FirstPartyAnalytics() {
   const location = useLocation();
   const [consent,setConsent] = useState(read);
-  const [open,setOpen] = useState(!read());
+  const [open,setOpen] = useState(false);
   function choose(value) {
     try { localStorage.setItem(key,value); if(value !== 'yes') sessionStorage.removeItem('gordon-metrics-tab'); } catch { /* storage unavailable: no tracking */ }
     setConsent(value); setOpen(false);
   }
   useEffect(() => {
-    if(consent !== 'yes' || blocked()) return;
+    if(consent === 'no' || blocked()) return;
     let visit;
     try { visit = sessionStorage.getItem('gordon-metrics-tab') || crypto.randomUUID(); sessionStorage.setItem('gordon-metrics-tab',visit); } catch { return; }
     const params = new URLSearchParams(window.location.search);
     let ref = '';
     try { ref = document.referrer ? new URL(document.referrer).hostname : ''; } catch { /* no referrer */ }
-    const common = {consent:true,visit,path:location.pathname,
+    const common = {collection_mode:'automatic',visit,path:location.pathname,
       device:/iPad|Tablet|Android(?!.*Mobile)/i.test(navigator.userAgent) ? 'tablet' : /Mobi/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
       source:clean(params.get('utm_source')) || (ref && ref !== window.location.hostname ? ref : 'direct'),
       campaign:clean(params.get('utm_campaign')),placement:clean(params.get('utm_content'))};
     const send = (kind,target='',seconds=0) => {
-      if(read() !== 'yes' || blocked()) return;
+      if(read() === 'no' || blocked()) return;
       fetch(`${API}/metrics/`,{method:'POST',headers:{'Content-Type':'application/json'},credentials:'omit',keepalive:true,
         body:JSON.stringify({...common,event:crypto.randomUUID(),kind,target,seconds})}).catch(()=>{});
     };

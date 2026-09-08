@@ -11,16 +11,6 @@
 {% block content %}
   <div class="dashboard-primary-columns">
     <div class="dashboard-column dashboard-overview-column">
-      {% include "admin/partials/first_party_metrics.html" %}
-      <a class="dashboard-notification-card" href="{% url 'admin_notifications' %}">
-        <span class="dashboard-notification-icon" aria-hidden="true">!</span>
-        <span>
-          <small>ADMIN OBAVIJESTI</small>
-          <strong>Provjerite nove razgovore i kontakt poruke</strong>
-        </span>
-        <b class="admin-notification-count dashboard-notification-count" hidden>0</b>
-        <i aria-hidden="true">→</i>
-      </a>
       <a class="dashboard-seo-card" href="{% url 'admin:website_seopage_changelist' %}">
         <span class="dashboard-seo-icon" aria-hidden="true">SEO</span>
         <span>
@@ -49,5 +39,6 @@
       </section>
     </div>
     {{ block.super }}
+    <div class="dashboard-live-column">{% include "admin/partials/first_party_metrics.html" %}</div>
   </div>
 {% endblock %}

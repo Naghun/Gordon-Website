@@ -1711,6 +1711,17 @@ body .inline-group .add-row a:focus::before {
   -webkit-text-fill-color: #0b0d0e !important;
 }
 
+/* Dashboard: welcome, apps/tools, live metrics, then activity. */
+body.dashboard #content {width:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin-right:0}
+body.dashboard #content > .titles-and-tools {grid-column:1 / -1;grid-row:1}
+body.dashboard #content-main {grid-column:1;grid-row:2;width:100%;margin:0}
+body.dashboard .dashboard-overview-column {grid-column:2;grid-row:2}
+body.dashboard .dashboard-live-column {grid-column:1 / -1;grid-row:3;min-width:0}
+body.dashboard #content-related {grid-column:1 / -1;grid-row:4;width:100%;margin:0}
+body.dashboard #content-related .actionlist {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.admin-notification-link {text-decoration:none!important;border:1px solid #345052;border-radius:16px;padding:5px 10px!important}
+@media(max-width:800px){body.dashboard #content{grid-template-columns:minmax(0,1fr)}body.dashboard #content-main{grid-row:2}body.dashboard .dashboard-overview-column{grid-column:1;grid-row:3}body.dashboard .dashboard-live-column{grid-row:4}body.dashboard #content-related{grid-row:5}body.dashboard #content-related .actionlist{grid-template-columns:1fr}}
+
 /* Full-screen login shell with a centered, contained form. */
 body.login {
   min-height: 100dvh;

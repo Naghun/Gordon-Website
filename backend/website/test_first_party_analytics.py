@@ -51,3 +51,7 @@ class MetricsTests(TestCase):
         response = self.client.post('/api/metrics/', json.dumps(self.payload), content_type='application/json', HTTP_ORIGIN='https://gordon.ba', HTTP_SEC_GPC='1')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(AnalyticsVisit.objects.count(), 0)
+
+    def test_automatic_collection(self):
+        self.assertEqual(self.send(consent=False, collection_mode='automatic').status_code,200)
+        self.assertEqual(AnalyticsVisit.objects.count(),1)

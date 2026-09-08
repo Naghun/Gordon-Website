@@ -8,7 +8,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction
-from django.db.models import Count, Sum, F
+from django.db.models import Count, Sum, F, Q
 from django.http import JsonResponse
 from django.template.response import TemplateResponse
 from django.utils import timezone
@@ -56,7 +56,7 @@ def collect(request):
     cache.set(rate_key,count+1,60)
     try:
         data = json.loads(request.body)
-        if not isinstance(data, dict) or data.get('consent') is not True:
+        if not isinstance(data, dict) or (data.get('consent') is not True and data.get('collection_mode') != 'automatic'):
             raise ValueError()
         visit_id, event_id = uuid.UUID(data['visit']), uuid.UUID(data['event'])
         kind, path = data['kind'], data['path']
@@ -113,7 +113,7 @@ def stats(request):
         'live_count':live.count(), 'sessions':visits.count(),
         'pageviews':events.filter(kind='page_view').count(),
         'active_seconds':visits.aggregate(total=Sum('active_seconds'))['total'] or 0,
-        'pages':list(events.values('path').annotate(events=Count('pk'),seconds=Sum('seconds')).order_by('-seconds')[:15]),
+        'pages':list(events.values('path').annotate(events=Count('pk', filter=Q(kind='page_view')),sessions=Count('visit_id',distinct=True),seconds=Sum('seconds')).order_by('-seconds')[:15]),
         'devices':groups(visits,'device'), 'sources':groups(visits,'source'),
         'campaigns':groups(visits.exclude(campaign=''),'campaign'), 'placements':groups(visits.exclude(placement=''),'placement'),
         'locations':list(visits.values('country','city').annotate(count=Count('pk')).order_by('-count')[:15]),
