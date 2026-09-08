@@ -11,6 +11,7 @@
 {% block content %}
   <div class="dashboard-primary-columns">
     <div class="dashboard-column dashboard-overview-column">
+      {% include "admin/partials/first_party_metrics.html" %}
       <a class="dashboard-notification-card" href="{% url 'admin_notifications' %}">
         <span class="dashboard-notification-icon" aria-hidden="true">!</span>
         <span>

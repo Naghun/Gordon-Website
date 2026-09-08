@@ -1,0 +1,15 @@
+{% load static %}
+{% if perms.website.view_analyticsvisit %}
+<section class="gordon-metrics" data-metrics-url="{% url 'first_party_analytics_data' %}">
+  <h2>Naša analitika · uživo</h2>
+  <p data-metrics-status>Učitavanje statistike…</p>
+  <div class="metrics-cards" data-metrics-cards></div>
+  <h3>Aktivne sesije — posljednjih 45 sekundi</h3>
+  <div class="metrics-scroll" data-metrics-live></div>
+  <p>Sesije nisu isto što i jedinstvene osobe. Vrijeme je procjena aktivnog pregledanja, ne vrijeme otvorenog taba.</p>
+  <a href="{% url 'first_party_analytics' %}">Stranice, izvori, uređaji i kontakt forme →</a>
+  {% if metrics_full %}<div data-metrics-details></div>{% endif %}
+</section>
+<link rel="stylesheet" href="{% static 'admin/first-party-metrics.css' %}">
+<script defer src="{% static 'admin/first-party-metrics.js' %}"></script>
+{% endif %}

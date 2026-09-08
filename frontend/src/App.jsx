@@ -48,6 +48,7 @@ import "./App.css";
 import "./styles/shared.css";
 import { API, nav, pages, seoPages } from "./config/site";
 import { trackContactClick, trackPageView } from "./utils/analytics";
+import FirstPartyAnalytics from "./components/FirstPartyAnalytics";
 import { Home } from "./pages/home/HomePage";
 import { AIContact, AIPage } from "./pages/ai/AIPage";
 import {
@@ -745,6 +746,7 @@ export default function App() {
   }, []);
   return (
     <BrowserRouter>
+      <FirstPartyAnalytics />
       <FrontendTranslator />
       <Shell />
     </BrowserRouter>

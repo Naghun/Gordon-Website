@@ -1,0 +1,6 @@
+.metrics-consent{position:fixed;bottom:18px;left:18px;z-index:9999;max-width:min(440px,calc(100vw - 36px));box-sizing:border-box;color:#eff8f8}
+.metrics-consent.is-open{padding:24px;background:linear-gradient(135deg,#152829,#0b1112 75%);border:1px solid #315051;border-radius:20px;box-shadow:0 16px 60px #0006}
+.metrics-consent .metrics-eyebrow{display:block;font-size:10px;letter-spacing:2px;color:#24c9cd;margin-bottom:10px}
+.metrics-consent strong{display:block;font-size:21px;line-height:1.25}.metrics-consent p{margin:12px 0;color:#d5e1e1;font-size:13px;line-height:1.65}.metrics-consent small{display:block;color:#aebfc0;font-size:11px;line-height:1.6}
+.metrics-consent div{display:flex;gap:10px;margin-top:20px}.metrics-consent button{cursor:pointer;background:#142526;color:#eafafa;border:1px solid #426061;border-radius:10px;padding:10px 16px;font:inherit;font-size:12px}.metrics-consent div button{flex:1;background:#24c9cd;color:#071112;font-weight:600}.metrics-consent div button+button{background:transparent;color:#eff8f8}.metrics-consent button:focus-visible{outline:2px solid white;outline-offset:3px}
+@media(max-width:480px){.metrics-consent{left:12px;bottom:12px;max-width:calc(100vw - 24px)}.metrics-consent.is-open{padding:20px}}

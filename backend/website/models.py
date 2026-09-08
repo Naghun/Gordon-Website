@@ -2,6 +2,32 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.utils import timezone
 import uuid
+
+class AnalyticsVisit(models.Model):
+ token = models.UUIDField(primary_key=True)
+ started_at = models.DateTimeField(default=timezone.now, db_index=True)
+ last_seen = models.DateTimeField(default=timezone.now, db_index=True)
+ current_path = models.CharField(max_length=250)
+ device = models.CharField(max_length=20)
+ source = models.CharField(max_length=120, default='direct')
+ campaign = models.CharField(max_length=100, blank=True)
+ placement = models.CharField(max_length=100, blank=True)
+ country = models.CharField(max_length=80, default='Nepoznato')
+ city = models.CharField(max_length=100, default='Nepoznato')
+ active_seconds = models.PositiveIntegerField(default=0)
+ class Meta:
+  verbose_name = 'Analitička sesija'
+  verbose_name_plural = 'Analitičke sesije'
+
+class AnalyticsEvent(models.Model):
+ token = models.UUIDField(primary_key=True)
+ visit = models.ForeignKey(AnalyticsVisit, on_delete=models.CASCADE, related_name='events')
+ created_at = models.DateTimeField(default=timezone.now, db_index=True)
+ kind = models.CharField(max_length=30, db_index=True)
+ path = models.CharField(max_length=250)
+ target = models.CharField(max_length=250, blank=True)
+ seconds = models.PositiveSmallIntegerField(default=0)
+
 class Service(models.Model):
  title=models.CharField(max_length=120); description=models.TextField(); icon=models.CharField(max_length=40,default='Code2'); order=models.PositiveIntegerField(default=0)
  class Meta: ordering=['order','id']

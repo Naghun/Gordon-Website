@@ -575,6 +575,7 @@ export function SoftwareContact() {
       trackLead("software");
       setStatus("Hvala! Vaš softverski upit je uspješno poslan.");
     } catch {
+      window.dispatchEvent(new Event('gordon-lead-error'));
       setStatus("Upit trenutno nije potvrđen. Pokušajte ponovo.");
     }
   }

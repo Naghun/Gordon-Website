@@ -146,6 +146,21 @@ const blogPages = [
   ],
 }));
 
+// Use the same reviewed article bodies as the database import, not SEO filler.
+for (const batch of ['01', '02']) {
+  const posts = JSON.parse(await readFile(join(projectRoot, '..', 'content', `instagram-batch-${batch}.json`), 'utf8'));
+  for (const post of posts) {
+    const blocks = post.content.split(/\n\n/);
+    const sections = [];
+    let heading = 'Priča s događaja';
+    for (const block of blocks.slice(1)) {
+      if (block.startsWith('## ')) heading = block.slice(3);
+      else sections.push([heading, block]);
+    }
+    blogPages.push({path:`/blog/${post.slug}`, title:`${post.title} | GordonDM`, description:post.excerpt,
+      eyebrow:'GORDONDM BLOG', h1:post.title, intro:blocks[0], sections});
+  }
+}
 pages.push(...blogPages);
 
 const staticBlogLinks = blogPages.map((post) => (
@@ -159,7 +174,8 @@ const escapeHtml = (value) => value
   .replaceAll('"', "&quot;");
 
 function staticBody(page, notFound = false) {
-  const sections = page.sections.map(([heading, text]) => `<section><h2>${escapeHtml(heading)}</h2><p>${escapeHtml(text)}</p></section>`).join("");
+  const inline = text => escapeHtml(text).replace(/\[([^\]]+)\]\((\/[a-z0-9/-]*)\)/g, '<a href="$2">$1</a>');
+  const sections = page.sections.map(([heading, text], index) => `<section>${index && page.sections[index-1][0] === heading ? '' : `<h2>${escapeHtml(heading)}</h2>`}<p>${inline(text)}</p></section>`).join("");
   const blogSection = notFound ? "" : `<section class="static-blog-links"><h2>Izdvojeno iz GordonDM bloga</h2><p>Pročitajte priče o partnerstvima, događajima, tehnologiji i ljudima koji povezuju Sarajevo i Balkan s globalnim Web3 ekosistemom.</p>${staticBlogLinks}</section>`;
   return `<main class="static-seo-shell" data-static-seo="true"><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.h1)}</h1><p>${escapeHtml(page.intro)}</p>${sections}${blogSection}<nav aria-label="Glavne stranice"><h2>${notFound ? "Nastavite pregled stranice" : "Istražite GordonDM usluge"}</h2><p><a href="/">Početna</a> · <a href="/ai-automatizacija">AI automatizacija</a> · <a href="/softver-rjesenja">Softver rješenja</a> · <a href="/marketing">Marketing</a> · <a href="/kripto">Web3</a> · <a href="/konsulting">Konsulting</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a> · <a href="/kontakt">Kontakt</a></p></nav></main>`;
 }

@@ -199,6 +199,7 @@ function CryptoContactV2() {
       trackLead("web3");
       setStatus("Poruka je potvrđena. GordonDM tim će vam se javiti.");
     } catch {
+      window.dispatchEvent(new Event('gordon-lead-error'));
       setStatus("Poruka trenutno nije potvrđena. Pokušajte ponovo.");
     }
   }

@@ -18,6 +18,7 @@ export function trackPageView(path) {
 }
 
 export function trackLead(formName) {
+  window.dispatchEvent(new Event('gordon-lead-success'));
   sendEvent("generate_lead", { form_name: formName });
 }
 

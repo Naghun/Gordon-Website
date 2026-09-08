@@ -585,13 +585,53 @@ body #nav-sidebar .module a:visited {
 }
 
 #changelist .changelist-form-container {
-  display: flex;
+  display: block;
   align-items: flex-start;
   gap: 18px;
   overflow: visible;
   border: 0;
   background: transparent;
   box-shadow: none;
+}
+
+/* Keep search above results on both supported Django changelist structures. */
+body.change-list #content,
+body.change-list #content-main {
+  min-width: 0;
+  box-sizing: border-box;
+}
+body.change-list #changelist .changelist-form-container {
+  width: 100%;
+  min-width: 0;
+}
+body.change-list #changelist .changelist-form-container:has(> #changelist-filter) {
+  display: flex;
+}
+body.change-list #changelist .changelist-form-container > #toolbar {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+body.change-list #changelist-form {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+body.change-list #changelist .results {
+  max-width: 100%;
+  overflow-x: auto;
+}
+body.model-seopage #result_list .field-page_name { min-width: 190px; }
+body.model-seopage #result_list .field-route { min-width: 220px; }
+body.model-seopage #result_list .field-primary_keyword { min-width: 170px; }
+@media (max-width: 1100px) {
+  body.change-list #changelist .changelist-form-container:has(> #changelist-filter) {
+    display: block;
+  }
+  body.change-list #toolbar #searchbar {
+    min-width: 0;
+    width: min(100%, 340px);
+    box-sizing: border-box;
+  }
 }
 
 #changelist .changelist-form-container > div {

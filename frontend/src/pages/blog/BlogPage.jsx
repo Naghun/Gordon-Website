@@ -121,10 +121,18 @@ const youtubeStartSeconds = (url) => {
   } catch { return 0; }
 };
 
+function ArticleInlineContent({ text }) {
+  // Only site-relative Markdown links are supported; never inject HTML from posts.
+  return text.split(/(\[[^\]]+\]\(\/(?!\/)[^\s)]+\))/g).map((part, index) => {
+    const link = part.match(/^\[([^\]]+)\]\((\/[^\s)]+)\)$/);
+    return link ? <Link key={index} to={link[2]}>{link[1]}</Link> : part;
+  });
+}
+
 function ArticleContent({ content }) {
   return content.split(/\n\n+/).map((block) => {
     if (block.startsWith("## ")) return <h2 key={block}>{block.slice(3)}</h2>;
-    return <p key={block}>{block}</p>;
+    return <p key={block}><ArticleInlineContent text={block} /></p>;
   });
 }
 
@@ -271,7 +279,7 @@ export function BlogPostPage() {
         <header><p className="eyebrow">{labels.photoStory}</p><h2>{labels.atmosphere}: {eventPlace}.</h2></header>
         <div>{current.images.map((item, index) => <figure key={item.id || item.image}>
           <button type="button" onClick={() => setLightboxIndex(index)} aria-label={`${labels.openPhoto} ${index + 1}`}>
-            <img src={item.image} alt={`${current.title} — ${labels.photo} ${index + 1}`} loading="lazy" />
+            <img src={item.image} alt={language === "bs" && item.caption ? item.caption : `${current.title} — ${labels.photo} ${index + 1}`} loading="lazy" />
             <span aria-hidden="true"><ZoomIn /></span>
           </button>
         </figure>)}</div>

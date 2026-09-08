@@ -20,6 +20,7 @@ from django.http import JsonResponse
 from django.urls import include, path, re_path
 from django.views.static import serve
 from website.admin_notifications import notification_open, notifications_feed, notifications_page
+from website import first_party_analytics
 
 def home(request):
     return JsonResponse({
@@ -30,6 +31,9 @@ def home(request):
     })
 
 urlpatterns = [
+    path('api/metrics/', first_party_analytics.collect),
+    path('admin/analytics/', admin.site.admin_view(first_party_analytics.dashboard), name='first_party_analytics'),
+    path('admin/analytics/data/', admin.site.admin_view(first_party_analytics.stats), name='first_party_analytics_data'),
     path('', home, name='home'),
     path('admin/notifications/', notifications_page, name='admin_notifications'),
     path('admin/notifications/feed/', notifications_feed, name='admin_notifications_feed'),

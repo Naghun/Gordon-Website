@@ -48,6 +48,7 @@ export function MarketingContact() {
       trackLead("marketing");
       setStatus("Brief je poslan. Javit ćemo vam se s prijedlogom kampanje.");
     } catch {
+      window.dispatchEvent(new Event('gordon-lead-error'));
       setStatus("Brief trenutno nije potvrđen. Pokušajte ponovo.");
     }
   }

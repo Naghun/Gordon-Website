@@ -24,6 +24,7 @@ export default function ContactForm() {
       trackLead("contact");
       setStatus("Hvala! Vaša poruka je uspješno poslana.");
     } catch (error) {
+      window.dispatchEvent(new Event('gordon-lead-error'));
       console.error("Kontakt forma:", error);
       setStatus(
         "Poruka nije potvrđena. Pokušajte ponovo ili nas kontaktirajte direktno.",
