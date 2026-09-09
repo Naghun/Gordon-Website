@@ -147,7 +147,7 @@ const blogPages = [
 }));
 
 // Use the same reviewed article bodies as the database import, not SEO filler.
-for (const batch of ['01', '02']) {
+for (const batch of ['01', '02', '03']) {
   const posts = JSON.parse(await readFile(join(projectRoot, '..', 'content', `instagram-batch-${batch}.json`), 'utf8'));
   for (const post of posts) {
     const blocks = post.content.split(/\n\n/);

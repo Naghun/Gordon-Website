@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--local-preview', action='store_true')
         parser.add_argument('--publish', action='store_true', help='Publish approved new articles, never overwrite existing articles.')
-        parser.add_argument('--batch', choices=['01','02'], default='01')
+        parser.add_argument('--batch', choices=['01','02','03'], default='01')
 
     @transaction.atomic
     def handle(self, *args, **options):
@@ -35,13 +35,17 @@ class Command(BaseCommand):
             if words <= 200 or '# ' in post['content'].replace('## ', ''):
                 raise CommandError(f'Invalid content or word count: {slug}')
             images = [f'blog/instagram/{slug}/{i+1:02d}.webp' for i in range(len(post['photos']))]
-            for image in images:
+            cover = post.get('cover_image') or images[0]
+            for image in [cover, *images]:
                 if not (settings.MEDIA_ROOT/image).is_file():
                     raise CommandError(f'Missing optimized image: {image}')
+            video_url = post.get('video_url','')
+            if preview:
+                video_url = video_url.replace('https://gordon.ba/backend/media/', 'http://127.0.0.1:8011/media/')
             article = BlogPost.objects.create(
                 title=post['title'], slug=slug, excerpt=post['excerpt'], content=post['content'],
                 category=post['category'], location=post['location'], cover_logo='gordondm',
-                cover_image=images[0], is_published=publish,
+                cover_image=cover, video_url=video_url, is_published=publish,
             )
             for i, image in enumerate(images):
                 BlogPostImage.objects.create(post=article, image=image, caption=post['photo_captions'][i], order=i)

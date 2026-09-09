@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "ai-agenti-za-firme-razgovori-zakazivanje",
+    "title": "AI agenti za firme: od razgovora do zakazanog sastanka",
+    "excerpt": "GordonDM radi na implementaciji AI agenta koji razgovara, prikuplja osnovne informacije i pomaže pri dogovaranju termina, uz jasna pravila i ljudsku kontrolu.",
+    "category": "ai",
+    "location": "Sarajevo",
+    "primary_keyword": "AI agenti za firme",
+    "secondary_keywords": "AI automatizacija poslovanja, glasovni AI agent, automatizacija zakazivanja, AI korisnička podrška",
+    "sources": [
+      "user-confirmed implementation in progress",
+      "reels.html:1",
+      "reels.html:218",
+      "reels.html:219",
+      "reels.html:220"
+    ],
+    "photos": [],
+    "photo_captions": [],
+    "cover_image": "blog/instagram/ai-agenti-za-firme-razgovori-zakazivanje/ai-cover.png",
+    "content": "Telefon zvoni dok je tim na sastanku. Novi upit čeka odgovor, a dogovaranje jednog termina pretvara se u nekoliko poruka. Upravo su takve svakodnevne situacije polazna tačka za AI agente za firme. U GordonDM-u radimo na implementaciji AI agenta koji razgovara s korisnikom, prikuplja potrebne informacije i pomaže da razgovor završi konkretnim sljedećim korakom.\n\n## Šta želimo da agent preuzme\n\nCilj nije napraviti glas koji samo izgovara unaprijed snimljene rečenice. Razvijamo pristup u kojem agent prati tok razgovora, postavlja dodatno pitanje kada nešto nije jasno i radi unutar dogovorenih pravila. To može biti provjera vrste usluge, bilježenje razloga javljanja ili priprema zahtjeva za termin.\n\nVažno je naglasiti da govorimo o implementaciji na kojoj radimo, a ne o gotovom proizvodu koji već samostalno rješava svaku situaciju. Funkcije, povezivanje s postojećim sistemima i način preuzimanja razgovora definišu se prema konkretnom poslovanju.\n\n## Od pitanja do potvrđenog termina\n\nZamislimo korisnika koji želi konsultacije. Agent bi prvo razjasnio temu i okvirno trajanje razgovora. Zatim bi, uz odobreno povezivanje s kalendarom, provjerio raspoloživost i ponudio odgovarajući termin. Prije završetka korisnik treba dobiti priliku da potvrdi podatke i izbor.\n\nTakav proces mora razlikovati ponuđeni termin od zaista rezervisanog termina. Ako kalendar nije dostupan ili se zahtjev ne može završiti, agent ne treba izmišljati potvrdu. Umjesto toga, razgovor se prosljeđuje osobi iz tima ili se ostavlja jasan zahtjev za naknadni kontakt.\n\n## Ljudska kontrola ostaje dio usluge\n\nDobar glasovni AI agent treba znati kada da stane. Neuobičajen zahtjev, nezadovoljan korisnik ili pitanje izvan dogovorenog područja razlog su za uključivanje čovjeka. Korisniku treba jasno reći da razgovara s AI sistemom, a prikupljanje podataka ograničiti na ono što je potrebno za uslugu.\n\nU pripremi su posebno važni izgovor imena, različiti načini postavljanja pitanja, prekidanje razgovora i provjera razumijevanja. Testiranje treba obuhvatiti i situacije u kojima odgovor nije poznat, ne samo idealan razgovor.\n\n## Početi od jednog korisnog procesa\n\nZa prvu implementaciju bolji je jasno ograničen zadatak nego obećanje da će AI preuzeti sve. Najprije se mapira postojeći način rada, zatim pravila odgovaranja i tek onda integracije. Uspjeh se može pratiti kroz završene zahtjeve, pogrešno dogovorene termine i broj razgovora koji zahtijevaju pomoć tima.\n\nAko razmišljate o [AI automatizaciji poslovanja](/ai-automatizacija), krenimo od procesa koji vam danas oduzima vrijeme. Kroz [digitalni konsalting](/konsulting) možemo razjasniti opseg, a kroz [softverska rješenja](/softver-rjesenja) planirati potrebna povezivanja. [Pošaljite nam upit](/kontakt) i opišite kako trenutno primate pozive i dogovarate termine."
+  },
+  {
+    "slug": "ai-razvoj-softvera-od-ideje-do-aplikacije",
+    "title": "Od ideje do aplikacije: AI u razvoju poslovnog softvera",
+    "excerpt": "Kako AI može pomoći pri razvoju aplikacije, SaaS proizvoda ili internog poslovnog alata — od jasnog zadatka i prototipa do testiranja i održavanja.",
+    "category": "software",
+    "location": "",
+    "primary_keyword": "AI razvoj softvera",
+    "secondary_keywords": "izrada poslovnog softvera, SaaS rješenja, enterprise rješenja, razvoj aplikacija",
+    "sources": [
+      "reels.html:216"
+    ],
+    "photos": [],
+    "photo_captions": [],
+    "cover_image": "blog/instagram/ai-razvoj-softvera-od-ideje-do-aplikacije/ai-cover.png",
+    "content": "Dobra aplikacija počinje jasnim problemom, a ne izborom programskog jezika. Možda tim prepisuje podatke iz nekoliko tabela, ponude se pripremaju ručno ili korisnici nemaju jednostavan način da prate svoj zahtjev. AI razvoj softvera otvara dodatne mogućnosti da se takva ideja brže razradi, ali put do pouzdanog proizvoda i dalje traži plan, provjeru i odgovornost.\n\n## Prvo definišemo šta aplikacija treba riješiti\n\nRečenica „treba nam aplikacija” nije dovoljna za početak razvoja. Potrebno je znati ko je koristi, koje informacije unosi i šta treba dobiti na kraju. Jednako su važna pravila: ko smije vidjeti određene podatke, ko odobrava promjene i šta se dešava kada unos nije ispravan.\n\nZa interni alat to može biti jednostavan pregled zadataka i statusa. Za SaaS rješenje potrebno je razmišljati i o različitim korisničkim računima, pristupu usluzi i podršci. Enterprise rješenja dodatno traže usklađivanje s postojećim sistemima, složenijim ulogama i načinom rada organizacije.\n\n## Gdje AI pomaže tokom razvoja\n\nAI alati mogu pomoći pri razradi strukture, pripremi početnog koda, pisanju testova i objašnjavanju postojećeg sistema. Terminal u kojem se nižu komande i rezultati provjera jeste dio procesa, ali nije sam po sebi dokaz da je aplikacija spremna za korisnike.\n\nKoristan način rada je podijeliti projekat na male, provjerljive cjeline. Prvo se napravi jedan tok, primjerice kreiranje i pregled zahtjeva. Zatim se provjeri ponašanje, isprave problemi i dodaje sljedeća funkcija. Tako je lakše vidjeti šta zaista radi i gdje ideju treba prilagoditi.\n\n## Prototip nije isto što i gotov proizvod\n\nPrototip pomaže da se provjeri da li je ideja razumljiva i korisna. Produkcijska aplikacija mora izdržati pogrešne unose, prekide veze i pokušaje neovlaštenog pristupa. Potrebni su pregled koda, testiranje, sigurnosne provjere i plan čuvanja podataka.\n\nAI-generisani kod zato tretiramo kao materijal koji treba provjeriti, ne kao automatski završen posao. Takav pristup preporučuje i [GitHubova dokumentacija o odgovornoj upotrebi AI alata](https://docs.github.com/copilot/responsible-use/chat-in-github). Stručna kontrola ostaje važna i kada alat uspješno izvrši zadatak.\n\n## Razvoj se nastavlja nakon objave\n\nPrava vrijednost poslovnog softvera vidi se kada ga ljudi počnu koristiti. Tada postaje jasnije koja funkcija štedi vrijeme, gdje je ekran nejasan i koje povezivanje nedostaje. Održavanje, podrška i postepena poboljšanja zato trebaju biti dio plana od početka.\n\nU GordonDM-u ideju povezujemo s konkretnim poslovnim procesom. Pogledajte naša [softverska rješenja](/softver-rjesenja) i mogućnosti [AI automatizacije](/ai-automatizacija). Ako imate zamisao za aplikaciju, [javite nam se](/kontakt) s opisom problema, korisnika i rezultata koji želite postići. To je korisniji početak od dugačke liste funkcija bez jasnog cilja."
+  },
+  {
+    "slug": "ai-kreiranje-sadrzaja-digitalni-marketing",
+    "title": "AI u kreiranju sadržaja: ideja, vizual i ljudska kreativnost",
+    "excerpt": "AI u digitalnom marketingu pomaže pri razradi ideja i pripremi sadržaja. Kako spojiti originalne materijale, jasnu poruku i kreativnu kontrolu brenda.",
+    "category": "marketing",
+    "location": "",
+    "primary_keyword": "AI u digitalnom marketingu",
+    "secondary_keywords": "kreiranje sadržaja, digitalni marketing Sarajevo, AI vizuali, video produkcija",
+    "sources": [
+      "reels.html:214",
+      "reels.html:1"
+    ],
+    "photos": [],
+    "photo_captions": [],
+    "cover_image": "blog/instagram/ai-kreiranje-sadrzaja-digitalni-marketing/ai-cover.png",
+    "content": "Dobra ideja za kampanju ponekad ostane samo rečenica jer produkcija djeluje previše zahtjevno. Potrebni su vizuali, video, tekst i prilagodbe za različite kanale. AI u digitalnom marketingu može pomoći da se ideja razradi i isproba kroz više pravaca, ali smisao sadržaja i dalje dolazi iz razumijevanja publike i poruke koju brend želi prenijeti.\n\n## Kreativni zadatak prije generisanja\n\nPrije izrade vizuala treba odgovoriti na nekoliko jednostavnih pitanja. Kome se obraćamo? Koji problem predstavljamo? Šta želimo da osoba uradi nakon što vidi objavu? Bez tih odgovora lako nastane lijepa slika koja nema vezu s ciljem kampanje.\n\nJasan kreativni zadatak obuhvata ton, boje, format i ono što mora ostati prepoznatljivo. Logo, naziv proizvoda i ključna poruka ne trebaju se mijenjati nasumično između različitih verzija. AI je tada podrška razradi, a ne zamjena za identitet brenda.\n\n## Više verzija, ista prepoznatljiva poruka\n\nJedna tema može dobiti nekoliko vizuelnih pristupa: detalj proizvoda, ilustraciju problema ili scenu koja prikazuje željeni način rada. Nakon izbora smjera slijedi prilagođavanje prostoru u kojem će sadržaj biti prikazan. Kvadratna objava, vertikalni video i naslovna slika bloga ne traže isti raspored.\n\nVažno je provjeriti čitljivost na telefonu, položaj teksta i odnos između slike i poziva na akciju. Više verzija nije automatski bolje. Korisnije je imati nekoliko jasnih prijedloga koje možemo uporediti nego veliku količinu sadržaja bez dosljednog pravca.\n\n## Originalni snimci ostaju vrijedni\n\nZa osvrt na događaj ili prikaz saradnje originalne fotografije i snimci nose nešto što ilustracija ne može zamijeniti: stvaran prostor, ljude i atmosferu. AI naslovna slika može objasniti temu, ali je ne treba predstavljati kao fotografiju događaja koji se zaista održao.\n\nTakvu razliku pravimo i u našem blogu. Primjer [Korpa × Binance kampanje](/blog/korpa-binance-kampanja-sarajevo-2025) povezuje tematski vizual s originalnim videom. Čitalac tako dobija i preglednu naslovnicu i pristup stvarnom materijalu.\n\n## Provjera prije objavljivanja\n\nPrije objave pregledamo tekst, detalje slike i usklađenost s porukom. Tvrdnje o proizvodu moraju biti tačne, a materijali koje koristimo odgovarajući za planiranu namjenu. Posebnu pažnju zaslužuju lica, logotipi i prikazi koji bi mogli ostaviti pogrešan utisak o stvarnom događaju ili rezultatu.\n\nNakon objave smislenije je pratiti kvalitet upita i reakcije publike nego samo broj proizvedenih slika. Uspješna kreativna ideja treba voditi prema razumljivom sljedećem koraku. Naš [digitalni marketing](/marketing) povezujemo s planiranjem sadržaja i odredišne stranice. Ako imate kampanju u pripremi, [pošaljite nam upit](/kontakt) s ciljem i publikom, pa možemo predložiti gdje koristiti originalnu produkciju, a gdje AI ilustraciju."
+  },
+  {
+    "slug": "superquiz-sarajevo-superteam-balkan-zajednica",
+    "title": "SuperQuiz Sarajevo: znanje i zajednica uz Superteam Balkan",
+    "excerpt": "Osvrt na SuperQuiz sa Superteam Balkanom i širu GordonKast priču o kvizovima u Sarajevu, uz originalne fotografije i pregled kasnijih izdanja.",
+    "category": "general",
+    "location": "Sarajevo",
+    "primary_keyword": "SuperQuiz Sarajevo",
+    "secondary_keywords": "kviz Sarajevo, Superteam Balkan, GordonKast, događaji Sarajevo",
+    "sources": [
+      "posts_1.html:30",
+      "posts_1.html:1",
+      "posts_1.html:2",
+      "reels.html:7",
+      "reels.html:10",
+      "user-confirmed multiple quizzes"
+    ],
+    "photos": [
+      "media/posts/18110764597500120.jpg",
+      "media/posts/17855310180487110.jpg",
+      "media/posts/17994111398700606.jpg",
+      "media/other/18091941299102626.jpg"
+    ],
+    "photo_captions": [
+      "Atmosfera prvog SuperQuiza sa Superteam Balkanom u Sarajevu",
+      "Druženje na SuperQuizu u Sarajevu",
+      "Učesnici SuperQuiz večeri",
+      "Arhivska najava Global Kviza #7 za 10. august 2026. — zaseban format, nije SuperQuiz"
+    ],
+    "content": "Kviz je dobar povod da se ljudi okupe, ali najbolji dio često počinje između dva pitanja. Razgovor za stolom, zajedničko razmišljanje i navijanje pretvore večer u iskustvo koje se pamti. SuperQuiz Sarajevo sa Superteam Balkanom dio je te GordonKast priče: povezivanja ljudi kroz znanje, druženje i otvoren prostor za novu zajednicu.\n\n## Večer zabilježena originalnim fotografijama\n\nU objavi od 9. oktobra 2025. zabilježili smo prvi SuperQuiz by Superteam Balkan u Sarajevu. Zahvalili smo učesnicima, čestitali pobjednicima i podijelili galeriju atmosfere. Upravo iz te galerije dolaze fotografije uz ovaj članak, bez naknadnog izmišljanja scena.\n\nVrijednost takvog okupljanja nije samo u konačnom poretku. Ljudi dobijaju priliku da upoznaju druge učesnike i podijele interesovanje u opuštenijem okruženju. Za zajednicu koja se bavi tehnologijom i Web3 temama, kviz može biti jednostavan način da razgovor izađe iz ekrana i pređe za zajednički sto.\n\n## Kvizovi su postali dio naše priče\n\nDo sada smo učestvovali u više kviz okupljanja i promocija, a kroz objave se vidi kontinuitet te priče. Ipak, važno je razlikovati nazive i događaje. SuperQuiz sa Superteam Balkanom nije isto što i Global Kviz, o kojem smo već pisali u zasebnom članku.\n\nNaša arhiva sadrži i kasnije objave za Global Kviz u Red Door Pubu. Najnoviji kviz-video u pregledanom izvozu objavljen je 14. jula 2026. i najavljuje šesto izdanje za 27. juli. Noviji banner, objavljen 30. jula, najavljuje sedmo izdanje za 10. august. To su najave, pa ih ne predstavljamo kao dokaz o održavanju ili rezultatima tih večeri.\n\n## Od najave do uspomene na događaj\n\nKvalitetna komunikacija kviza ima nekoliko dijelova. Najava treba jasno prikazati datum, mjesto i način prijave. Podsjetnik približava atmosferu, dok fotografije nakon događaja čuvaju uspomenu i pokazuju kako je večer izgledala.\n\nUpravo ta povezanost sadržaja i stvarnog okupljanja važna je za [event marketing i digitalnu promociju](/marketing). Ne radi se samo o jednom banneru, nego o razumljivom putu od prve informacije do dolaska i kasnijeg prisjećanja. Broj prijava ili poslovne rezultate ne navodimo bez odgovarajućih podataka.\n\n## Pratite naredna okupljanja\n\nOvaj tekst je osvrt na ranije događaje, a ne aktuelni poziv na prijavu. Za nove datume i najave pratite [GordonKast na Instagramu](https://www.instagram.com/gordonkast/). Širu priču o kasnijim izdanjima pročitajte u članku [Global Kviz Sarajevo](/blog/global-kviz-sarajevo-2026-zajednica-event-marketing).\n\nAko želite osmisliti slično okupljanje za svoju zajednicu ili brend, [javite nam se](/kontakt). Zajedno možemo razraditi ideju, način predstavljanja i sadržaj koji događaju daje prepoznatljiv karakter.",
+    "video_url": "https://gordon.ba/backend/media/blog/videos/global-kviz-6-najava-2026.mp4"
+  }
+]

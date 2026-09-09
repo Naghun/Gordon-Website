@@ -12,6 +12,8 @@ const fallbackPosts = [
 ];
 
 const additionalCategories = {
+  "ai-razvoj-softvera-od-ideje-do-aplikacije": ["ai"],
+  "ai-kreiranje-sadrzaja-digitalni-marketing": ["ai"],
   "global-kviz-sarajevo-2026-zajednica-event-marketing": ["general"],
   "gordondm-solana-saradnja": ["software"],
   "binance-campus-montenegro-budva-gordondm": ["software"],
