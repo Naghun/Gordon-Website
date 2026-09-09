@@ -1,4 +1,10 @@
 body.dashboard #content{display:block;width:auto;margin:0;max-width:none}
+.dashboard-blog-tools{padding:20px;margin:0 0 24px;background:#e0f7f5;border:1px solid #b6e7e3;border-radius:14px;color:#142828}
+.dashboard-blog-tools h2{margin:0 0 8px;color:#142828}
+.dashboard-blog-tools p{font-size:13px;line-height:1.5}
+.dashboard-blog-tools>div{display:flex;flex-wrap:wrap;gap:10px}
+.dashboard-blog-tools a{display:inline-block;padding:10px 14px;border-radius:8px;background:white;color:#096e74!important;text-decoration:none!important;font-weight:700}
+.dashboard-blog-tools a:first-child{background:#21c8c8;color:#102828!important}
 /* Compact dashboard surfaces; detailed analytics remains on its own page. */
 body.dashboard #content-main .module{border:1px solid #cce8e8;border-radius:14px;overflow:hidden;box-shadow:0 5px 20px #123d3d06}
 body.dashboard #content-main .module caption{background:#d9f4f3!important;color:#122728!important;padding:16px!important}

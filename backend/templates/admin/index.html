@@ -9,6 +9,16 @@
     <h1>Dobrodošli, {{ user.get_short_name|default:user.username }}.</h1>
     <p>Upravljajte porukama, sadržajem i korisnicima na jednom mjestu.</p>
   </div>
+      {% if perms.website.view_blogpost %}
+      <section class="dashboard-blog-tools">
+        <h2>Članci</h2>
+        <p>Pišite nove članke ili uredite postojeće tekstove, naslovne slike i galerije.</p>
+        <div>
+          {% if perms.website.add_blogpost %}<a href="{% url 'admin:website_blogpost_add' %}">+ Novi članak</a>{% endif %}
+          <a href="{% url 'admin:website_blogpost_changelist' %}">Svi članci →</a>
+        </div>
+      </section>
+      {% endif %}
       <div id="content-main">{% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}</div>
     </div>
     <div class="dashboard-column dashboard-overview-column">

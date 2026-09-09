@@ -245,17 +245,31 @@ class BlogPostImageInline(admin.TabularInline):
  extra=1
  fields=('image','caption','order')
 
+class BlogPostEditorForm(forms.ModelForm):
+ class Meta:
+  model=BlogPost
+  fields='__all__'
+  labels={'title':'Naslov članka','slug':'Adresa članka (slug)','category':'Kategorija','excerpt':'Kratki opis','content':'Tekst članka','cover_image':'Naslovna slika','cover_logo':'Logo na naslovnici','is_published':'Objavljeno','is_featured':'Izdvojeni članak','published_at':'Datum prikazan uz članak','video_url':'Link do videa','location':'Lokacija'}
+  help_texts={'content':'Naslov iznad automatski je H1. Za podnaslov napišite ## Podnaslov, za link [naziv](https://...). Pasuse odvojite praznim redom. Preporuka: barem 200 korisnih riječi.', 'is_published':'Označeno: članak je vidljiv posjetiocima nakon čuvanja. Neoznačeno: nacrt, nije javno dostupan.', 'cover_image':'Odaberite naslovnu fotografiju. Dodatne fotografije dodajte u galeriju ispod.', 'slug':'Jedinstvena adresa nakon /blog/. Ne mijenjajte adresu već objavljenog članka bez preusmjerenja.'}
+  widgets={'content':forms.Textarea(attrs={'rows':24,'style':'width:100%;max-width:960px;box-sizing:border-box'}),'excerpt':forms.Textarea(attrs={'rows':3})}
+ def __init__(self,*args,**kwargs):
+  super().__init__(*args,**kwargs)
+  if not self.instance.pk:
+   self.fields['is_published'].initial=False
+
 @admin.register(BlogPost)
 class BlogPostAdmin(ConciseChangeListTitleMixin,admin.ModelAdmin):
- changelist_title='Blogovi'
+ changelist_title='Svi članci'
+ form=BlogPostEditorForm
  list_display=('title','category','location','published_at','is_featured','is_published')
  list_filter=('category','cover_logo','is_featured','is_published')
  search_fields=('title','title_en','title_de','excerpt','excerpt_en','excerpt_de','content','content_en','content_de','location')
  prepopulated_fields={'slug':('title',)}
  fieldsets=(
-  ('Osnovno',{'fields':('title','slug','category','cover_logo','cover_image','location','video_url','published_at','is_featured','is_published')}),
-  ('Bosanski',{'fields':('excerpt','content')}),
-  ('English',{'fields':('title_en','excerpt_en','content_en')}),
-  ('Deutsch',{'fields':('title_de','excerpt_de','content_de')}),
+  ('Članak',{'fields':('title','slug','category','excerpt','content')}),
+  ('Slike i video',{'fields':('cover_image','cover_logo','video_url','location')}),
+  ('Objava',{'fields':('is_published','is_featured','published_at')}),
+  ('English',{'fields':('title_en','excerpt_en','content_en'),'classes':('collapse',)}),
+  ('Deutsch',{'fields':('title_de','excerpt_de','content_de'),'classes':('collapse',)}),
  )
  inlines=(BlogPostImageInline,)
