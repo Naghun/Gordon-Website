@@ -1,0 +1,11 @@
+.blog-index>.blog-topic-nav{display:flex;flex-wrap:wrap;gap:4px;padding:8px;background:#fff;border:1px solid #dce7e5;border-radius:16px;margin-bottom:36px;box-shadow:0 8px 24px #123c3b06}
+.blog-index>.blog-topic-nav button{display:flex;align-items:center;gap:12px;padding:13px 17px;border:0;border-radius:10px;font:600 13px Manrope,sans-serif;color:#485c5b;background:transparent;letter-spacing:0;white-space:nowrap}
+.blog-index>.blog-topic-nav button small{font-size:10px;min-width:19px;line-height:19px;border-radius:5px;background:#edf3f2;color:#6c807f;text-align:center}
+.blog-index>.blog-topic-nav button:hover{color:#087e83;background:#edf7f6}
+.blog-index>.blog-topic-nav button.active{background:#102829;color:white;box-shadow:0 3px 8px #07101115}
+.blog-index>.blog-topic-nav button.active small{background:#254749;color:#65e5df}
+.blog-index>.blog-topic-nav button:focus-visible{outline:2px solid #079b9f;outline-offset:2px}
+.blog-index>.blog-topic-nav button::after{display:none!important}
+.blog-index>.blog-topic-nav button{color:#485c5b!important;background:transparent!important;text-transform:none;letter-spacing:0}
+.blog-index>.blog-topic-nav button.active,.blog-index>.blog-topic-nav button.active:hover{background:#102829!important;color:#fff!important}
+@media(max-width:650px){.blog-index>.blog-topic-nav{flex-wrap:nowrap;overflow-x:auto;max-width:100%;border-radius:12px;padding:6px}.blog-index>.blog-topic-nav button{flex-shrink:0;padding:12px}}

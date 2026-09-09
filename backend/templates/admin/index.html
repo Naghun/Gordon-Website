@@ -1,15 +1,16 @@
 {% extends "admin/index.html" %}
 
-{% block content_title %}
-  <div class="dashboard-welcome">
+{% block content_title %}{% endblock %}
+
+{% block content %}
+  <div class="dashboard-primary-columns">
+    <div class="dashboard-admin-column">  <div class="dashboard-welcome">
     <span class="welcome-label">GORDON DIGITAL MARKETING</span>
     <h1>Dobrodošli, {{ user.get_short_name|default:user.username }}.</h1>
     <p>Upravljajte porukama, sadržajem i korisnicima na jednom mjestu.</p>
   </div>
-{% endblock %}
-
-{% block content %}
-  <div class="dashboard-primary-columns">
+      <div id="content-main">{% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}</div>
+    </div>
     <div class="dashboard-column dashboard-overview-column">
       <a class="dashboard-seo-card" href="{% url 'admin:website_seopage_changelist' %}">
         <span class="dashboard-seo-icon" aria-hidden="true">SEO</span>
@@ -37,8 +38,8 @@
           </a>
         </div>
       </section>
+      {% include "admin/partials/first_party_metrics.html" %}
     </div>
-    {{ block.super }}
-    <div class="dashboard-live-column">{% include "admin/partials/first_party_metrics.html" %}</div>
+    {% if perms.website.view_analyticsvisit %}<section class="dashboard-charts-column gordon-metrics"><h2>Promet kroz vrijeme</h2><p>Stvarni zabilježeni podaci · vrijeme Sarajevo</p><div data-metrics-charts></div></section>{% endif %}
   </div>
 {% endblock %}

@@ -20,7 +20,7 @@ with override_settings(ALLOWED_HOSTS=['testserver', '127.0.0.1']):
     for post in posts:
         response = client.get('/api/blog/'+post['slug']+'/')
         assert response.status_code == 200
-        assert len(response.json()['images']) == len(post['photos'])
+        assert len(response.json()['images']) == (0 if post.get('video_url') else len(post['photos']))
         assert BlogPost.objects.filter(slug=post['slug']).count() == 1
     user = get_user_model().objects.filter(is_superuser=True, is_active=True).first()
     assert user, 'An existing local admin is required for render verification'
@@ -36,5 +36,8 @@ with override_settings(ALLOWED_HOSTS=['testserver', '127.0.0.1']):
     stats = client.get('/admin/analytics/data/')
     assert stats.status_code == 200
     (output.parent/'metrics-check.json').write_text(stats.content.decode(), encoding='utf-8')
+    response = client.get('/admin/')
+    assert response.status_code == 200
+    (output.parent/'dashboard-check.html').write_text(response.content.decode().replace('<head>', '<head><base href="http://127.0.0.1:8011/">'), encoding='utf-8')
     client.logout()
 print('6 API articles, galleries, unique slugs and authenticated admin renders passed.')

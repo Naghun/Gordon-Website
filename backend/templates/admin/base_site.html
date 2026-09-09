@@ -6,6 +6,7 @@
 {% block extrastyle %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'admin/gordondm.css' %}?v=38">
+  <link rel="stylesheet" href="{% static 'admin/dashboard-layout.css' %}?v=2">
 {% endblock %}
 
 {% block extrahead %}
@@ -23,9 +24,9 @@
 {% block nav-global %}{% endblock %}
 
 {% block userlinks %}
-  <a class="admin-notification-link" href="{% url 'admin_notifications' %}" aria-label="Otvori notifikacije">
-    <span>Notifikacije</span>
+  {{ block.super }}
+  <a class="admin-notification-link" href="{% url 'admin_notifications' %}" aria-label="Otvori notifikacije" title="Notifikacije">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z"/><path d="M10 21h4"/></svg>
     <b class="admin-notification-count" hidden>0</b>
   </a>
-  {{ block.super }}
 {% endblock %}

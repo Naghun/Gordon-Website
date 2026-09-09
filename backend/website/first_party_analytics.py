@@ -9,6 +9,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import transaction
 from django.db.models import Count, Sum, F, Q
+from django.db.models.functions import TruncDate
 from django.http import JsonResponse
 from django.template.response import TemplateResponse
 from django.utils import timezone
@@ -108,7 +109,21 @@ def stats(request):
     live = visits.filter(last_seen__gte=now-timedelta(seconds=45)).order_by('-last_seen')
     def groups(query, field):
         return list(query.values(field).annotate(count=Count('pk')).order_by('-count')[:15])
+    today = timezone.localdate(now)
+    counts = {row['day']:row['count'] for row in events.filter(kind='page_view').annotate(day=TruncDate('created_at')).values('day').annotate(count=Count('pk'))}
+    daily = [{'label':(today-timedelta(days=i)).isoformat(),'count':counts.get(today-timedelta(days=i),0)} for i in range(29,-1,-1)]
+    hourly = []
+    for i in range(6,0,-1):
+        start, end = now-timedelta(hours=i), now-timedelta(hours=i-1)
+        bound = {'created_at__lte':end} if i == 1 else {'created_at__lt':end}
+        hourly.append({'label':timezone.localtime(start).strftime('%H:%M'),'count':events.filter(kind='page_view',created_at__gte=start,**bound).count()})
+    channels = {}
+    for row in visits.values('source').annotate(count=Count('pk')):
+        source = row['source'].lower()
+        channel = 'Instagram' if source in ('ig','instagram') or source.endswith('instagram.com') else 'Facebook' if source in ('fb','facebook') or source.endswith('facebook.com') else 'Google' if source == 'google' or source.endswith('google.com') else 'Direktno' if source == 'direct' else row['source']
+        channels[channel] = channels.get(channel,0)+row['count']
     result = {
+        'daily':daily, 'hourly':hourly, 'channels':[{'label':k,'count':v} for k,v in sorted(channels.items(),key=lambda item:-item[1])],
         'live':list(live.values('token','current_path','device','source','country','city','active_seconds')[:50]),
         'live_count':live.count(), 'sessions':visits.count(),
         'pageviews':events.filter(kind='page_view').count(),

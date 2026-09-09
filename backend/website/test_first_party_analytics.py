@@ -55,3 +55,14 @@ class MetricsTests(TestCase):
     def test_automatic_collection(self):
         self.assertEqual(self.send(consent=False, collection_mode='automatic').status_code,200)
         self.assertEqual(AnalyticsVisit.objects.count(),1)
+
+    def test_charts(self):
+        self.send(source='l.instagram.com')
+        user=get_user_model().objects.create_user(username='chart-admin',is_staff=True,is_superuser=True)
+        self.client.force_login(user)
+        data=self.client.get('/admin/analytics/data/').json()
+        self.assertEqual(len(data['daily']),30)
+        self.assertEqual(len(data['hourly']),6)
+        self.assertEqual(sum(r['count'] for r in data['daily']),1)
+        self.assertEqual(sum(r['count'] for r in data['hourly']),1)
+        self.assertEqual(data['channels'],[{'label':'Instagram','count':1}])
