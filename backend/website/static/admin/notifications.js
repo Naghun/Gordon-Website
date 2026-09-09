@@ -1,4 +1,5 @@
 (() => {
+  const feedUrl = document.currentScript?.dataset.notificationsUrl;
   let lastSignature = null;
   let audioReady = false;
 
@@ -31,7 +32,8 @@
 
   const refreshNotifications = async () => {
     try {
-      const response = await fetch('/admin/notifications/feed/', {
+      if (!feedUrl) return;
+      const response = await fetch(feedUrl, {
         headers: { Accept: 'application/json' },
         cache: 'no-store',
       });
@@ -41,6 +43,7 @@
       badges.forEach((badge) => {
         badge.textContent = String(data.count);
         badge.hidden = data.count === 0;
+        badge.parentElement.setAttribute('aria-label', `Notifikacije: ${data.count} za provjeru`);
       });
       const signature = data.items[0]?.url || '';
       if (lastSignature !== null && signature && signature !== lastSignature) {

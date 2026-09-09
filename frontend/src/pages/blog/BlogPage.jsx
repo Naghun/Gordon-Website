@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, CalendarDays, ChevronLeft, ChevronRight, Externa
 import { API } from "../../config/site";
 import "./blog.css";
 import "./blog-topics.css";
+import "./quiz-banner.css";
 
 const fallbackPosts = [
   { id: "binance", title: "GordonDM i Binance potpisali ugovor o saradnji", slug: "gordondm-binance-saradnja", excerpt: "Saradnja GordonDM-a i Binance ekosistema usmjerena je na događaje, edukaciju i jačanje svijesti o odgovornoj primjeni kripta u Sarajevu i na Balkanu.", content: "GordonDM i Binance potpisali su ugovor o saradnji usmjeren na razvoj zajedničkih inicijativa, razmjenu znanja i promociju odgovorne primjene blockchain tehnologije u Bosni i Hercegovini i širem regionu Balkana.\n\nVažan dio saradnje odnosi se na organizaciju događaja, edukativnih susreta i otvorenih razgovora u Sarajevu. Cilj je približiti kripto i Web3 teme ljudima koji žele razumjeti tehnologiju, ali i kompanijama koje istražuju njenu praktičnu poslovnu primjenu.\n\nKroz konferencije, radionice i lokalna okupljanja planirano je povezivanje domaće zajednice sa stručnjacima i predstavnicima blockchain ekosistema koji djeluju na Balkanu. Fokus neće biti samo na promociji kripta, nego i na sigurnosti, odgovornom upravljanju digitalnom imovinom i jasnom razumijevanju rizika.\n\nSaradnja otvara prostor i za kvalitetnije predstavljanje blockchain projekata, marketinške kampanje prilagođene regionalnom tržištu te podršku događajima koji okupljaju developere, poduzetnike, kompanije i nove korisnike. Sarajevo u tom procesu ima potencijal postati važna tačka povezivanja tehnoloških ideja i regionalne Web3 zajednice.\n\nGordonDM će kroz svoje iskustvo u digitalnom marketingu, razvoju softvera, organizaciji sadržaja i lokalnom tržištu doprinositi tome da se globalne kripto teme prevedu u razumljive i korisne inicijative za ljude i kompanije na Balkanu. Konkretni događaji i aktivnosti bit će predstavljeni kroz naredne objave.\n\nPartnerstvo tako stvara dugoročnu osnovu za lokalne edukativne programe, kvalitetniju produkciju sadržaja i povezivanje regionalnih organizacija sa provjerenim znanjem globalnog Binance ekosistema.", category: "crypto", category_label: "Kripto i Web3", cover_logo: "binance", published_at: "2026-08-26T09:00:00+02:00" },
@@ -154,7 +155,7 @@ export function BlogCards({ posts, compact = false, language = "bs", labels = co
     <div className={`blog-grid ${compact ? "compact" : ""}`}>
       {posts.map((post, index) => (
         <motion.article key={post.slug} initial={{ opacity: 0, y: 38 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: .2 }} transition={{ delay: index * .08 }}>
-          <Link className="blog-cover" to={`/blog/${post.slug}`} aria-label={post.title}>
+          <Link className={`blog-cover${post.slug === 'superquiz-sarajevo-superteam-balkan-zajednica' ? ' quiz-banner-cover' : ''}`} to={`/blog/${post.slug}`} aria-label={post.title}>
             <img className="blog-featured-image" src={coverPath(post)} alt={post.title} loading="lazy" style={{ objectPosition: "center top" }} />
             <span className="blog-partner-badge"><img src={logoPath(post.cover_logo)} alt={`${post.cover_logo} logo`} loading="lazy" /></span>
             <small>GORDONDM / {post.cover_logo.toUpperCase()}</small>
@@ -264,7 +265,7 @@ export function BlogPostPage() {
           {current.location && <span><MapPin /> {localizedLocation(current.location, language)}</span>}
         </div>}
       </header>
-      <div className="blog-detail-cover">
+      <div className={`blog-detail-cover${current.slug === 'superquiz-sarajevo-superteam-balkan-zajednica' ? ' quiz-banner-cover' : ''}`}>
         <img className="blog-featured-image" src={coverPath(current)} alt={current.title} style={{ objectPosition: "center bottom" }} />
         <span className="blog-partner-badge"><img src={logoPath(current.cover_logo)} alt={`${current.cover_logo} logo`} /></span>
         <small>GORDONDM × {current.cover_logo.toUpperCase()}</small>

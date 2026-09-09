@@ -259,7 +259,10 @@ class BlogPostEditorForm(forms.ModelForm):
 
 @admin.register(BlogPost)
 class BlogPostAdmin(ConciseChangeListTitleMixin,admin.ModelAdmin):
- changelist_title='Svi članci'
+ changelist_title='Blog / Članci'
+ class Media:
+  css={'all':('admin/blog-editor.css',)}
+  js=('admin/blog-editor.js',)
  form=BlogPostEditorForm
  list_display=('title','category','location','published_at','is_featured','is_published')
  list_filter=('category','cover_logo','is_featured','is_published')

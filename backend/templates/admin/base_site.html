@@ -6,12 +6,12 @@
 {% block extrastyle %}
   {{ block.super }}
   <link rel="stylesheet" href="{% static 'admin/gordondm.css' %}?v=38">
-  <link rel="stylesheet" href="{% static 'admin/dashboard-layout.css' %}?v=3">
+  <link rel="stylesheet" href="{% static 'admin/dashboard-layout.css' %}?v=4">
 {% endblock %}
 
 {% block extrahead %}
   {{ block.super }}
-  <script defer src="{% static 'admin/notifications.js' %}?v=3"></script>
+  <script defer src="{% static 'admin/notifications.js' %}?v=4" data-notifications-url="{% url 'admin_notifications_feed' %}"></script>
 {% endblock %}
 
 {% block branding %}

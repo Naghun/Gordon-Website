@@ -39,5 +39,8 @@ with override_settings(ALLOWED_HOSTS=['testserver', '127.0.0.1']):
     response = client.get('/admin/')
     assert response.status_code == 200
     (output.parent/'dashboard-check.html').write_text(response.content.decode().replace('<head>', '<head><base href="http://127.0.0.1:8011/">'), encoding='utf-8')
+    response = client.get('/admin/website/blogpost/add/')
+    assert response.status_code == 200
+    (output.parent/'blog-editor-check.html').write_text(response.content.decode().replace('<head>', '<head><base href="http://127.0.0.1:8011/">'), encoding='utf-8')
     client.logout()
 print('6 API articles, galleries, unique slugs and authenticated admin renders passed.')
