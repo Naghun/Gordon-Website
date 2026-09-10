@@ -18,6 +18,10 @@ class ContentView(APIView):
   services=ServiceSerializer(Service.objects.all(),many=True).data or DEFAULT_SERVICES
   return Response({'services':services,'projects':ProjectSerializer(Project.objects.filter(is_featured=True),many=True).data})
 class ContactView(generics.CreateAPIView):
+ # Public submissions never use an admin session or act on its privileges.
+ # Keep session authentication and CSRF protection unchanged for admin views.
+ authentication_classes=[]
+ permission_classes=[]
  queryset=ContactMessage.objects.all(); serializer_class=ContactSerializer
  def perform_create(self, serializer):
   contact=serializer.save()
