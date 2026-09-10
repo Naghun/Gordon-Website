@@ -21,7 +21,9 @@ DirectoryIndex index.html
 
   # Svaka javna React ruta dobija vlastiti HTML, H1, meta podatke i tekst i bez JavaScripta.
   RewriteRule ^(ai-automatizacija|softver-rjesenja|marketing|kripto|konsulting|kontakt|blog|faq)/?$ seo-pages/$1.html [L]
-  RewriteRule ^blog/(gordondm-binance-saradnja|gordondm-solana-saradnja|bitcoin-pizza-day-sarajevo|superteam-balkan-split-solana-event|binance-campus-montenegro-budva-gordondm)/?$ seo-pages/blog/$1.html [L]
+  # Serve every generated article, not just the original five. Unknown slugs stay 404.
+  RewriteCond %{DOCUMENT_ROOT}/seo-pages/blog/$1.html -f
+  RewriteRule ^blog/([a-z0-9-]+)/?$ seo-pages/blog/$1.html [L]
 
   # Postojeće datoteke i generisani direktoriji prolaze bez prepisivanja.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
