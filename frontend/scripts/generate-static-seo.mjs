@@ -157,7 +157,10 @@ for (const batch of ['01', '02', '03']) {
       if (block.startsWith('## ')) heading = block.slice(3);
       else sections.push([heading, block]);
     }
-    blogPages.push({path:`/blog/${post.slug}`, title:`${post.title} | GordonDM`, description:post.excerpt,
+    const seoTitle = post.slug === 'bloomberg-adria-next-step-retail-2025-gordonkast'
+      ? 'Bloomberg Adria: digitalna trgovina'
+      : post.title;
+    blogPages.push({path:`/blog/${post.slug}`, title:`${seoTitle} | GordonDM`, description:post.excerpt,
       eyebrow:'GORDONDM BLOG', h1:post.title, intro:blocks[0], sections});
   }
 }
