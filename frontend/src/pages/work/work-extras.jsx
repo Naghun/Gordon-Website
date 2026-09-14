@@ -1,4 +1,5 @@
 import { manualPlan } from "./import-plan";
+import { applyImportDestination } from "./import-destination";
 import { useState } from "react";
 import {
   Bell,
@@ -226,6 +227,8 @@ export function WorkExtras({
   error,
 }) {
   const [source, setSource] = useState("");
+  const [brief, setBrief] = useState("");
+  const [importTarget, setImportTarget] = useState(null);
   const [localKey, setLocalKey] = useState("");
   const [rules, setRules] = useState(
     "Prvi red bloka je glavni zadatak. Jedan Enter nastavlja njegove podzadatke. Dva ili više Entera (prazan red) otvaraju novi glavni zadatak. Naslov sa # ili Projekat: označava projekat. Analiziraj i značenje teksta, ali poštuj ova pravila grupisanja. Ne izmišljaj rokove.",
@@ -521,6 +524,17 @@ export function WorkExtras({
     );
   }
   if (modal !== "x-import") return null;
+  const destinations = data.projects.filter(
+    (p) => p.owner === user.id || p.roles?.[user.id] !== "viewer",
+  );
+  const target =
+    importTarget ??
+    (destinations.some((p) => p.id === project?.id) ? project.id : "");
+  const chooseDestination = (value) => {
+    setImportTarget(value);
+    if (plan) setPlan(applyImportDestination(plan, value, destinations));
+    setToken(uid());
+  };
   const count =
     plan?.projects.reduce(
       (n, p) => n + p.tasks.reduce((m, t) => m + 1 + t.subtasks.length, 0),
@@ -535,13 +549,20 @@ export function WorkExtras({
         mode === "demo" ? "import/local-preview/" : "import/preview/",
         "POST",
         {
-          source,
-          rules,
+          source: !brief.trim()
+            ? source
+            : [
+                brief.trim() && `OPIS POSLA:\n${brief.trim()}`,
+                source.trim() && `BILJEŠKE I LISTA:\n${source.trim()}`,
+              ]
+                .filter(Boolean)
+                .join("\n\n"),
+          rules: `${rules}${brief.trim() ? "\nOpis posla je zahtjev za planiranje: predloži konkretne glavne zadatke i podzadatke koji su potrebni da se posao obavi. Listu i bilješke koristi kao dodatne zahtjeve. Ne izmišljaj osobe ili rokove. Ne pravi zadatak od samog naslova OPIS POSLA ili BILJEŠKE I LISTA." : ""}`,
           ...(mode === "demo" ? { api_key: localKey } : {}),
         },
       );
       setLocalKey("");
-      setPlan(result);
+      setPlan(applyImportDestination(result, target, destinations));
       setToken(uid());
       setMessage("AI prijedlog je spreman. Provjeri i prilagodi prije uvoza.");
     } catch (e) {
@@ -551,7 +572,7 @@ export function WorkExtras({
     }
   };
   return (
-    <Modal title="Masovni uvoz · od bilješki do zadataka" close={close} wide>
+    <Modal title="Masovni uvoz · napravi plan posla" close={close} wide>
       <div className="gw-modal-body gw-import">
         {error && (
           <p role="alert" className="gw-modal-error">
@@ -562,34 +583,81 @@ export function WorkExtras({
           Zalijepi listu ili opiši posao. Prvo se pravi prijedlog; zadaci se
           spremaju tek kada potvrdiš uvoz.
         </p>
+        <div className="gw-import-setup">
+          <label>
+            <span className="gw-import-step">1 · Odredište</span>U koji projekat
+            dodajemo zadatke?
+            <select
+              aria-label="Projekat za uvoz"
+              disabled={analyzing || busy}
+              value={target}
+              onChange={(e) => chooseDestination(e.target.value)}
+            >
+              <option value="">Novi projekat</option>
+              {destinations.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            <span className="gw-import-step">2 · Opiši posao</span>Šta treba
+            odraditi?
+            <textarea
+              rows={3}
+              maxLength={3000}
+              disabled={analyzing || busy}
+              value={brief}
+              onChange={(e) => {
+                setBrief(e.target.value);
+                setPlan(null);
+                setMessage("");
+              }}
+              placeholder="Npr. Pripremi plan lansiranja web stranice: sadržaj, dizajn, razvoj i završne provjere. Razradi svaki dio u podzadatke."
+            />
+          </label>
+        </div>
         <label>
-          Tvoja lista
+          Lista i bilješke (opcionalno uz opis posla)
           <textarea
             rows={7}
-            maxLength={20000}
+            maxLength={16000}
+            disabled={analyzing || busy}
             value={source}
-            onChange={(e) => setSource(e.target.value)}
+            onChange={(e) => {
+              setSource(e.target.value);
+              setPlan(null);
+              setMessage("");
+            }}
             placeholder={
               "# Novi web\nPriprema sadržaja\n  Napisati naslovnu\n  Prikupiti fotografije\n\nRazvoj kontakt forme"
             }
           />
         </label>
-        <label>
-          Pravilnik za AI
-          <textarea
-            rows={3}
-            maxLength={4000}
-            value={rules}
-            onChange={(e) => setRules(e.target.value)}
-          />
-        </label>
+        <details className="gw-import-rules">
+          <summary>Pravila raspoređivanja · prilagodi po potrebi</summary>
+          <label>
+            Pravilnik za AI
+            <textarea
+              rows={3}
+              maxLength={3400}
+              disabled={analyzing || busy}
+              value={rules}
+              onChange={(e) => {
+                setRules(e.target.value);
+                setPlan(null);
+              }}
+            />
+          </label>
+        </details>
         {mode === "demo" && (
           <details className="gw-local-ai">
             <summary>Drugi API ključ (opcionalno)</summary>
             <p>
               AI automatski koristi ključ sa servera. Ovo polje koristi samo ako
-              želiš drugi ključ za ovu analizu. Ključ se ne čuva u pregledniku ni
-              u projektu.
+              želiš drugi ključ za ovu analizu. Ključ se ne čuva u pregledniku
+              ni u projektu.
             </p>
             <input
               type="password"
@@ -608,22 +676,28 @@ export function WorkExtras({
         <div className="gw-extra-actions">
           <button
             className="gw-primary"
-            disabled={analyzing || busy || !source.trim()}
+            disabled={analyzing || busy || (!source.trim() && !brief.trim())}
             onClick={previewAI}
           >
-            {analyzing ? "AI analizira…" : "Analiziraj uz ChatGPT"}
+            {analyzing ? "AI priprema zadatke…" : "Napravi plan uz ChatGPT"}
           </button>
           <button
             disabled={analyzing || busy || !source.trim()}
             onClick={() => {
-              setPlan(manualPlan(source));
+              setPlan(
+                applyImportDestination(
+                  manualPlan(source),
+                  target,
+                  destinations,
+                ),
+              );
               setToken(uid());
               setMessage(
                 "Raspored po redovima: prvi red je glavni zadatak; naredni redovi su podzadaci. Prazan red započinje novi glavni zadatak. Ovo nije AI analiza.",
               );
             }}
           >
-            Ručni raspored bez AI
+            Rasporedi listu bez AI
           </button>
         </div>
         {message && (

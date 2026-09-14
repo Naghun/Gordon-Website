@@ -57,3 +57,5 @@ Dokumentacija integracije: https://developers.openai.com/api/docs/guides/structu
 
 - Paleta uz listu otvara uski popover sa simulatorom. Kružići direktno uređuju status, rub, kartice i pozadinu; spremanje potvrđuje promjene. Globalni pregled boja ostaje dostupan u alatnoj traci.
 - Prevlačenje preko gornjeg ruba koristi poluprozirnu kopiju liste, animirano pomjeranje susjeda i označeno mjesto ubacivanja. Raspored se sprema tek na drop; Escape ili puštanje izvan table odustaje. Uz rub table radi automatsko horizontalno pomjeranje.
+
+- Masovni uvoz na vrhu nudi odredišni projekat (početno trenutno otvoreni) i opis posla. Opis može sam pokrenuti AI planiranje; bilješke su opcionalne. Odabrani postojeći projekat objedinjuje predložene zadatke u jednom pregledu. Spremanje je i dalje zasebna potvrda.

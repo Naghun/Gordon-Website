@@ -56,6 +56,8 @@ git -C "${REPOSITORY_DIR}" merge-base --is-ancestor "${commit_sha}" origin/main
 git -C "${REPOSITORY_DIR}" reset --hard "${commit_sha}"
 
 cd "${REPOSITORY_DIR}"
+# URL checks import application libraries; install them before importing new code.
+"${PIP_BIN}" install -r backend/requirements.txt
 "${PYTHON_BIN}" backend/manage.py check
 
 timestamp="$(date -u +%Y%m%d-%H%M%S)"

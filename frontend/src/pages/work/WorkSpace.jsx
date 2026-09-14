@@ -939,7 +939,13 @@ export default function WorkSpace() {
           <Download size={16} />
         </button>
       </div>
-      <WorkToolbar setModal={setModal} data={data} />
+      <WorkToolbar
+        setModal={(value) => {
+          setError("");
+          setModal(value);
+        }}
+        data={data}
+      />
       {error && (
         <div role="alert" className="gw-error-bar">
           {error}
