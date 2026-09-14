@@ -256,3 +256,12 @@ class BlogPostImage(models.Model):
   verbose_name='Slika bloga'
   verbose_name_plural='Galerija bloga'
  def __str__(self): return self.caption or f'Slika: {self.post.title}'
+
+
+class WorkChatMessage(models.Model):
+ project=models.ForeignKey(WorkProject,on_delete=models.CASCADE,related_name='chat_messages')
+ author=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True)
+ text=models.TextField(max_length=4000)
+ created_at=models.DateTimeField(auto_now_add=True)
+ class Meta:
+  ordering=['id']

@@ -290,3 +290,21 @@ def task(request,pk=None):
             ids=get_user_model().objects.filter(username__in=names).values_list('pk',flat=True)
             notify_task(t,request.user,'spomenut/a si u „'+t.title+'“',ids)
     return Response({**task_data(t),'related':related},status=200 if pk else 201)
+
+
+@api_view(['GET','POST'])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def chat(request,pk):
+    from .models import WorkChatMessage
+    p=get_object_or_404(WorkProject,pk=pk,members=request.user)
+    def serialize(m):
+        return {'id':m.pk,'text':m.text,'author':person(m.author) if m.author else {'id':None,'name':'Bivši član'},'time':m.created_at.isoformat()}
+    if request.method=='POST':
+        m=WorkChatMessage.objects.create(project=p,author=request.user,text=text(request.data.get('text',''),4000,True))
+        return Response(serialize(m),status=201)
+    try: limit=max(1,int(request.query_params.get('limit',100)))
+    except (ValueError,TypeError): raise ValidationError('Neispravan broj poruka.')
+    limit=min(limit,10000)
+    messages=list(p.chat_messages.select_related('author').order_by('-id')[:limit+1])
+    return Response({'messages':[serialize(m) for m in reversed(messages[:limit])],'more':len(messages)>limit})

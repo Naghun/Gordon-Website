@@ -38,6 +38,7 @@ import {
   imageData,
 } from "./work-data";
 import "./work.css";
+import WorkChat from "./WorkChat";
 import ListColorPopover from "./ListColorPopover";
 import useListDrag from "./use-list-drag";
 import { syncTaskCompletion } from "./task-completion";
@@ -73,9 +74,7 @@ function Modal({ title, children, close, wide = false }) {
         e.preventDefault();
         close();
       }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) close();
-      }}
+
     >
       <div className="gw-dialog-head">
         <span>{title}</span>
@@ -89,7 +88,10 @@ function Modal({ title, children, close, wide = false }) {
 }
 export default function WorkSpace() {
   const navigate = useNavigate();
-  const [inboxView, setInboxView] = useState("active");
+  const [taskColorsOpen, setTaskColorsOpen] = useState(false);
+  const taskColorsRef = useRef(null);
+  const [allProjects, setAllProjects] = useState(false);
+  const [collapsedProjects, setCollapsedProjects] = useState({});
   const [mode, setMode] = useState(null),
     [user, setUser] = useState(null),
     [data, setData] = useState({ projects: [], tasks: [] }),
@@ -427,7 +429,9 @@ export default function WorkSpace() {
       projects: d.projects.map((p) => (p.id === result.id ? result : p)),
     }));
   }
-  function openTask(t) {
+  function openTask(t, showColors = false) {
+    setTaskColorsOpen(showColors);
+    if(showColors) requestAnimationFrame(() => taskColorsRef.current?.scrollIntoView({block:"center"}));
     setDraft(structuredClone(t));
     setCheckText("");
     setComment("");
@@ -495,6 +499,7 @@ export default function WorkSpace() {
     });
   }
   function selectProject(p) {
+    setAllProjects(false);
     setProjectId(p.id);
     setView("board");
     setSearch("");
@@ -503,7 +508,7 @@ export default function WorkSpace() {
     setModal(null);
   }
   const active = data.tasks.filter(
-      (t) => t.project === project?.id && !t.deleted && !t.archived,
+      (t) => (allProjects ? !!t.project : t.project === project?.id) && !t.deleted && !t.archived,
     ),
     done = active.filter((t) => t.status === "done");
   const matches = (t) =>
@@ -513,7 +518,7 @@ export default function WorkSpace() {
       .includes(search.toLowerCase());
   const boardTasks = data.tasks.filter(
     (t) =>
-      t.project === project?.id &&
+      (allProjects ? !!t.project : t.project === project?.id) &&
       matches(t) &&
       (view === "trash"
         ? t.deleted
@@ -522,17 +527,6 @@ export default function WorkSpace() {
           : !t.archived &&
             !t.deleted &&
             (view === "done" ? t.status === "done" : t.status !== "done")),
-  );
-  const inboxTasks = data.tasks.filter(
-    (t) =>
-      !t.project &&
-      (inboxView === "trash"
-        ? t.deleted
-        : inboxView === "archive"
-          ? t.archived && !t.deleted
-          : !t.deleted &&
-            !t.archived &&
-            (inboxView === "done" ? t.status === "done" : t.status !== "done")),
   );
   const personal = data.tasks.filter(
     (t) =>
@@ -553,8 +547,7 @@ export default function WorkSpace() {
       color =
         t.status === "done"
           ? "#56d8a0"
-          : p?.columns.find((c) => c.id === t.status)?.color || "#aa8cff",
-      person = member(t.person, p);
+          : p?.columns.find((c) => c.id === t.status)?.color || "#aa8cff";
     return (
       <article
         key={t.id}
@@ -575,30 +568,12 @@ export default function WorkSpace() {
         onDragStart={(e) => e.dataTransfer.setData("text/plain", t.id)}
       >
         <button className="gw-card-open" onClick={() => openTask(t)}>
-          <div className="gw-card-tags">
-            {t.label && <span>{t.label}</span>}
-            {t.priority === "Visok" && (
-              <b>
-                <Flag size={11} />
-                Visok
-              </b>
-            )}
-          </div>
           <h3>{t.title}</h3>
           {t.parent && (
             <small className="gw-parent-label">
               ↳{" "}
               {data.tasks.find((x) => x.id === t.parent)?.title || "Podzadatak"}
             </small>
-          )}
-          {!compact && t.checklist.length > 0 && (
-            <div className="gw-progress">
-              <i
-                style={{
-                  width: `${(t.checklist.filter((c) => c.done).length / t.checklist.length) * 100}%`,
-                }}
-              />
-            </div>
           )}
           <div className="gw-card-meta">
             {t.due && (
@@ -621,12 +596,6 @@ export default function WorkSpace() {
                 {t.comments.length}
               </span>
             )}
-            <span
-              className="gw-avatar"
-              title={person?.name || "Nije dodijeljeno"}
-            >
-              {initials(person?.name)}
-            </span>
           </div>
         </button>
         {total > 0 && (
@@ -698,7 +667,7 @@ export default function WorkSpace() {
           className="gw-card-color"
           aria-label={`Boje kartice: ${t.title}`}
           title="Boje ove kartice"
-          onClick={() => openTask(t)}
+          onClick={() => openTask(t, true)}
         >
           ◐
         </button>
@@ -794,7 +763,7 @@ export default function WorkSpace() {
             Tvoj sljedeći korak.
           </h1>
           <p>
-            Prijavi se svojim Gordon računom. Vidjet ćeš privatni Inbox i
+            Prijavi se svojim Gordon računom. Vidjet ćeš zadatke, chat i
             projekte u kojima si član.
           </p>
           <form onSubmit={login}>
@@ -848,7 +817,7 @@ export default function WorkSpace() {
           onClick={() => setModal("projects")}
         >
           <Layers size={16} />
-          {project?.name || "Izaberi projekat"}
+          {allProjects ? "Svi projekti" : project?.name || "Izaberi projekat"}
           <ChevronDown size={15} />
         </button>
         <div className="gw-top-right">
@@ -866,7 +835,7 @@ export default function WorkSpace() {
         <div>
           <span className="gw-eyebrow">MALO PO MALO. VELIKE STVARI.</span>
           <h1>
-            {project?.name || "Dobro došao u Gordon Work"}
+            {allProjects ? "Svi projekti" : project?.name || "Dobro došao u Gordon Work"}
             <span className="gw-private">
               <LockKeyhole size={12} />
               Privatni projekat
@@ -881,11 +850,11 @@ export default function WorkSpace() {
               </span>
             ))}
           </div>
-          <button onClick={() => setModal("members")} disabled={!project}>
+          <button onClick={() => setModal("members")} disabled={!project || allProjects}>
             <Users size={16} />
             Članovi
           </button>
-          <button onClick={() => setModal("background")} disabled={!project}>
+          <button onClick={() => setModal("background")} disabled={!project || allProjects}>
             <ImageIcon size={16} />
             Pozadina
           </button>
@@ -932,9 +901,9 @@ export default function WorkSpace() {
             </button>
           ))}
         </div>
-        <span className="gw-progress-label">
+        <button className="gw-progress-label" onClick={() => { setView("done"); setPanels((p) => ({...p, board:true})); }}>
           {done.length}/{active.length} završeno
-        </span>
+        </button>
         <button aria-label="Izvezi dostupne projekte" onClick={exportData}>
           <Download size={16} />
         </button>
@@ -955,44 +924,7 @@ export default function WorkSpace() {
         </div>
       )}
       <div className="gw-panels">
-        {panels.inbox && (
-          <aside className="gw-inbox gw-panel">
-            <div className="gw-panel-title">
-              <h2>
-                <Inbox size={18} />
-                Moj Inbox <b>{inboxTasks.length}</b>
-              </h2>
-              <button aria-label="Sakrij Inbox" onClick={() => toggle("inbox")}>
-                <X size={16} />
-              </button>
-            </div>
-            <p className="gw-panel-note">
-              Samo tvoje ideje. Otvori karticu i prebaci je u projekat kada bude
-              spremna.
-            </p>
-            <select
-              className="gw-inbox-filter"
-              aria-label="Pregled Inboxa"
-              value={inboxView}
-              onChange={(e) => setInboxView(e.target.value)}
-            >
-              <option value="active">Aktivne ideje</option>
-              <option value="done">Završeno</option>
-              <option value="archive">Arhiva</option>
-              <option value="trash">Korpa</option>
-            </select>
-            {inboxView === "active" && quickForm("inbox", null, "inbox")}
-            <div className="gw-panel-scroll">
-              {inboxTasks.filter(matches).map((t) => taskCard(t, true))}
-              {!inboxTasks.length && (
-                <div className="gw-empty">
-                  <Inbox size={27} />
-                  <p>Uhvatimo sljedeću dobru ideju.</p>
-                </div>
-              )}
-            </div>
-          </aside>
-        )}
+        {panels.inbox && <WorkChat key={`${mode}:${user.id}`} projects={data.projects} projectId={project?.id} user={user} mode={mode} close={() => toggle("inbox")} />}
         {panels.planner && (
           <aside className="gw-planner gw-panel">
             <div className="gw-panel-title">
@@ -1072,7 +1004,7 @@ export default function WorkSpace() {
               <span>
                 <LayoutGrid size={16} />
                 {view === "board"
-                  ? "Tabla projekta"
+                  ? allProjects ? "Sve projektne table" : "Tabla projekta"
                   : view === "done"
                     ? "Završeni zadaci"
                     : view === "trash"
@@ -1101,6 +1033,31 @@ export default function WorkSpace() {
                   <Plus size={16} />
                   Kreiraj projekat
                 </button>
+              </div>
+            ) : allProjects ? (
+              <div className="gw-all-projects">
+                <div className="gw-extra-actions">
+                  <button onClick={() => setCollapsedProjects(Object.fromEntries(data.projects.map(p => [p.id,true])))}>Skupi sve</button>
+                  <button onClick={() => setCollapsedProjects({})}>Proširi sve</button>
+                </div>
+                {data.projects.map(p => {
+                  const tasks = boardTasks.filter(t => t.project === p.id);
+                  const completed = data.tasks.filter(t => t.project === p.id && !t.deleted && !t.archived && t.status === "done").length;
+                  return <section className="gw-project-overview" key={p.id}>
+                    <div className="gw-overview-head">
+                      <button aria-expanded={!collapsedProjects[p.id]} onClick={() => setCollapsedProjects(v => ({...v,[p.id]:!v[p.id]}))}><ChevronDown size={16} style={{transform:collapsedProjects[p.id] ? "rotate(-90deg)" : undefined}} /><strong>{p.name}</strong><small>{tasks.length} zadataka</small></button>
+                      <button onClick={() => {setView("done");setCollapsedProjects(v=>({...v,[p.id]:false}));}}>{completed} završeno</button>
+                      <button onClick={() => selectProject(p)}>Otvori projekat <ArrowUpRight size={14}/></button>
+                    </div>
+                    {!collapsedProjects[p.id] && <div className="gw-overview-lists">
+                      {(view === "board" ? p.columns : [{id:view,name:view === "done" ? "Završeni" : view === "trash" ? "Korpa" : "Arhiva"}]).map(col => <div key={col.id}>
+                        <h3>{col.name}</h3>
+                        {tasks.filter(t => view !== "board" || t.status === col.id).map(t => taskCard(t,true))}
+                        {view === "board" && quickForm(`${p.id}:${col.id}`,p.id,col.id)}
+                      </div>)}
+                    </div>}
+                  </section>;
+                })}
               </div>
             ) : view === "board" ? (
               <div className="gw-board">
@@ -1148,11 +1105,7 @@ export default function WorkSpace() {
                         {
                           boardTasks.filter(
                             (t) =>
-                              t.status === col.id &&
-                              (!t.parent ||
-                                !boardTasks.some(
-                                  (parent) => parent.id === t.parent,
-                                )),
+                              t.status === col.id,
                           ).length
                         }
                       </b>
@@ -1197,13 +1150,6 @@ export default function WorkSpace() {
                     </div>
                     <div className="gw-column-cards">
                       {boardTasks
-                        .filter(
-                          (t) =>
-                            !t.parent ||
-                            !boardTasks.some(
-                              (parent) => parent.id === t.parent,
-                            ),
-                        )
                         .filter((t) => t.status === col.id)
                         .map((t) => taskCard(t))}
                     </div>
@@ -1280,7 +1226,7 @@ export default function WorkSpace() {
       </div>
       <nav className="gw-dock" aria-label="Radni paneli">
         {[
-          ["inbox", "Inbox", Inbox],
+          ["inbox", "Live chat", MessageSquare],
           ["planner", "Planer", CalendarDays],
           ["board", "Tabla", LayoutGrid],
         ].map(([id, label, Icon]) => (
@@ -1340,160 +1286,6 @@ export default function WorkSpace() {
                   placeholder="Naziv zadatka"
                   autoFocus
                 />
-                <div className="gw-task-fields">
-                  <label>
-                    Projekat
-                    <select
-                      value={draft.project || ""}
-                      onChange={(e) => {
-                        const p = data.projects.find(
-                          (p) => p.id === e.target.value,
-                        );
-                        setDraft({
-                          ...draft,
-                          project: p?.id || null,
-                          status: p?.columns[0].id || "inbox",
-                          person: null,
-                        });
-                      }}
-                    >
-                      {draft.creator === user.id && (
-                        <option value="">Privatni Inbox</option>
-                      )}
-                      {data.projects.map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Status
-                    <select
-                      value={draft.status}
-                      onChange={(e) =>
-                        setDraft({ ...draft, status: e.target.value })
-                      }
-                    >
-                      {(
-                        data.projects.find((p) => p.id === draft.project)
-                          ?.columns || [{ id: "inbox", name: "Inbox" }]
-                      )
-                        .concat([{ id: "done", name: "Završeno" }])
-                        .map((c) => (
-                          <option key={c.id} value={c.id}>
-                            {c.name}
-                          </option>
-                        ))}
-                    </select>
-                  </label>
-                  <label>
-                    Odgovorna osoba
-                    <select
-                      value={draft.person || ""}
-                      onChange={(e) =>
-                        setDraft({
-                          ...draft,
-                          person: e.target.value
-                            ? Number(e.target.value)
-                            : null,
-                        })
-                      }
-                    >
-                      <option value="">Nije dodijeljeno</option>
-                      {(
-                        data.projects.find((p) => p.id === draft.project)
-                          ?.members || [user]
-                      ).map((p) => (
-                        <option key={p.id} value={p.id}>
-                          {p.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Rok
-                    <input
-                      type="date"
-                      value={draft.due}
-                      onChange={(e) =>
-                        setDraft({ ...draft, due: e.target.value })
-                      }
-                    />
-                  </label>
-                  <label>
-                    Prioritet
-                    <select
-                      value={draft.priority}
-                      onChange={(e) =>
-                        setDraft({ ...draft, priority: e.target.value })
-                      }
-                    >
-                      {["Nizak", "Srednji", "Visok"].map((p) => (
-                        <option key={p}>{p}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    Oznaka
-                    <input
-                      maxLength={40}
-                      placeholder="Dizajn, marketing…"
-                      value={draft.label}
-                      onChange={(e) =>
-                        setDraft({ ...draft, label: e.target.value })
-                      }
-                    />
-                  </label>
-                </div>
-                <section className="gw-card-appearance">
-                  <h3>Boje ove kartice</h3>
-                  <div className="gw-extra-actions">
-                    {[
-                      ["fill", "Boja kartice", "#242d3d"],
-                      ["border", "Boja okvira", "#aa8cff"],
-                    ].map(([key, label, fallback]) => (
-                      <label key={key}>
-                        {label}
-                        <input
-                          type="color"
-                          aria-label={label}
-                          value={draft.appearance?.[key] || fallback}
-                          disabled={!editable(draft.project)}
-                          onInput={(e) =>
-                            setDraft({
-                              ...draft,
-                              appearance: {
-                                ...draft.appearance,
-                                [key]: e.target.value,
-                              },
-                            })
-                          }
-                        />
-                      </label>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => setDraft({ ...draft, appearance: {} })}
-                    >
-                      Koristi boje liste
-                    </button>
-                  </div>
-                  <div
-                    className="gw-color-example"
-                    style={{
-                      background: draft.appearance?.fill || "#242d3d",
-                      color: readable(draft.appearance?.fill),
-                      border: `2px solid ${draft.appearance?.border || "#aa8cff"}`,
-                    }}
-                  >
-                    {draft.title || "Pregled kartice"}
-                  </div>
-                  <small>
-                    Promjena važi samo za ovaj zadatak. Potvrdi dugmetom
-                    Sačuvaj.
-                  </small>
-                </section>
                 <label className="gw-description">
                   Glavni zadatak
                   <select
@@ -1525,14 +1317,20 @@ export default function WorkSpace() {
                     {data.tasks
                       .filter((t) => t.parent === draft.id && !t.deleted)
                       .map((t) => (
+                        <div className="gw-subtask-detail" key={t.id}>
+                        <input type="checkbox" aria-label={`Završi podzadatak ${t.title}`} checked={t.status === "done"} disabled={busy || !editable(t.project)} onChange={() => run(async () => {
+                          const result = await writeTask({...t,status:t.status === "done" ? data.projects.find(p=>p.id===t.project)?.columns[0]?.id || "inbox" : "done"});
+                          const updated = result.related?.find(x=>x.id===draft.id);
+                          if(updated) setDraft(d=>({...d,revision:updated.revision,status:updated.status}));
+                        })}/>
                         <button
                           className="gw-subtask-link"
                           type="button"
                           key={t.id}
                           onClick={() => openTask(t)}
                         >
-                          {t.status === "done" ? "✓" : "↳"} {t.title}
-                        </button>
+                          {t.title}
+                        </button></div>
                       ))}
                   </section>
                 )}
@@ -1623,6 +1421,115 @@ export default function WorkSpace() {
                     <Plus size={17} />
                   </button>
                 </div>
+                <div className="gw-task-fields">
+                  <label>
+                    Projekat
+                    <select
+                      value={draft.project || ""}
+                      onChange={(e) => {
+                        const p = data.projects.find(
+                          (p) => p.id === e.target.value,
+                        );
+                        setDraft({
+                          ...draft,
+                          project: p?.id || null,
+                          status: p?.columns[0].id || "inbox",
+                          person: null,
+                        });
+                      }}
+                    >
+                      {draft.creator === user.id && (
+                        <option value="">Privatni Inbox</option>
+                      )}
+                      {data.projects.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Status
+                    <select
+                      value={draft.status}
+                      onChange={(e) =>
+                        setDraft({ ...draft, status: e.target.value })
+                      }
+                    >
+                      {(
+                        data.projects.find((p) => p.id === draft.project)
+                          ?.columns || [{ id: "inbox", name: "Inbox" }]
+                      )
+                        .concat([{ id: "done", name: "Završeno" }])
+                        .map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.name}
+                          </option>
+                        ))}
+                    </select>
+                  </label>
+
+                  <label>
+                    Rok
+                    <input
+                      type="date"
+                      value={draft.due}
+                      onChange={(e) =>
+                        setDraft({ ...draft, due: e.target.value })
+                      }
+                    />
+                  </label>
+
+
+                </div>
+                <details ref={taskColorsRef} open={taskColorsOpen} onToggle={e=>setTaskColorsOpen(e.currentTarget.open)} className="gw-card-appearance">
+                  <summary>Boje kartice</summary>
+                  <div className="gw-extra-actions">
+                    {[
+                      ["fill", "Boja kartice", "#242d3d"],
+                      ["border", "Boja okvira", "#aa8cff"],
+                    ].map(([key, label, fallback]) => (
+                      <label key={key}>
+                        {label}
+                        <input
+                          type="color"
+                          aria-label={label}
+                          value={draft.appearance?.[key] || fallback}
+                          disabled={!editable(draft.project)}
+                          onInput={(e) =>
+                            setDraft({
+                              ...draft,
+                              appearance: {
+                                ...draft.appearance,
+                                [key]: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </label>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setDraft({ ...draft, appearance: {} })}
+                    >
+                      Koristi boje liste
+                    </button>
+                  </div>
+                  <div
+                    className="gw-color-example"
+                    style={{
+                      background: draft.appearance?.fill || "#242d3d",
+                      color: readable(draft.appearance?.fill),
+                      border: `2px solid ${draft.appearance?.border || "#aa8cff"}`,
+                    }}
+                  >
+                    {draft.title || "Pregled kartice"}
+                  </div>
+                  <small>
+                    Promjena važi samo za ovaj zadatak. Potvrdi dugmetom
+                    Sačuvaj.
+                  </small>
+                </details>
               </div>
               <aside className="gw-task-conversation">
                 <Attachments
@@ -1777,11 +1684,12 @@ export default function WorkSpace() {
         <Modal title="Tvoji projekti" close={() => setModal(null)}>
           <div className="gw-modal-body">
             <p>Sve na svom mjestu. Odaberi prostor za sljedeći zadatak.</p>
+            <button className="gw-primary" onClick={() => {setAllProjects(true);setView("board");setPanels(p=>({...p,board:true}));setModal(null);}}>Svi projekti · {data.projects.length}</button>
             <div className="gw-project-grid">
               {data.projects.map((p) => (
                 <button
                   key={p.id}
-                  className={p.id === project?.id ? "selected" : ""}
+                  className={!allProjects && p.id === project?.id ? "selected" : ""}
                   onClick={() => selectProject(p)}
                 >
                   <span style={{ background: backdrop(p.background) }}>
@@ -2068,6 +1976,8 @@ export default function WorkSpace() {
       {modal === "list-options" && listEdit && (
         <Modal title={`Lista · ${listEdit.name}`} close={() => setModal(null)}>
           <div className="gw-modal-body">
+            <label>Naziv liste<input aria-label="Naziv liste" maxLength={50} value={listEdit.name} onChange={e => setListEdit({...listEdit,name:e.target.value})}/></label>
+            <button disabled={busy || !listEdit.name.trim()} onClick={async () => {if(await run(() => patchProject({columns:project.columns.map(c=>c.id===listEdit.id ? {...c,name:listEdit.name.trim()} : c)}))) setModal(null);}}>Sačuvaj naziv</button>
             <p>Promijeni raspored povlačenjem naslova ili ovim dugmadima.</p>
             <div className="gw-extra-actions">
               {[-1, 1].map((offset) => {

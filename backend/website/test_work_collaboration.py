@@ -23,6 +23,22 @@ class CollaborationTests(TestCase):
     def plan(self):
         return {'projects':[{'name':'Imported','tasks':[{'title':'Main','description':'Context','due':'','subtasks':[{'title':'Child','description':'','due':'2026-10-01'}]}]}]}
 
+    def test_chat_persists_for_members_and_blocks_outsiders(self):
+        url=f'/api/work/projects/{self.project.pk}/chat/'
+        self.assertEqual(self.client.post(url,{'text':'Prva poruka'},format='json').status_code,201)
+        self.client.force_login(self.editor)
+        self.assertEqual(self.client.get(url).json()['messages'][0]['text'],'Prva poruka')
+        self.assertEqual(self.client.post(url,{'text':'Odgovor'},format='json').status_code,201)
+        page=self.client.get(url+'?limit=1').json()
+        self.assertTrue(page['more']);self.assertEqual(page['messages'][0]['text'],'Odgovor')
+        self.assertEqual(len(self.client.get(url).json()['messages']),2)
+        self.assertEqual(self.client.post(url,{'text':' '},format='json').status_code,400)
+        self.assertEqual(self.client.post(url,{'text':'x'*4001},format='json').status_code,400)
+        self.client.force_login(self.outside)
+        self.assertEqual(self.client.get(url).status_code,404)
+        self.assertEqual(self.client.post(url,{'text':'Denied'},format='json').status_code,404)
+        self.client.logout();self.assertEqual(self.client.get(url).status_code,403)
+
     def test_site_admin_has_owner_controls_despite_viewer_role(self):
         self.editor.is_staff=True;self.editor.save()
         self.project.roles={str(self.editor.pk):'viewer'};self.project.save()

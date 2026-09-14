@@ -59,3 +59,10 @@ Dokumentacija integracije: https://developers.openai.com/api/docs/guides/structu
 - Prevlačenje preko gornjeg ruba koristi poluprozirnu kopiju liste, animirano pomjeranje susjeda i označeno mjesto ubacivanja. Raspored se sprema tek na drop; Escape ili puštanje izvan table odustaje. Uz rub table radi automatsko horizontalno pomjeranje.
 
 - Masovni uvoz na vrhu nudi odredišni projekat (početno trenutno otvoreni) i opis posla. Opis može sam pokrenuti AI planiranje; bilješke su opcionalne. Odabrani postojeći projekat objedinjuje predložene zadatke u jednom pregledu. Spremanje je i dalje zasebna potvrda.
+
+
+## Pregled projekata i razgovor
+- Projekti → Svi projekti prikazuje dostupne projekte sa skupljanjem/proširivanjem i unosom kartica u pojedinačne liste.
+- Live chat zamjenjuje Inbox panel. Razgovori pripadaju projektu i dostupni su samo članovima; poruke se čuvaju u WorkChatMessage, osvježavaju svake 3 sekunde i starije se učitavaju na zahtjev. Demo razgovor ostaje u lokalnom pregledniku.
+- Detalji zadatka prvo prikazuju glavni zadatak, podzadatke, opis i korake. Odgovorna osoba, prioritet i oznaka ostaju sačuvani u podacima, ali su skriveni iz obrasca.
+- Podzadaci su vidljivi i na tabli; sve liste se mogu preimenovati kroz meni liste. Klik na pozadinu dijaloga ne odbacuje izmjene tokom izbora boje.

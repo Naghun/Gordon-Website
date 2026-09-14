@@ -16,20 +16,15 @@ export default function ListColorPopover({
   const ref = useRef(null);
   useEffect(() => {
     ref.current?.focus();
-    const dismiss = (e) => {
-      if (!ref.current?.contains(e.target) && !anchor.contains(e.target))
-        close();
-    };
     const escape = (e) => {
       if (e.key === "Escape") {
-        close();
-        anchor.focus();
+        e.stopPropagation();
       }
     };
-    document.addEventListener("pointerdown", dismiss);
+
     document.addEventListener("keydown", escape);
     return () => {
-      document.removeEventListener("pointerdown", dismiss);
+
       document.removeEventListener("keydown", escape);
     };
   }, [anchor, close]);
@@ -63,7 +58,7 @@ export default function ListColorPopover({
     >
       <div className="gw-pop-head">
         <strong>Izgled liste</strong>
-        <button onClick={close} aria-label="Zatvori boje">
+        <button disabled={busy} onClick={() => owner ? save(value) : close()} aria-label="Sačuvaj i zatvori boje">
           <X size={16} />
         </button>
       </div>

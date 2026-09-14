@@ -46,6 +46,7 @@ urlpatterns = [
     path('api/work/login/', work_api.sign_in),
     path('api/work/logout/', work_api.sign_out),
     path('api/work/state/', work_api.state),
+    path('api/work/projects/<uuid:pk>/chat/', work_api.chat),
     path('api/work/projects/', work_api.projects),
     path('api/work/projects/<uuid:pk>/', work_api.project),
     path('api/work/tasks/', work_api.task),
