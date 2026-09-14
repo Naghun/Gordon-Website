@@ -2164,3 +2164,12 @@
 .gw-chat form { padding:12px; border-top:1px solid #ffffff16; display:flex; flex-direction:column; gap:8px; }
 .gw-chat textarea { resize:vertical; min-height:68px; }
 @media(max-width:650px) { .gw-overview-lists { grid-template-columns:1fr; } .gw-project-overview > .gw-overview-head > button:first-child { flex-basis:100%; } }
+
+.gw-board.gw-aligned { align-items:stretch; }
+.gw-board.gw-aligned .gw-column { height:100%; }
+.gw-board.gw-aligned .gw-column-cards { flex:1; }
+.gw-app .gw-color-editors input[type="color"] { width:28px; height:28px; border-radius:50%; padding:0; }
+
+.gw-single-color-editor { grid-template-columns:1fr; }
+.gw-all-projects.gw-aligned .gw-overview-lists > div { display:flex; flex-direction:column; }
+.gw-all-projects.gw-aligned .gw-overview-lists .gw-quick-add { margin-top:auto; }

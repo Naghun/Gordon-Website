@@ -227,6 +227,7 @@ export function WorkExtras({
   openTask,
   error,
 }) {
+  const [colorListId, setColorListId] = useState("");
   const [source, setSource] = useState("");
   const [brief, setBrief] = useState("");
   const [importTarget, setImportTarget] = useState(null);
@@ -280,7 +281,7 @@ export function WorkExtras({
     );
   if (modal === "x-colors" || modal.startsWith("x-colors:"))
     return (
-      <Modal title="Boje lista i kartica" close={close} wide>
+      <Modal title="Boje lista i kartica" close={close}>
         <div className="gw-modal-body">
           {error && (
             <p role="alert" className="gw-modal-error">
@@ -295,7 +296,8 @@ export function WorkExtras({
             <p>Prvo odaberi projekat.</p>
           ) : (
             <>
-              <div className="gw-color-editors">
+              <label>Lista<select aria-label="Lista za boje" value={(project.columns.some(c=>c.id===colorListId) ? colorListId : project.columns[0]?.id)} onChange={e=>setColorListId(e.target.value)}>{project.columns.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
+              <div className="gw-color-editors gw-single-color-editor">
                 {(colors?.id === project.id
                   ? colors.columns
                   : project.columns
@@ -304,7 +306,7 @@ export function WorkExtras({
                     key={c.id}
                     style={{
                       display:
-                        modal !== "x-colors" && modal !== `x-colors:${c.id}`
+                        (modal === "x-colors" ? c.id !== ((project.columns.some(c=>c.id===colorListId) ? colorListId : project.columns[0]?.id)) : modal !== `x-colors:${c.id}`)
                           ? "none"
                           : undefined,
                       background: c.fill || "#151c29",
@@ -897,6 +899,7 @@ export function WorkExtras({
                         id: uid(),
                         name: p.name,
                         owner: user.id,
+                        teamVisible: true,
                         members: people,
                         roles: {},
                         columns: columns(),

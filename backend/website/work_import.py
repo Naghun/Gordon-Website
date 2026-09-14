@@ -14,7 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from .models import WorkImport, WorkProject, WorkTask
-from .work_api import text, require_editor
+from .work_api import text, require_editor, create_team_project
 
 def obj(properties):
     return {'type':'object','properties':properties,'required':list(properties),'additionalProperties':False}
@@ -123,8 +123,7 @@ def commit(request):
                 p=get_object_or_404(WorkProject,pk=row['target'],members=request.user)
                 require_editor(p,request.user)
             else:
-                p=WorkProject.objects.create(name=row['name'],owner=request.user)
-                p.members.add(request.user)
+                p=create_team_project(row['name'],request.user)
             def create(item,parent=None):
                 nonlocal count
                 count+=1

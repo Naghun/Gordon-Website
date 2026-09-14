@@ -30,8 +30,10 @@ def sync_admin_team(user):
     if not user.is_active or not (user.is_staff or user.is_superuser): return
     admins = list(get_user_model().objects.filter(is_active=True).filter(Q(is_staff=True)|Q(is_superuser=True)).order_by('pk'))
     with transaction.atomic():
-        p, _ = WorkProject.objects.get_or_create(pk=ADMIN_TEAM_ID, defaults={'name':'Gordon tim','owner':admins[0]})
-        p.members.add(*admins)
+        p, _ = WorkProject.objects.get_or_create(pk=ADMIN_TEAM_ID, defaults={'name':'Gordon tim','owner':admins[0],'team_visible':True})
+        if p.team_visible: p.members.add(*admins)
+        for shared in WorkProject.objects.filter(team_visible=True):
+            shared.members.add(*admins)
 
 def open_work(request):
     from django.conf import settings
@@ -89,7 +91,7 @@ def visible_tasks(user):
     return WorkTask.objects.filter(Q(project__members=user)|Q(project__isnull=True,creator=user)).distinct()
 
 def project_data(p):
-    return {'id':str(p.pk),'name':p.name,'owner':p.owner_id,'members':[person(u) for u in p.members.filter(is_active=True)],'columns':p.columns,'background':p.background,'roles':p.roles}
+    return {'id':str(p.pk),'name':p.name,'owner':p.owner_id,'members':[person(u) for u in p.members.filter(is_active=True)],'columns':p.columns,'background':p.background,'roles':p.roles,'teamVisible':p.team_visible}
 
 def task_data(t):
     return {'id':str(t.pk),'project':str(t.project_id) if t.project_id else None,'title':t.title,'description':t.description,
@@ -136,12 +138,19 @@ def validate_background(value):
     except Exception: raise ValidationError('Slika pozadine nije ispravna.')
     return value
 
+def create_team_project(name,user,shared=True):
+    if not isinstance(shared,bool): raise ValidationError('Odaberite vidljivost projekta.')
+    p=WorkProject.objects.create(name=name,owner=user,team_visible=shared)
+    p.members.add(user)
+    if shared:
+        p.members.add(*get_user_model().objects.filter(is_active=True).filter(Q(is_staff=True)|Q(is_superuser=True)))
+    return p
+
 @api_view(['POST'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def projects(request):
-    p=WorkProject.objects.create(name=text(request.data.get('name',''),100,True),owner=request.user)
-    p.members.add(request.user)
+    p=create_team_project(text(request.data.get('name',''),100,True),request.user,request.data.get('teamVisible',True))
     return Response(project_data(p),status=201)
 
 @api_view(['PATCH','POST'])
@@ -161,6 +170,17 @@ def project(request,pk):
             if u.pk!=p.owner_id: p.roles[str(u.pk)]=role
             p.save()
         else:
+            if 'teamVisible' in request.data:
+                shared=request.data['teamVisible']
+                if not isinstance(shared,bool): raise ValidationError('Odaberite vidljivost projekta.')
+                p.team_visible=shared
+                if shared:
+                    p.members.add(*get_user_model().objects.filter(is_active=True).filter(Q(is_staff=True)|Q(is_superuser=True)))
+                else:
+                    if p.owner_id!=request.user.pk: raise PermissionDenied('Samo vlasnik može sakriti projekat od tima.')
+                    p.members.set([p.owner])
+                    from django.db.models import F
+                    p.tasks.exclude(assignee=p.owner).filter(assignee__isnull=False).update(assignee=None,revision=F('revision')+1)
             if 'name' in request.data: p.name=text(request.data['name'],100,True)
             if 'background' in request.data: p.background=validate_background(request.data['background'])
             if request.data.get('reset_display') is True:

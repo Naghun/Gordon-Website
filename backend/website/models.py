@@ -15,6 +15,7 @@ class WorkProject(models.Model):
  columns=models.JSONField(default=work_columns)
  background=models.TextField(default='aurora')
  roles=models.JSONField(default=dict)
+ team_visible=models.BooleanField(default=False)
  created_at=models.DateTimeField(auto_now_add=True)
  def __str__(self): return self.name
 

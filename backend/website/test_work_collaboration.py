@@ -23,6 +23,28 @@ class CollaborationTests(TestCase):
     def plan(self):
         return {'projects':[{'name':'Imported','tasks':[{'title':'Main','description':'Context','due':'','subtasks':[{'title':'Child','description':'','due':'2026-10-01'}]}]}]}
 
+    def test_new_projects_shared_and_hide_revokes_team_access(self):
+        self.editor.is_staff=True;self.editor.save()
+        response=self.client.post('/api/work/projects/',{'name':'Open project'},format='json')
+        self.assertEqual(response.status_code,201)
+        p=WorkProject.objects.get(pk=response.json()['id'])
+        self.assertTrue(p.team_visible);self.assertTrue(p.members.filter(pk=self.editor.pk).exists())
+        late=get_user_model().objects.create_user('new-admin',is_staff=True)
+        self.client.force_login(late)
+        self.assertIn(str(p.pk),[row['id'] for row in self.client.get('/api/work/state/').json()['projects']])
+        self.client.force_login(self.owner)
+        assigned=WorkTask.objects.create(project=p,creator=self.owner,assignee=late,title='Assigned')
+        self.assertEqual(self.client.patch(f'/api/work/projects/{p.pk}/',{'teamVisible':False},format='json').status_code,200)
+        assigned.refresh_from_db();self.assertIsNone(assigned.assignee_id)
+        self.client.force_login(late)
+        self.assertNotIn(str(p.pk),[row['id'] for row in self.client.get('/api/work/state/').json()['projects']])
+        self.assertEqual(self.client.get(f'/api/work/projects/{p.pk}/chat/').status_code,404)
+        self.client.force_login(self.owner)
+        private=self.client.post('/api/work/projects/',{'name':'Hidden','teamVisible':False},format='json')
+        self.assertEqual(len(private.json()['members']),1)
+        self.client.patch(f'/api/work/projects/{p.pk}/',{'teamVisible':True},format='json')
+        self.assertTrue(p.members.filter(pk=late.pk).exists())
+
     def test_chat_persists_for_members_and_blocks_outsiders(self):
         url=f'/api/work/projects/{self.project.pk}/chat/'
         self.assertEqual(self.client.post(url,{'text':'Prva poruka'},format='json').status_code,201)

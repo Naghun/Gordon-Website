@@ -66,3 +66,6 @@ Dokumentacija integracije: https://developers.openai.com/api/docs/guides/structu
 - Live chat zamjenjuje Inbox panel. Razgovori pripadaju projektu i dostupni su samo članovima; poruke se čuvaju u WorkChatMessage, osvježavaju svake 3 sekunde i starije se učitavaju na zahtjev. Demo razgovor ostaje u lokalnom pregledniku.
 - Detalji zadatka prvo prikazuju glavni zadatak, podzadatke, opis i korake. Odgovorna osoba, prioritet i oznaka ostaju sačuvani u podacima, ali su skriveni iz obrasca.
 - Podzadaci su vidljivi i na tabli; sve liste se mogu preimenovati kroz meni liste. Klik na pozadinu dijaloga ne odbacuje izmjene tokom izbora boje.
+
+- Novi projekti (i projekti iz uvoza) otvoreni su svim aktivnim administratorima. Vlasnik može odabrati skriven projekat pri kreiranju ili kroz Članovi → Vidljivost projekta. Skrivanjem se uklanjaju članovi i njihove dodjele; privatni projekti nastali prije ove izmjene ostaju privatni. Gordon tim zadržava automatsko članstvo dok je otvoren.
+- Podzadaci i koraci su odmah prošireni na kartici. Poravnaj liste izjednačava visine i poziciju unosa novih kartica; dodjela članu ponovo je u detaljima zadatka.

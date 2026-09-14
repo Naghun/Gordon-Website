@@ -88,6 +88,8 @@ function Modal({ title, children, close, wide = false }) {
 }
 export default function WorkSpace() {
   const navigate = useNavigate();
+  const [alignLists, setAlignLists] = useState(false);
+  const [newProjectShared, setNewProjectShared] = useState(true);
   const [taskColorsOpen, setTaskColorsOpen] = useState(false);
   const taskColorsRef = useRef(null);
   const [allProjects, setAllProjects] = useState(false);
@@ -378,7 +380,7 @@ export default function WorkSpace() {
     return result;
   }
   async function patchProject(values) {
-    if (mode === "team" && (values.remove_column || values.reset_display)) {
+    if (mode === "team" && (values.remove_column || values.reset_display || values.teamVisible !== undefined)) {
       await request(`projects/${project.id}/`, "PATCH", values);
       setData(await request("state/"));
       return;
@@ -423,7 +425,7 @@ export default function WorkSpace() {
     const result =
       mode === "team"
         ? await request(`projects/${project.id}/`, "PATCH", values)
-        : { ...project, ...values };
+        : { ...project, ...values, ...(values.teamVisible !== undefined ? {members:values.teamVisible ? people : [user]} : {}) };
     setData((d) => ({
       ...d,
       projects: d.projects.map((p) => (p.id === result.id ? result : p)),
@@ -576,6 +578,7 @@ export default function WorkSpace() {
             </small>
           )}
           <div className="gw-card-meta">
+            {t.person && <span>{member(t.person,p)?.name || "Član tima"}</span>}
             {t.due && (
               <span
                 className={t.due < day() && t.status !== "done" ? "late" : ""}
@@ -603,20 +606,20 @@ export default function WorkSpace() {
             <button
               className="gw-subtask-toggle"
               aria-label={`Podzadaci: ${t.title}`}
-              aria-expanded={!!expandedTasks[t.id]}
+              aria-expanded={expandedTasks[t.id] !== false}
               onClick={() =>
-                setExpandedTasks((v) => ({ ...v, [t.id]: !v[t.id] }))
+                setExpandedTasks((v) => ({ ...v, [t.id]: v[t.id] === false }))
               }
             >
               <ChevronDown
                 size={15}
                 style={{
-                  transform: expandedTasks[t.id] ? "rotate(180deg)" : undefined,
+                  transform: expandedTasks[t.id] !== false ? "rotate(180deg)" : undefined,
                 }}
               />
               {finished}/{total} podzadataka i koraka
             </button>
-            {expandedTasks[t.id] && (
+            {expandedTasks[t.id] !== false && (
               <div className="gw-subtask-items">
                 {children.map((c) => (
                   <label key={c.id}>
@@ -753,7 +756,7 @@ export default function WorkSpace() {
     return (
       <div className="gw-login">
         <div className="gw-login-card">
-          <Link to="/" className="gw-brand">
+          <Link to={mode === "demo" ? "/dashboard/work?demo=1" : "/dashboard/work"} className="gw-brand">
             <b>g.</b>gordon <span>work</span>
           </Link>
           <LockKeyhole size={30} />
@@ -808,7 +811,7 @@ export default function WorkSpace() {
       style={{ background: backdrop(project?.background || "aurora") }}
     >
       <header className="gw-topbar">
-        <Link to="/" className="gw-brand">
+        <Link to={mode === "demo" ? "/dashboard/work?demo=1" : "/dashboard/work"} className="gw-brand">
           <b>g.</b>gordon <span>work</span>
         </Link>
         <span className="gw-divider" />
@@ -838,7 +841,7 @@ export default function WorkSpace() {
             {allProjects ? "Svi projekti" : project?.name || "Dobro došao u Gordon Work"}
             <span className="gw-private">
               <LockKeyhole size={12} />
-              Privatni projekat
+              {allProjects ? "Pregled tima" : project?.teamVisible ? "Otvoren za tim" : "Skriven od tima"}
             </span>
           </h1>
         </div>
@@ -904,6 +907,7 @@ export default function WorkSpace() {
         <button className="gw-progress-label" onClick={() => { setView("done"); setPanels((p) => ({...p, board:true})); }}>
           {done.length}/{active.length} završeno
         </button>
+        <button aria-pressed={alignLists} onClick={()=>setAlignLists(v=>!v)}>{alignLists ? "Prirodna visina" : "Poravnaj liste"}</button>
         <button aria-label="Izvezi dostupne projekte" onClick={exportData}>
           <Download size={16} />
         </button>
@@ -1035,7 +1039,7 @@ export default function WorkSpace() {
                 </button>
               </div>
             ) : allProjects ? (
-              <div className="gw-all-projects">
+              <div className={`gw-all-projects ${alignLists ? "gw-aligned" : ""}`}>
                 <div className="gw-extra-actions">
                   <button onClick={() => setCollapsedProjects(Object.fromEntries(data.projects.map(p => [p.id,true])))}>Skupi sve</button>
                   <button onClick={() => setCollapsedProjects({})}>Proširi sve</button>
@@ -1052,7 +1056,7 @@ export default function WorkSpace() {
                     {!collapsedProjects[p.id] && <div className="gw-overview-lists">
                       {(view === "board" ? p.columns : [{id:view,name:view === "done" ? "Završeni" : view === "trash" ? "Korpa" : "Arhiva"}]).map(col => <div key={col.id}>
                         <h3>{col.name}</h3>
-                        {tasks.filter(t => view !== "board" || t.status === col.id).map(t => taskCard(t,true))}
+                        {tasks.filter(t => (view !== "board" || t.status === col.id) && (!t.parent || !tasks.some(p=>p.id===t.parent))).map(t => taskCard(t,true))}
                         {view === "board" && quickForm(`${p.id}:${col.id}`,p.id,col.id)}
                       </div>)}
                     </div>}
@@ -1060,7 +1064,7 @@ export default function WorkSpace() {
                 })}
               </div>
             ) : view === "board" ? (
-              <div className="gw-board">
+              <div className={`gw-board ${alignLists ? "gw-aligned" : ""}`}>
                 {project.columns.map((col, columnIndex) => (
                   <section
                     key={col.id}
@@ -1150,7 +1154,7 @@ export default function WorkSpace() {
                     </div>
                     <div className="gw-column-cards">
                       {boardTasks
-                        .filter((t) => t.status === col.id)
+                        .filter((t) => t.status === col.id && (!t.parent || !boardTasks.some(p=>p.id===t.parent)))
                         .map((t) => taskCard(t))}
                     </div>
                     {quickForm(col.id, project.id, col.id)}
@@ -1469,6 +1473,12 @@ export default function WorkSpace() {
                     </select>
                   </label>
 
+                  <label>Kome je dodijeljeno
+                    <select aria-label="Kome je dodijeljeno" value={draft.person || ""} onChange={e=>setDraft({...draft,person:e.target.value ? Number(e.target.value) : null})}>
+                      <option value="">Nije dodijeljeno</option>
+                      {(data.projects.find(p=>p.id===draft.project)?.members || [user]).map(m=><option key={m.id} value={m.id}>{m.name}</option>)}
+                    </select>
+                  </label>
                   <label>
                     Rok
                     <input
@@ -1722,18 +1732,21 @@ export default function WorkSpace() {
                     mode === "team"
                       ? await request("projects/", "POST", {
                           name: projectName,
+                          teamVisible: newProjectShared,
                         })
                       : {
                           id: uid(),
                           name: projectName.trim(),
+                          teamVisible: newProjectShared,
                           owner: user.id,
-                          members: people,
+                          members: newProjectShared ? people : [user],
                           columns: columns(),
                           background: "aurora",
                         };
                   setData((d) => ({ ...d, projects: [...d.projects, p] }));
                   setProjectId(p.id);
                   setProjectName("");
+                  setNewProjectShared(true);
                   setView("board");
                   setPanels((p) => ({ ...p, board: true }));
                 });
@@ -1750,6 +1763,7 @@ export default function WorkSpace() {
                   onChange={(e) => setProjectName(e.target.value)}
                 />
               </label>
+              <label><input type="checkbox" checked={newProjectShared} onChange={e=>setNewProjectShared(e.target.checked)}/> Otvoren za sve administratore</label>
               <button className="gw-primary" disabled={busy}>
                 <Plus size={17} />
                 Kreiraj
@@ -1867,6 +1881,13 @@ export default function WorkSpace() {
       {modal === "members" && (
         <Modal title="Članovi projekta" close={() => setModal(null)}>
           <div className="gw-modal-body">
+            {project && (mode === "demo" || project.owner === user.id) && <label>Vidljivost projekta
+              <select aria-label="Vidljivost projekta" disabled={busy} value={project.teamVisible ? "team" : "private"} onChange={e=>run(()=>patchProject({teamVisible:e.target.value === "team"}))}>
+                <option value="team">Otvoren za sve administratore</option>
+                <option value="private">Sakrij od tima · samo ja</option>
+              </select>
+              <small>Skrivanjem uklanjaš pristup ostalim članovima. Ponovno otvaranje vraća administratore.</small>
+            </label>}
             {projectPeople.map((p) => (
               <div className="gw-member-row" key={p.id}>
                 <span className="gw-avatar">{initials(p.name)}</span>
