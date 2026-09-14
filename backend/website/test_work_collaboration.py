@@ -32,6 +32,8 @@ class CollaborationTests(TestCase):
         late=get_user_model().objects.create_user('new-admin',is_staff=True)
         self.client.force_login(late)
         self.assertIn(str(p.pk),[row['id'] for row in self.client.get('/api/work/state/').json()['projects']])
+        self.assertEqual(self.client.patch(f'/api/work/projects/{p.pk}/',{'teamVisible':False},format='json').status_code,403)
+        self.assertEqual(self.client.patch(f'/api/work/projects/{p.pk}/',{'teamVisible':True},format='json').status_code,403)
         self.client.force_login(self.owner)
         assigned=WorkTask.objects.create(project=p,creator=self.owner,assignee=late,title='Assigned')
         self.assertEqual(self.client.patch(f'/api/work/projects/{p.pk}/',{'teamVisible':False},format='json').status_code,200)

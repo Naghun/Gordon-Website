@@ -227,7 +227,6 @@ export function WorkExtras({
   openTask,
   error,
 }) {
-  const [colorListId, setColorListId] = useState("");
   const [source, setSource] = useState("");
   const [brief, setBrief] = useState("");
   const [importTarget, setImportTarget] = useState(null);
@@ -281,7 +280,7 @@ export function WorkExtras({
     );
   if (modal === "x-colors" || modal.startsWith("x-colors:"))
     return (
-      <Modal title="Boje lista i kartica" close={close}>
+      <Modal title="Boje lista i kartica" close={close} wide>
         <div className="gw-modal-body">
           {error && (
             <p role="alert" className="gw-modal-error">
@@ -296,8 +295,7 @@ export function WorkExtras({
             <p>Prvo odaberi projekat.</p>
           ) : (
             <>
-              <label>Lista<select aria-label="Lista za boje" value={(project.columns.some(c=>c.id===colorListId) ? colorListId : project.columns[0]?.id)} onChange={e=>setColorListId(e.target.value)}>{project.columns.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
-              <div className="gw-color-editors gw-single-color-editor">
+              <div className="gw-color-editors gw-compact-color-grid">
                 {(colors?.id === project.id
                   ? colors.columns
                   : project.columns
@@ -305,10 +303,7 @@ export function WorkExtras({
                   <section
                     key={c.id}
                     style={{
-                      display:
-                        (modal === "x-colors" ? c.id !== ((project.columns.some(c=>c.id===colorListId) ? colorListId : project.columns[0]?.id)) : modal !== `x-colors:${c.id}`)
-                          ? "none"
-                          : undefined,
+                      display: modal !== "x-colors" && modal !== `x-colors:${c.id}` ? "none" : undefined,
                       background: c.fill || "#151c29",
                       color: readable(c.fill),
                       border: `2px solid ${c.border || c.color}`,

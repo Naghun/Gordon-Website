@@ -817,7 +817,7 @@ export default function WorkSpace() {
         <span className="gw-divider" />
         <button
           className="gw-project-switch"
-          onClick={() => setModal("projects")}
+          onClick={() => {setNewProjectShared(true);setModal("projects");}}
         >
           <Layers size={16} />
           {allProjects ? "Svi projekti" : project?.name || "Izaberi projekat"}
@@ -839,10 +839,12 @@ export default function WorkSpace() {
           <span className="gw-eyebrow">MALO PO MALO. VELIKE STVARI.</span>
           <h1>
             {allProjects ? "Svi projekti" : project?.name || "Dobro došao u Gordon Work"}
-            <span className="gw-private">
-              <LockKeyhole size={12} />
-              {allProjects ? "Pregled tima" : project?.teamVisible ? "Otvoren za tim" : "Skriven od tima"}
-            </span>
+            {!allProjects && project && <label className="gw-visibility-badge" title={project.owner === user.id ? "Promijeni vidljivost projekta" : "Vidljivost mijenja vlasnik projekta"}>
+              <LockKeyhole size={13}/>
+              <select aria-label="Javnost projekta" disabled={busy || (mode !== "demo" && project.owner !== user.id)} value={project.teamVisible ? "team" : "private"} onChange={e=>run(()=>patchProject({teamVisible:e.target.value === "team"}))}>
+                <option value="team">Javno</option><option value="private">Privatno</option>
+              </select>
+            </label>}
           </h1>
         </div>
         <div className="gw-project-actions">
@@ -1032,7 +1034,7 @@ export default function WorkSpace() {
                 <p>Kreiraj projekat pa dodaj kolege i zadatke.</p>
                 <button
                   className="gw-primary"
-                  onClick={() => setModal("projects")}
+                  onClick={() => {setNewProjectShared(true);setModal("projects");}}
                 >
                   <Plus size={16} />
                   Kreiraj projekat
@@ -1245,7 +1247,7 @@ export default function WorkSpace() {
           </button>
         ))}
         <span />
-        <button onClick={() => setModal("projects")}>
+        <button onClick={() => {setNewProjectShared(true);setModal("projects");}}>
           <Layers size={18} />
           <span>Projekti</span>
           <ChevronDown size={13} />
@@ -1694,7 +1696,8 @@ export default function WorkSpace() {
         <Modal title="Tvoji projekti" close={() => setModal(null)}>
           <div className="gw-modal-body">
             <p>Sve na svom mjestu. Odaberi prostor za sljedeći zadatak.</p>
-            <button className="gw-primary" onClick={() => {setAllProjects(true);setView("board");setPanels(p=>({...p,board:true}));setModal(null);}}>Svi projekti · {data.projects.length}</button>
+            <button className="gw-all-projects-choice" onClick={() => {setAllProjects(true);setView("board");setPanels(p=>({...p,board:true}));setModal(null);}}><span className="gw-all-choice-icon"><Layers size={25}/></span><span><strong>Svi projekti</strong><small>Sve table na jednom mjestu · {data.projects.length} projekata</small></span><ArrowUpRight size={21}/></button>
+            <p className="gw-project-divider">ILI ODABERI PROJEKAT</p>
             <div className="gw-project-grid">
               {data.projects.map((p) => (
                 <button
@@ -1763,7 +1766,7 @@ export default function WorkSpace() {
                   onChange={(e) => setProjectName(e.target.value)}
                 />
               </label>
-              <label><input type="checkbox" checked={newProjectShared} onChange={e=>setNewProjectShared(e.target.checked)}/> Otvoren za sve administratore</label>
+              <label className="gw-public-check"><input type="checkbox" checked={newProjectShared} onChange={e=>setNewProjectShared(e.target.checked)}/> <span>Javni</span></label>
               <button className="gw-primary" disabled={busy}>
                 <Plus size={17} />
                 Kreiraj
@@ -1883,8 +1886,8 @@ export default function WorkSpace() {
           <div className="gw-modal-body">
             {project && (mode === "demo" || project.owner === user.id) && <label>Vidljivost projekta
               <select aria-label="Vidljivost projekta" disabled={busy} value={project.teamVisible ? "team" : "private"} onChange={e=>run(()=>patchProject({teamVisible:e.target.value === "team"}))}>
-                <option value="team">Otvoren za sve administratore</option>
-                <option value="private">Sakrij od tima · samo ja</option>
+                <option value="team">Javno · dostupno timu</option>
+                <option value="private">Privatno · samo ja</option>
               </select>
               <small>Skrivanjem uklanjaš pristup ostalim članovima. Ponovno otvaranje vraća administratore.</small>
             </label>}
@@ -1998,7 +2001,7 @@ export default function WorkSpace() {
         <Modal title={`Lista · ${listEdit.name}`} close={() => setModal(null)}>
           <div className="gw-modal-body">
             <label>Naziv liste<input aria-label="Naziv liste" maxLength={50} value={listEdit.name} onChange={e => setListEdit({...listEdit,name:e.target.value})}/></label>
-            <button disabled={busy || !listEdit.name.trim()} onClick={async () => {if(await run(() => patchProject({columns:project.columns.map(c=>c.id===listEdit.id ? {...c,name:listEdit.name.trim()} : c)}))) setModal(null);}}>Sačuvaj naziv</button>
+
             <p>Promijeni raspored povlačenjem naslova ili ovim dugmadima.</p>
             <div className="gw-extra-actions">
               {[-1, 1].map((offset) => {
@@ -2062,6 +2065,7 @@ export default function WorkSpace() {
             )}
             {error && <p role="alert">{error}</p>}
           </div>
+          <div className="gw-list-save-footer"><button className="gw-primary" disabled={busy || !listEdit.name.trim()} onClick={async () => {if(await run(() => patchProject({columns:project.columns.map(c=>c.id===listEdit.id ? {...c,name:listEdit.name.trim()} : c)}))) setModal(null);}}>Sačuvaj listu</button></div>
         </Modal>
       )}
       {modal === "column" && (

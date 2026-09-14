@@ -171,6 +171,7 @@ def project(request,pk):
             p.save()
         else:
             if 'teamVisible' in request.data:
+                if p.owner_id!=request.user.pk: raise PermissionDenied('Samo vlasnik mijenja vidljivost projekta.')
                 shared=request.data['teamVisible']
                 if not isinstance(shared,bool): raise ValidationError('Odaberite vidljivost projekta.')
                 p.team_visible=shared
