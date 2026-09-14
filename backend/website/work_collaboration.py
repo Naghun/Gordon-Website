@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError, PermissionDenied
 from rest_framework.response import Response
 from .models import WorkProject, WorkTask, WorkAttachment, WorkNotification
-from .work_api import visible_tasks, require_editor, project_data, text, notify_task
+from .work_api import is_work_admin, visible_tasks, require_editor, project_data, text, notify_task
 
 @api_view(['PATCH','DELETE'])
 @authentication_classes([SessionAuthentication])
@@ -19,7 +19,7 @@ from .work_api import visible_tasks, require_editor, project_data, text, notify_
 def member(request,pk,user_id):
     with transaction.atomic():
         p=get_object_or_404(WorkProject.objects.select_for_update(),pk=pk,members=request.user)
-        if p.owner_id!=request.user.pk: raise PermissionDenied('Samo vlasnik upravlja članovima.')
+        if p.owner_id!=request.user.pk and not is_work_admin(request.user): raise PermissionDenied('Samo vlasnik upravlja članovima.')
         if user_id==p.owner_id: raise ValidationError('Vlasniku se ne može ukloniti pristup.')
         get_object_or_404(p.members,pk=user_id)
         if request.method=='DELETE':

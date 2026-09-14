@@ -39,8 +39,11 @@ def open_work(request):
     destination = f'http://{request.get_host().split(":")[0]}:5173/dashboard/work' if settings.DEBUG else '/dashboard/work'
     return redirect(destination)
 
+def is_work_admin(user):
+    return user.is_active and (user.is_staff or user.is_superuser)
+
 def require_editor(project, user):
-    if project and project.owner_id != user.pk and project.roles.get(str(user.pk)) == 'viewer':
+    if project and not is_work_admin(user) and project.owner_id != user.pk and project.roles.get(str(user.pk)) == 'viewer':
         raise PermissionDenied('Imate pristup samo za pregled ovog projekta.')
 
 def notify_task(t, actor, message, recipients):
@@ -49,7 +52,7 @@ def notify_task(t, actor, message, recipients):
         WorkNotification.objects.create(recipient_id=uid,task=t,text=f'{person(actor)["name"]}: {message}'[:300])
 
 def person(user):
-    return {'id':user.pk,'name':user.get_full_name() or user.username,'username':user.username}
+    return {'id':user.pk,'name':user.get_full_name() or user.username,'username':user.username,'isAdmin':is_work_admin(user)}
 
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication])
@@ -147,7 +150,7 @@ def projects(request):
 def project(request,pk):
     with transaction.atomic():
         p=get_object_or_404(WorkProject.objects.select_for_update(),pk=pk,members=request.user)
-        if p.owner_id!=request.user.pk: raise PermissionDenied('Samo vlasnik uređuje projekat i članove.')
+        if p.owner_id!=request.user.pk and not is_work_admin(request.user): raise PermissionDenied('Samo vlasnik uređuje projekat i članove.')
         if request.method=='POST':
             username=text(request.data.get('username',''),150,True)
             u=get_user_model().objects.filter(username=username,is_active=True).first()

@@ -62,8 +62,9 @@ export function TeamMemberControls({
 }) {
   const [confirm, setConfirm] = useState(false);
   const role = project.roles?.[member.id] || "editor";
+  if (member.isAdmin) return <b>Administrator</b>;
   if (project.owner === member.id) return <b>Vlasnik</b>;
-  if (project.owner !== user.id && mode !== "demo")
+  if (project.owner !== user.id && !user.isAdmin && mode !== "demo")
     return <b>{role === "viewer" ? "Pregled" : "Uređivanje"}</b>;
   const change = (next, remove = false) =>
     run(async () => {
@@ -525,7 +526,7 @@ export function WorkExtras({
   }
   if (modal !== "x-import") return null;
   const destinations = data.projects.filter(
-    (p) => p.owner === user.id || p.roles?.[user.id] !== "viewer",
+    (p) => user.isAdmin || p.owner === user.id || p.roles?.[user.id] !== "viewer",
   );
   const target =
     importTarget ??
@@ -728,7 +729,7 @@ export function WorkExtras({
                   >
                     <option value="">Kreiraj novi projekat</option>
                     {data.projects
-                      .filter((p) => p.roles?.[user.id] !== "viewer")
+                      .filter((p) => user.isAdmin || p.roles?.[user.id] !== "viewer")
                       .map((x) => (
                         <option key={x.id} value={x.id}>
                           {x.name}

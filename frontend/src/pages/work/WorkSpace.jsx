@@ -149,9 +149,9 @@ export default function WorkSpace() {
   const project =
     data.projects.find((p) => p.id === projectId) || data.projects[0];
   const projectPeople = project?.members || [];
-  const owner = mode === "demo" || project?.owner === user?.id;
+  const owner = mode === "demo" || user?.isAdmin || project?.owner === user?.id;
   const editable = (projectId) =>
-    mode === "demo" ||
+    mode === "demo" || user?.isAdmin ||
     data.projects.find((p) => p.id === projectId)?.roles?.[user?.id] !==
       "viewer";
   function startDemo() {

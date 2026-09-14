@@ -23,6 +23,26 @@ class CollaborationTests(TestCase):
     def plan(self):
         return {'projects':[{'name':'Imported','tasks':[{'title':'Main','description':'Context','due':'','subtasks':[{'title':'Child','description':'','due':'2026-10-01'}]}]}]}
 
+    def test_site_admin_has_owner_controls_despite_viewer_role(self):
+        self.editor.is_staff=True;self.editor.save()
+        self.project.roles={str(self.editor.pk):'viewer'};self.project.save()
+        self.client.force_login(self.editor)
+        self.assertTrue(self.client.get('/api/work/session/').json()['user']['isAdmin'])
+        columns=self.project.columns+[{'id':'new-list','name':'Nova lista','color':'#abcdef'}]
+        url=f'/api/work/projects/{self.project.pk}/'
+        self.assertEqual(self.client.patch(url,{'columns':columns,'background':'ocean'},format='json').status_code,200)
+        self.assertEqual(self.client.patch(f'/api/work/tasks/{self.task.pk}/',{'revision':1,'title':'Updated'},format='json').status_code,200)
+        self.assertEqual(self.client.post(url,{'username':self.outside.username},format='json').status_code,200)
+        self.assertEqual(self.client.delete(f'{url}members/{self.outside.pk}/').status_code,200)
+        self.assertEqual(self.client.patch(url,{'remove_column':'new-list'},format='json').status_code,200)
+        private=WorkProject.objects.create(name='Private',owner=self.outside)
+        private.members.add(self.outside)
+        self.assertEqual(self.client.patch(f'/api/work/projects/{private.pk}/',{'name':'Denied'},format='json').status_code,404)
+
+    def test_regular_editor_cannot_manage_project(self):
+        self.client.force_login(self.editor)
+        self.assertEqual(self.client.patch(f'/api/work/projects/{self.project.pk}/',{'name':'Denied'},format='json').status_code,403)
+
     def test_viewer_cannot_edit_upload_or_import(self):
         self.project.roles={str(self.editor.pk):'viewer'};self.project.save()
         self.client.force_login(self.editor)
