@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {manualPlan} from '../src/pages/work/import-plan.js';
+const plan=manualPlan('# Web\nGlavni\nPodzadatak 1\nPodzadatak 2\n\nDrugi glavni\nNjegov podzadatak\n\n\nTreći');
+assert.equal(plan.projects.length,1);
+assert.deepEqual(plan.projects[0].tasks.map(t=>t.title),['Glavni','Drugi glavni','Treći']);
+assert.equal(plan.projects[0].tasks[0].subtasks.length,2);
+assert.equal(plan.projects[0].tasks[1].subtasks.length,1);
+assert.equal(manualPlan('A\r\nB\r\n\r\nC').projects[0].tasks.length,2);
+assert.equal(manualPlan('  \n\n').projects.length,0);
+assert.equal(manualPlan('Projekat: Prvi\nA\nB\n\n# Drugi\nC\nD').projects.length,2);
+console.log('Work import: single/double Enter, CRLF and project headings passed.');

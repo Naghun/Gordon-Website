@@ -10,8 +10,9 @@ from django.conf import settings
 from django.utils import timezone
 
 from .models import AdminEmail
+from .mail_accounts import accounts
 
-_last_sync = 0.0
+_last_sync = {}
 
 
 def _text(value):
@@ -49,18 +50,21 @@ def _body(message):
     return ""
 
 
-def sync_mailbox(force=False, limit=250):
+def sync_mailbox(force=False, limit=250, mailbox="primary"):
+    config = accounts().get(mailbox)
+    if not config: return {"ok":False,"error":"Nepoznat sandučić."}
     global _last_sync
-    if not settings.IMAP_HOST or not settings.IMAP_USER or not settings.IMAP_PASSWORD:
+    if not config["host"] or not config["user"] or not config["password"]:
         return {"ok": False, "error": "Email sandučić nije konfigurisan."}
     now = time.monotonic()
-    if not force and now - _last_sync < 45:
+    if not force and now - _last_sync.get(mailbox,0) < 45:
         return {"ok": True, "skipped": True}
-    _last_sync = now
+    _last_sync[mailbox] = now
+    client = None
     try:
-        client_class = imaplib.IMAP4_SSL if settings.IMAP_USE_SSL else imaplib.IMAP4
-        client = client_class(settings.IMAP_HOST, settings.IMAP_PORT)
-        client.login(settings.IMAP_USER, settings.IMAP_PASSWORD)
+        client_class = imaplib.IMAP4_SSL if config["ssl"] else imaplib.IMAP4
+        client = client_class(config["host"], config["port"], timeout=20)
+        client.login(config["user"], config["password"])
         client.select("INBOX", readonly=True)
         status, data = client.uid("search", None, "ALL")
         if status != "OK":
@@ -69,7 +73,7 @@ def sync_mailbox(force=False, limit=250):
         created = 0
         for raw_uid in uids:
             uid = raw_uid.decode()
-            if AdminEmail.objects.filter(uid=uid).exists():
+            if AdminEmail.objects.filter(mailbox=mailbox,uid=uid).exists():
                 continue
             status, payload = client.uid("fetch", raw_uid, "(RFC822)")
             if status != "OK" or not payload or not isinstance(payload[0], tuple):
@@ -81,6 +85,7 @@ def sync_mailbox(force=False, limit=250):
                 received = timezone.make_aware(received)
             AdminEmail.objects.create(
                 uid=uid,
+                mailbox=mailbox,
                 message_id=message.get("Message-ID", "")[:255],
                 sender_name=sender_name[:180],
                 sender_email=sender_email,
@@ -91,6 +96,12 @@ def sync_mailbox(force=False, limit=250):
             )
             created += 1
         client.logout()
+        client = None
         return {"ok": True, "created": created}
     except Exception as exc:
         return {"ok": False, "error": str(exc)}
+
+    finally:
+        if client:
+            try: client.logout()
+            except Exception: pass

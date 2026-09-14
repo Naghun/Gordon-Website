@@ -10,6 +10,7 @@ from django.utils import timezone
 from .models import AdminEmail,BlogPost,BlogPostImage,ChatConversation,ChatMessage,ContactMessage,CryptoEvent,CryptoEventImage,CryptoLesson,Project,SEOPage,Service
 from .email_filters import suspected_sales_or_scam_q
 from .mailbox import sync_mailbox
+from .mail_accounts import send_from_mailbox
 admin.site.site_header='Studio administracija'
 
 class ConciseChangeListTitleMixin:
@@ -148,7 +149,7 @@ class AdminEmailAdmin(ConciseChangeListTitleMixin,admin.ModelAdmin):
  change_form_template='admin/website/adminemail/change_form.html'
  change_list_template='admin/website/adminemail/change_list.html'
  list_display=('subject','sender_email','received_at','is_read','replied_at')
- list_filter=(PartnerEmailFilter,EmailTypeFilter,'is_read','replied_at')
+ list_filter=('mailbox',PartnerEmailFilter,EmailTypeFilter,'is_read','replied_at')
  search_fields=('subject','sender_name','sender_email','body_text')
  readonly_fields=('email_reader',)
  fields=('email_reader','reply','is_read')
@@ -207,7 +208,7 @@ class AdminEmailAdmin(ConciseChangeListTitleMixin,admin.ModelAdmin):
    try:
     quoted='\n'.join(f'> {line}' for line in (obj.body_text or '').splitlines()[:80])
     complete=f'{reply}\n\nSrdačan pozdrav,\nGordonDM tim\n\n--- Originalna poruka ---\nOd: {obj.sender_name or obj.sender_email} <{obj.sender_email}>\nDatum: {obj.received_at:%d.%m.%Y. %H:%M}\nPredmet: {obj.subject}\n\n{quoted}'
-    send_mail(f'Re: {obj.subject}',complete,None,[obj.sender_email],fail_silently=False)
+    send_from_mailbox(obj.mailbox,f'Re: {obj.subject}',complete,[obj.sender_email])
     obj.replied_at=timezone.now()
     messages.success(request,'Email odgovor je uspješno poslan.')
    except Exception:

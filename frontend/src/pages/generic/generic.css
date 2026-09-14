@@ -348,3 +348,4 @@
     height: 270px;
   }
 }
+.contact-page .contact h1{font-size:clamp(38px,4vw,64px);line-height:1.08;letter-spacing:-.045em}.contact-page .contact .lead{font-size:18px;line-height:1.65}.contact-page .contact{align-items:start}.contact-page .contact .contact-direct-options{margin-top:4px}.contact-page .contact form>small:empty{display:none}

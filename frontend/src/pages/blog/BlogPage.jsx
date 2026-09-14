@@ -228,11 +228,13 @@ export function BlogPostPage() {
   const [lightboxIndex, setLightboxIndex] = useState(null);
   useEffect(() => {
     setPost(null);
-    fetch(`${API}/blog/${slug}/?lang=${language}`).then((response) => response.ok ? response.json() : Promise.reject()).then(setPost).catch(() => {
-      if (language === "bs") setPost(fallbackPosts.find((item) => item.slug === slug));
+    const controller = new AbortController();
+    fetch(`${API}/blog/${slug}/?lang=${language}`, { signal: controller.signal }).then((response) => response.ok ? response.json() : Promise.reject()).then(data => { if (!controller.signal.aborted) setPost(data); }).catch(() => {
+      if (!controller.signal.aborted && language === "bs") setPost(fallbackPosts.find((item) => item.slug === slug));
     });
+    return () => controller.abort();
   }, [slug, language]);
-  const current = post || posts.find((item) => item.slug === slug);
+  const current = (post?.slug === slug ? post : null) || posts.find((item) => item.slug === slug);
   const gallery = current?.images || [];
   const youtubeId = youtubeVideoId(current?.video_url);
   const youtubeStart = youtubeStartSeconds(current?.video_url);

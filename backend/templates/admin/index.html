@@ -9,6 +9,13 @@
     <h1>Dobrodošli, {{ user.get_short_name|default:user.username }}.</h1>
     <p>Upravljajte porukama, sadržajem i korisnicima na jednom mjestu.</p>
   </div>
+      {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
+      <section class="dashboard-blog-tools">
+        <h2>Gordon Work / Projekti</h2>
+        <p>Izdvojen prostor za projekte, timske zadatke i privatni Inbox. Prijava postojećim korisničkim računom.</p>
+        <div><a href="{% url 'gordon_work' %}">Otvori Gordon Work →</a></div>
+      </section>
+      {% endif %}
       {% if perms.website.view_blogpost %}
       <section class="dashboard-blog-tools">
         <h2>Blog / Članci</h2>

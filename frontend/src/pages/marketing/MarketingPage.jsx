@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { API } from "../../config/site";
 import { trackLead } from "../../utils/analytics";
+import ContactOptions from '../../components/ContactOptions';
 import "./marketing.css";
 
 export function MarketingContact() {
@@ -130,6 +131,7 @@ export function MarketingContact() {
           Pošaljite campaign brief <ArrowRight />
         </button>
         <small>{status}</small>
+        <ContactOptions />
       </form>
     </section>
   );

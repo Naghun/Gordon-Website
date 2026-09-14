@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import CopyEmail from "./components/CopyEmail";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   BrowserRouter,
   Link,
@@ -47,6 +48,7 @@ import {
 import "./App.css";
 import "./styles/shared.css";
 import { API, nav, pages, seoPages } from "./config/site";
+import { business, businessSchema, mapUrl, publicImageUrl } from './config/business';
 import { trackContactClick, trackPageView } from "./utils/analytics";
 import FirstPartyAnalytics from "./components/FirstPartyAnalytics";
 import { Home } from "./pages/home/HomePage";
@@ -69,6 +71,7 @@ import FrontendTranslator from "./i18n/FrontendTranslator";
 import { translatePhrase } from "./i18n/translations";
 import "./styles/internal-typography.css";
 import "./styles/mobile-polish.css";
+const WorkApp = lazy(() => import("./pages/work/WorkSpace"));
 
 let seoManagerPromise;
 function loadSEOManager() {
@@ -86,6 +89,18 @@ function loadSEOManager() {
 
 function SEO({ path, language = "bs" }) {
   const [managedPages, setManagedPages] = useState({});
+  const [articleResult, setArticleResult] = useState(null);
+  const article = articleResult?.path === path && articleResult?.language === language ? articleResult.data : null;
+  useEffect(() => {
+    if (!path.startsWith('/blog/')) return;
+    const controller = new AbortController();
+    const slug = path.split('/')[2];
+    fetch(`${API}/blog/${encodeURIComponent(slug)}/?lang=${language}`, { signal: controller.signal })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (!controller.signal.aborted) setArticleResult({ path, language, data }); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [path, language]);
 
   useEffect(() => {
     let active = true;
@@ -104,15 +119,15 @@ function SEO({ path, language = "bs" }) {
     const languageKey = ["bs", "en", "de"].includes(language) ? language : "bs";
     const managedTitle = managed?.[`title_${languageKey}`] || managed?.title_bs;
     const managedDescription = managed?.[`description_${languageKey}`] || managed?.description_bs;
-    const title = managedTitle || translatePhrase(fallback.title, language);
-    const description = managedDescription || translatePhrase(fallback.description, language);
+    const title = article ? `${article.title} | GordonDM` : managedTitle || translatePhrase(fallback.title, language);
+    const description = article?.excerpt || managedDescription || translatePhrase(fallback.description, language);
     const defaultCanonical = `https://gordon.ba${path === "/" ? "" : path}`;
-    const canonical = path.startsWith("/kripto/event/")
+    const canonical = path.startsWith("/kripto/event/") || path.startsWith('/blog/')
       ? defaultCanonical
       : managed?.canonical_url || defaultCanonical;
-    const ogTitle = languageKey === "bs" && managed?.og_title ? managed.og_title : title;
-    const ogDescription = languageKey === "bs" && managed?.og_description ? managed.og_description : description;
-    const ogImage = managed?.og_image || "https://gordon.ba/logo-gordondm-dark.png";
+    const ogTitle = !article && languageKey === "bs" && managed?.og_title ? managed.og_title : title;
+    const ogDescription = !article && languageKey === "bs" && managed?.og_description ? managed.og_description : description;
+    const ogImage = article ? publicImageUrl(article.cover_image) : managed?.og_image || "https://gordon.ba/logo-gordondm-dark.png";
     document.documentElement.lang =
       localStorage.getItem("gordondm_language") || "bs";
     document.title = title;
@@ -154,7 +169,7 @@ function SEO({ path, language = "bs" }) {
     });
     setMeta('meta[property="og:type"]', {
       property: "og:type",
-      content: "website",
+      content: article ? 'article' : "website",
     });
     setMeta('meta[name="twitter:card"]', {
       name: "twitter:card",
@@ -195,23 +210,7 @@ function SEO({ path, language = "bs" }) {
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "LocalBusiness",
-          "@id": organizationId,
-          name: "GordonDM",
-          alternateName: "Gordon Digital Marketing",
-          url: "https://gordon.ba/",
-          logo: "https://gordon.ba/logo-gordondm-dark.png",
-          image: "https://gordon.ba/logo-gordondm-dark.png",
-          email: "info@gordondm.com",
-          telephone: "+38761264263",
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: "Džemala Bijedića 279L",
-            addressLocality: "Sarajevo",
-            postalCode: "71320",
-            addressCountry: "BA",
-          },
-          areaServed: ["Sarajevo", "Bosna i Hercegovina", "Balkan"],
+          ...businessSchema(),
           knowsAbout,
         },
         {
@@ -222,17 +221,19 @@ function SEO({ path, language = "bs" }) {
           publisher: { "@id": organizationId },
         },
         {
-          "@type": path.startsWith("/blog/") ? "BlogPosting" : "WebPage",
+          "@type": article ? "BlogPosting" : "WebPage",
           "@id": `${canonical}#webpage`,
           url: canonical,
           name: title,
           description,
           isPartOf: { "@id": websiteId },
           publisher: { "@id": organizationId },
+          ...(article ? { headline: article.title, datePublished: article.published_at,
+            image: ogImage, mainEntityOfPage: { '@id': canonical }, author: { '@id': organizationId } } : {}),
         },
       ],
     });
-  }, [path, language, managedPages]);
+  }, [path, language, managedPages, article]);
   return null;
 }
 function Header() {
@@ -271,7 +272,9 @@ function Header() {
   return (
     <>
       <SEO path={loc.pathname} language={language} />
-      <header>
+      <div className="public-contact-strip"><CopyEmail /><a href={`tel:${business.phone}`}><Phone size={13}/>{business.phoneDisplay}</a></div>
+      <div className="public-contact-spacer" aria-hidden="true" />
+      <header className="public-site-header">
         <Link
           className="logo-link"
           to="/"
@@ -481,6 +484,7 @@ function ChatWidget() {
             {channel === "choose" ? (
               <div className="chat-channel-choice">
                 <p>Kako želite razgovarati s nama?</p>
+                <div className="chat-email-option"><CopyEmail outlook /></div>
                 <a href="https://wa.me/38761264263?text=Pozdrav%20GordonDM%2C%20%C5%BEelim%20vi%C5%A1e%20informacija." target="_blank" rel="noreferrer" aria-label="Otvorite WhatsApp razgovor s GordonDM timom">
                   <b>W</b>
                   <span>
@@ -694,10 +698,10 @@ function Shell() {
             <strong>Kontakt & mreže</strong>
             <address className="footer-contact">
               <a href="tel:+38761264263"><Phone /> +387 61 264 263</a>
-              <a href="https://www.google.com/maps/search/?api=1&query=D%C5%BEemala+Bijedi%C4%87a+279L%2C+Sarajevo+71320" target="_blank" rel="noreferrer"><MapPin /> <span>Džemala Bijedića 279L<br />Sarajevo 71320</span></a>
+              <a href={mapUrl} target="_blank" rel="noreferrer"><MapPin /> <span>{business.street}<br />{business.city} {business.postalCode}</span></a>
             </address>
             <div className="footer-socials" aria-label="GordonDM društvene mreže i kontakt">
-              <a href="mailto:info@gordondm.com" aria-label="Pošaljite email GordonDM timu"><Mail /><span>Email</span></a>
+              <CopyEmail />
               <a href="https://www.facebook.com/gordondm" target="_blank" rel="noreferrer" aria-label="GordonDM na Facebooku"><FontAwesomeIcon icon={faFacebookF} /><span>Facebook</span></a>
               <a href="https://www.instagram.com/gordonkast" target="_blank" rel="noreferrer" aria-label="GordonDM na Instagramu"><FontAwesomeIcon icon={faInstagram} /><span>Instagram</span></a>
             </div>
@@ -746,9 +750,10 @@ export default function App() {
   }, []);
   return (
     <BrowserRouter>
-      <FirstPartyAnalytics />
-      <FrontendTranslator />
-      <Shell />
+      <Routes>
+        <Route path="/dashboard/work/*" element={<Suspense fallback={<div style={{padding:32}}>Otvaram Gordon Work…</div>}><WorkApp /></Suspense>} />
+        <Route path="*" element={<><FirstPartyAnalytics /><FrontendTranslator /><Shell /></>} />
+      </Routes>
     </BrowserRouter>
   );
 }

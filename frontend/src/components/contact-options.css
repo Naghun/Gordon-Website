@@ -1,0 +1,15 @@
+.contact-direct-options{grid-column:1/-1;width:100%;margin-top:16px;padding-top:20px;border-top:1px solid #ffffff20;text-align:left}
+.contact-direct-options>span{display:block;font:400 12px/1.6 'DM Sans',sans-serif;color:#b3bdbb;margin-bottom:12px}
+.contact-direct-options>div{display:flex;flex-wrap:wrap;gap:10px}
+.contact-direct-options a{display:inline-flex!important;align-items:center;justify-content:center;gap:8px;padding:12px 14px!important;border:1px solid #ffffff28!important;border-radius:9px;background:#ffffff05!important;color:#f4f6f3!important;font:500 12px/1.5 'DM Sans',sans-serif!important;text-decoration:none;transition:border-color .2s,background .2s}
+.contact-direct-options a:hover{border-color:#2ed3d3!important;background:#2ed3d310!important}
+.contact-direct-options a svg{flex-shrink:0;width:17px;height:17px;color:#2ed3d3}
+.contact-business-details{margin-top:30px;padding-top:24px;border-top:1px solid #ffffff20;display:flex;flex-direction:column;gap:16px}
+.contact-business-details .contact-business-label{font-size:10px;letter-spacing:2px;color:#2ed3d3;margin:0}
+.contact-business-details>a{display:flex;align-items:flex-start;gap:12px;color:#c7cfcd;font-size:14px;line-height:1.7}
+.contact-business-details>a svg,.contact-hours svg{color:#2ed3d3;flex-shrink:0;margin-top:3px}
+.contact-business-details .contact-email-feature{font-size:clamp(18px,2vw,27px);color:#fff;font-weight:600;letter-spacing:-.5px;align-items:center;overflow-wrap:anywhere}
+.contact-hours{display:flex;gap:12px;margin:0;color:#c7cfcd;font-size:13px;line-height:1.7}
+.contact-business-details>small{color:#98a8a3;font-size:11px}
+.contact-direct-options a:focus-visible,.contact-business-details a:focus-visible{outline:2px solid #2ed3d3;outline-offset:4px}
+@media(max-width:600px){.contact-direct-options>div{flex-direction:column}.contact-direct-options a{justify-content:flex-start}.contact-business-details{margin-bottom:18px}}

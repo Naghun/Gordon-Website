@@ -21,6 +21,8 @@ from django.urls import include, path, re_path
 from django.views.static import serve
 from website.admin_notifications import notification_open, notifications_feed, notifications_page
 from website import first_party_analytics
+from website import work_api
+from website import work_collaboration, work_import
 
 def home(request):
     return JsonResponse({
@@ -31,6 +33,23 @@ def home(request):
     })
 
 urlpatterns = [
+    path('admin/emails/', notifications_page, name='admin_emails'),
+    path('admin/gordon-work/', work_api.open_work, name='gordon_work'),
+    path('api/work/import/preview/', work_import.preview),
+    path('api/work/import/local-preview/', work_import.local_preview),
+    path('api/work/import/commit/', work_import.commit),
+    path('api/work/notifications/read/', work_collaboration.read_notifications),
+    path('api/work/projects/<uuid:pk>/members/<int:user_id>/', work_collaboration.member),
+    path('api/work/tasks/<uuid:pk>/attachments/', work_collaboration.upload),
+    path('api/work/attachments/<uuid:pk>/', work_collaboration.attachment),
+    path('api/work/session/', work_api.session),
+    path('api/work/login/', work_api.sign_in),
+    path('api/work/logout/', work_api.sign_out),
+    path('api/work/state/', work_api.state),
+    path('api/work/projects/', work_api.projects),
+    path('api/work/projects/<uuid:pk>/', work_api.project),
+    path('api/work/tasks/', work_api.task),
+    path('api/work/tasks/<uuid:pk>/', work_api.task),
     path('api/metrics/', first_party_analytics.collect),
     path('admin/analytics/', admin.site.admin_view(first_party_analytics.dashboard), name='first_party_analytics'),
     path('admin/analytics/data/', admin.site.admin_view(first_party_analytics.stats), name='first_party_analytics_data'),

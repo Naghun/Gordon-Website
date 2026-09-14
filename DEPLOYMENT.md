@@ -32,6 +32,26 @@ Direktorij `backend/media/` mora biti uključen u backup jer sadrži covere i ga
 
 ## 3. Frontend
 
+Prije svakog builda nakon objave ili izmjene bloga izvesti javni snapshot iz iste baze
+koja se objavljuje. Izvoz uključuje samo objavljene članke, bez privatnih podataka:
+
+```powershell
+.\.venv\Scripts\python.exe backend/manage.py export_public_blog --output content/published-blog.json
+```
+
+`generate-static-seo.mjs` iz tog snapshota generiše puni tekst članaka i sitemap.
+Izmjenu u blog administraciji prati novi izvoz, build i postavljanje; sama izmjena
+u bazi još ne osvježava statički HTML na hostingu. Build prekida rad ako snapshot
+nedostaje ili sadrži nevažeće/duple slugove.
+
+Javni kontakt i poslovni schema podaci imaju zajednički izvor
+`frontend/src/config/business.js`. Za email obavijesti u produkcijskom `.env`
+postaviti `CONTACT_RECIPIENT=kontakt@gordondm.com`; postojeće SMTP podatke ne
+mijenjati bez provjere. Upiti se spremaju u administraciji i kad SMTP nije dostupan.
+
+Lokalni Gordon Work prototip nije javna ruta i ne dodaje se u sitemap niti hosting
+pravila. Nove kontakt/SEO izmjene prvo se provjeravaju lokalno.
+
 Produkcijski frontend koristi relativni API `/backend/api`, pa radi na istom domenu bez lokalnih adresa.
 
 ```powershell

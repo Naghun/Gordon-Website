@@ -27,7 +27,11 @@ class ContactView(generics.CreateAPIView):
   contact=serializer.save()
   if settings.CONTACT_RECIPIENT:
    email=EmailMessage(subject=f'Novi GordonDM upit — {contact.name}',body=f'Ime: {contact.name}\nEmail: {contact.email}\nKompanija: {contact.company or "-"}\nVrsta projekta: {contact.service_type or "-"}\n\nPoruka:\n{contact.message}',from_email=settings.DEFAULT_FROM_EMAIL,to=[settings.CONTACT_RECIPIENT],reply_to=[contact.email])
-   email.send(fail_silently=True)
+   try:
+    email.send(fail_silently=False)
+   except Exception:
+    # The inquiry is already safely stored in admin; do not encourage a duplicate.
+    logger.warning('Contact notification failed for saved inquiry %s', contact.pk)
 
 class ChatConversationView(generics.CreateAPIView):
  serializer_class=ChatConversationSerializer

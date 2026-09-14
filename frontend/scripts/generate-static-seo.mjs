@@ -1,6 +1,8 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { business, businessSchema, publicImageUrl } from '../src/config/business.js';
+import { faqs } from '../src/config/faqs.js';
 
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const distRoot = join(projectRoot, "dist");
@@ -95,7 +97,7 @@ const pages = [
     intro: "Opišite ideju, proces koji želite unaprijediti ili rezultat koji želite postići. GordonDM tim će pregledati kontekst i predložiti konkretan sljedeći korak za softver, AI automatizaciju, marketing, consulting ili blockchain projekat.",
     sections: [
       ["Razgovor prije ponude", "Prvi razgovor služi da razumijemo cilj, postojeće stanje, korisnike, rok i ograničenja. Ne nudimo generičan paket prije nego što znamo koji problem treba riješiti i kako ćete mjeriti uspjeh."],
-      ["GordonDM Sarajevo", "Dostupni smo putem kontakt forme, email adrese info@gordondm.com i telefona +387 61 264 263. Adresa je Džemala Bijedića 279L, 71320 Sarajevo, Bosna i Hercegovina."],
+      ["GordonDM Sarajevo", "Dostupni smo putem kontakt forme, email adrese kontakt@gordondm.com i telefona +387 61 264 263. Adresa je Džemala Bijedića 279K, 71000 Sarajevo, Bosna i Hercegovina."],
     ],
   },
   {
@@ -121,66 +123,45 @@ const pages = [
       ["Čime se GordonDM bavi?", "GordonDM je tehnološki partner iz Sarajeva za razvoj poslovnog softvera, web aplikacija, AI automatizaciju, SEO i digitalni marketing, tehnološki consulting te blockchain i Web3 projekte."],
       ["Kako počinje saradnja?", "Prvo definišemo cilj, postojeći proces i očekivani rezultat. Nakon analize predlažemo prioritete, realan opseg, faze i konkretan sljedeći korak."],
       ["Da li radite izvan Sarajeva?", "Da. Sarađujemo s kompanijama iz cijele Bosne i Hercegovine, regije i međunarodnih tržišta, dok su sjedište i tim u Sarajevu."],
-      ["Kako zatražiti ponudu?", "Pošaljite opis ideje putem kontakt forme ili na info@gordondm.com. Odgovorit ćemo s relevantnim pitanjima i prijedlogom daljeg postupka."],
+      ["Kako zatražiti ponudu?", "Pošaljite opis ideje putem kontakt forme ili na kontakt@gordondm.com. Odgovorit ćemo s relevantnim pitanjima i prijedlogom daljeg postupka."],
     ],
   },
 ];
 
-const blogPages = [
-  ["gordondm-binance-saradnja", "GordonDM i Binance potpisali ugovor o saradnji", "Saradnja GordonDM-a i Binance ekosistema usmjerena je na događaje, edukaciju i odgovornu primjenu blockchain tehnologije u Sarajevu i na Balkanu."],
-  ["gordondm-solana-saradnja", "GordonDM i Solana potpisali ugovor o saradnji", "Saradnja s fokusom na Solana edukaciju, regionalne događaje, blockchain razvoj i povezivanje Web3 zajednice u Bosni i Hercegovini i na Balkanu."],
-  ["bitcoin-pizza-day-sarajevo", "Bitcoin Pizza Day Sarajevo: zajednica i kripto edukacija", "Sarajevo je obilježilo Bitcoin Pizza Day, datum prve poznate kupovine fizičkog proizvoda bitcoinom i važan susret lokalne kripto zajednice."],
-  ["superteam-balkan-split-solana-event", "Superteam Balkan Split i budućnost Solana ekosistema", "GordonDM intervjui i priča sa Startup Village Split događaja koji je okupio Superteam Balkan zajednicu, Web3 buildere i regionalne Solana projekte."],
-  ["binance-campus-montenegro-budva-gordondm", "Binance Campus Montenegro u Budvi", "GordonDM donosi priču s regionalnog Binance Campus događaja u Budvi koji je povezao edukaciju, Web3 zajednicu, sadržaj i networking."],
-].map(([slug, title, description]) => ({
-  path: `/blog/${slug}`,
-  title: `${title} | GordonDM`,
-  description,
-  eyebrow: "KRIPTO I WEB3 · GORDONDM BLOG",
-  h1: title,
-  intro: description,
-  sections: [
-    ["Regionalna Web3 zajednica", "GordonDM kroz događaje, intervjue i sadržaj povezuje ljude koji razvijaju blockchain projekte sa širom publikom u Sarajevu, Bosni i Hercegovini i na Balkanu."],
-    ["Edukacija i odgovorna primjena kripta", "Fokus sadržaja je na znanju, sigurnosti, praktičnoj upotrebi tehnologije i saradnjama koje regionalnim talentima otvaraju prostor unutar globalnog Web3 ekosistema."],
-    ...(["gordondm-binance-saradnja", "gordondm-solana-saradnja", "binance-campus-montenegro-budva-gordondm"].includes(slug) ? [["Od regionalne ideje do konkretne vrijednosti", "Ovakve saradnje povezuju lokalno tržište s međunarodnim iskustvom te otvaraju prostor za nove edukativne programe, kvalitetan digitalni sadržaj, softverske projekte i dugoročna poslovna partnerstva."]] : []),
-  ],
-}));
-
-// Use the same reviewed article bodies as the database import, not SEO filler.
-for (const batch of ['01', '02', '03']) {
-  const posts = JSON.parse(await readFile(join(projectRoot, '..', 'content', `instagram-batch-${batch}.json`), 'utf8'));
-  for (const post of posts) {
-    const blocks = post.content.split(/\n\n/);
-    const sections = [];
-    let heading = 'Priča s događaja';
-    for (const block of blocks.slice(1)) {
-      if (block.startsWith('## ')) heading = block.slice(3);
-      else sections.push([heading, block]);
-    }
-    const seoTitle = post.slug === 'bloomberg-adria-next-step-retail-2025-gordonkast'
-      ? 'Bloomberg Adria: digitalna trgovina'
-      : post.title;
-    blogPages.push({path:`/blog/${post.slug}`, title:`${seoTitle} | GordonDM`, description:post.excerpt,
-      eyebrow:'GORDONDM BLOG', h1:post.title, intro:blocks[0], sections});
-  }
+// The same published article text feeds the HTML and sitemap. Never silently fall back
+// to a shorter manual list when the export is missing or invalid.
+const publishedPosts = JSON.parse(await readFile(join(projectRoot, '..', 'content', 'published-blog.json'), 'utf8'));
+if (!Array.isArray(publishedPosts) || publishedPosts.some(post => !post.title || !post.content || !/^[a-z0-9-]+$/.test(post.slug))) {
+  throw new Error('Invalid published blog export. Run export_public_blog before building.');
 }
+if (new Set(publishedPosts.map(post => post.slug)).size !== publishedPosts.length) throw new Error('Duplicate blog slug');
+const blogPages = publishedPosts.map(post => ({
+  path: `/blog/${post.slug}`, title: `${post.title} | GordonDM`, description: post.excerpt,
+  eyebrow: 'GORDONDM BLOG', h1: post.title, intro: post.excerpt, sections: [],
+  content: post.content, publishedAt: post.published_at, updatedAt: post.updated_at,
+  image: publicImageUrl(post.cover_image),
+}));
 pages.push(...blogPages);
+pages.find(page => page.path === '/faq').sections = faqs;
+const contactPage = pages.find(page => page.path === '/kontakt');
+contactPage.h1 = 'Pokrenimo vaš digitalni projekat.';
+contactPage.sections.push(['Radno vrijeme', business.hours]);
 
 const staticBlogLinks = blogPages.map((post) => (
-  `<article><h3><a href="${post.path}">${post.h1}</a></h3><p>${post.description}</p></article>`
+  `<article><h3><a href="${post.path}">${escapeHtml(post.h1)}</a></h3><p>${escapeHtml(post.description)}</p></article>`
 )).join("");
 
-const escapeHtml = (value) => value
+function escapeHtml(value) { return String(value)
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
   .replaceAll(">", "&gt;")
-  .replaceAll('"', "&quot;");
+  .replaceAll('"', "&quot;"); }
 
 function staticBody(page, notFound = false) {
   const inline = text => escapeHtml(text).replace(/\[([^\]]+)\]\((\/[a-z0-9/-]*)\)/g, '<a href="$2">$1</a>');
-  const sections = page.sections.map(([heading, text], index) => `<section>${index && page.sections[index-1][0] === heading ? '' : `<h2>${escapeHtml(heading)}</h2>`}<p>${inline(text)}</p></section>`).join("");
+  const sections = page.content ? page.content.split(/\n\n+/).filter(Boolean).map(block => block.startsWith('## ') ? `<h2>${escapeHtml(block.slice(3))}</h2>` : `<p>${inline(block)}</p>`).join('') : page.sections.map(([heading, text], index) => `<section>${index && page.sections[index-1][0] === heading ? '' : `<h2>${escapeHtml(heading)}</h2>`}<p>${inline(text)}</p></section>`).join("");
   const blogSection = notFound ? "" : `<section class="static-blog-links"><h2>Izdvojeno iz GordonDM bloga</h2><p>Pročitajte priče o partnerstvima, događajima, tehnologiji i ljudima koji povezuju Sarajevo i Balkan s globalnim Web3 ekosistemom.</p>${staticBlogLinks}</section>`;
-  return `<main class="static-seo-shell" data-static-seo="true"><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.h1)}</h1><p>${escapeHtml(page.intro)}</p>${sections}${blogSection}<nav aria-label="Glavne stranice"><h2>${notFound ? "Nastavite pregled stranice" : "Istražite GordonDM usluge"}</h2><p><a href="/">Početna</a> · <a href="/ai-automatizacija">AI automatizacija</a> · <a href="/softver-rjesenja">Softver rješenja</a> · <a href="/marketing">Marketing</a> · <a href="/kripto">Web3</a> · <a href="/konsulting">Konsulting</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a> · <a href="/kontakt">Kontakt</a></p></nav></main>`;
+  return `<main class="static-seo-shell" data-static-seo="true"><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.h1)}</h1><p>${escapeHtml(page.intro)}</p>${sections}${page.path === '/kontakt' ? `<p><a href="mailto:${business.email}">${business.email}</a> · <a href="tel:${business.phone}">${business.phoneDisplay}</a></p>` : ''}${blogSection}<nav aria-label="Glavne stranice"><h2>${notFound ? "Nastavite pregled stranice" : "Istražite GordonDM usluge"}</h2><p><a href="/">Početna</a> · <a href="/ai-automatizacija">AI automatizacija</a> · <a href="/softver-rjesenja">Softver rješenja</a> · <a href="/marketing">Marketing</a> · <a href="/kripto">Web3</a> · <a href="/konsulting">Konsulting</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a> · <a href="/kontakt">Kontakt</a></p></nav></main>`;
 }
 
 function renderDocument(page, { noindex = false, notFound = false } = {}) {
@@ -195,6 +176,10 @@ function renderDocument(page, { noindex = false, notFound = false } = {}) {
     .replace(/<meta property="og:url" content="[^"]*"\s*\/>/, `<meta property="og:url" content="${canonical}" />`)
     .replace('<div id="root"></div>', `<div id="root">${staticBody(page, notFound)}</div>`);
 
+  if (page.content) {
+    html = html.replace(/<meta property="og:type" content="[^"]*"\s*\/>/, '<meta property="og:type" content="article" />')
+      .replace(/<meta property="og:image" content="[^"]*"\s*\/>/, `<meta property="og:image" content="${escapeHtml(new URL(page.image, business.url).href)}" />`);
+  }
   const organizationId = "https://gordon.ba/#organization";
   const websiteId = "https://gordon.ba/#website";
   const pageSchema = {
@@ -206,6 +191,11 @@ function renderDocument(page, { noindex = false, notFound = false } = {}) {
     isPartOf: { "@id": websiteId },
     publisher: { "@id": organizationId },
   };
+  if (page.content) {
+    Object.assign(pageSchema, { headline: page.h1, datePublished: page.publishedAt,
+      dateModified: page.updatedAt, image: new URL(page.image, 'https://gordon.ba').href,
+      mainEntityOfPage: { '@id': canonical }, author: { '@id': organizationId } });
+  }
   if (page.path === "/faq") {
     pageSchema.mainEntity = page.sections.map(([question, answer]) => ({
       "@type": "Question",
@@ -217,23 +207,7 @@ function renderDocument(page, { noindex = false, notFound = false } = {}) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "LocalBusiness",
-        "@id": organizationId,
-        name: "GordonDM",
-        alternateName: "Gordon Digital Marketing",
-        url: "https://gordon.ba/",
-        logo: "https://gordon.ba/logo-gordondm-dark.png",
-        image: "https://gordon.ba/logo-gordondm-dark.png",
-        email: "info@gordondm.com",
-        telephone: "+38761264263",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Džemala Bijedića 279L",
-          addressLocality: "Sarajevo",
-          postalCode: "71320",
-          addressCountry: "BA",
-        },
-        areaServed: ["Sarajevo", "Bosna i Hercegovina", "Balkan"],
+        ...businessSchema(),
         knowsAbout: ["AI automatizacija", "SaaS platforme", "Enterprise rješenja", "Poslovni softver", "Digitalni marketing", "Web3", "Digitalni konsalting"],
       },
       {
@@ -270,3 +244,11 @@ const notFound = {
 await writeFile(join(distRoot, "404.html"), renderDocument(notFound, { noindex: true, notFound: true }), "utf8");
 
 console.log(`Generated ${pages.length + 1} crawler-visible HTML pages.`);
+
+
+// Derive the sitemap from precisely the pages emitted above; internal tools and
+// the 404 document are deliberately excluded.
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map(page => `  <url><loc>https://gordon.ba${page.path}</loc>${page.updatedAt ? `<lastmod>${escapeHtml(page.updatedAt)}</lastmod>` : ''}</url>`).join('\n')}\n</urlset>\n`;
+await writeFile(join(distRoot, 'sitemap.xml'), sitemap, 'utf8');
+await writeFile(join(projectRoot, 'public', 'sitemap.xml'), sitemap, 'utf8');
+console.log(`Sitemap: ${pages.length} pages, including ${blogPages.length} published articles.`);

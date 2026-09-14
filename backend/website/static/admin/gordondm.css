@@ -3272,3 +3272,6 @@ body .inline-group .add-row a:focus::before {
   color: #0b0d0e !important;
   -webkit-text-fill-color: #0b0d0e !important;
 }
+.notifications-list-title>div{flex-wrap:wrap;gap:10px}
+.notifications-list-title select{max-width:240px;background:#142d30;color:#fff;border:1px solid #269da4;border-radius:6px;padding:6px 9px;font-size:12px}
+.notifications-list-title label{margin-right:7px;font-size:11px}

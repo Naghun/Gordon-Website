@@ -2,6 +2,66 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 from django.utils import timezone
 import uuid
+from django.conf import settings
+
+def work_columns():
+ return [{'id':'ideas','name':'Ideje','color':'#aa8cff'}, {'id':'todo','name':'Za uraditi','color':'#5ca9ff'}, {'id':'doing','name':'U toku','color':'#ffbc57'}, {'id':'review','name':'Na pregledu','color':'#f087c9'}]
+
+class WorkProject(models.Model):
+ id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+ name=models.CharField(max_length=100)
+ owner=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='owned_work_projects')
+ members=models.ManyToManyField(settings.AUTH_USER_MODEL,related_name='work_projects')
+ columns=models.JSONField(default=work_columns)
+ background=models.TextField(default='aurora')
+ roles=models.JSONField(default=dict)
+ created_at=models.DateTimeField(auto_now_add=True)
+ def __str__(self): return self.name
+
+class WorkTask(models.Model):
+ id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+ project=models.ForeignKey(WorkProject,null=True,blank=True,on_delete=models.CASCADE,related_name='tasks')
+ creator=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='created_work_tasks')
+ assignee=models.ForeignKey(settings.AUTH_USER_MODEL,null=True,blank=True,on_delete=models.SET_NULL,related_name='assigned_work_tasks')
+ title=models.CharField(max_length=180)
+ parent=models.ForeignKey('self',null=True,blank=True,on_delete=models.SET_NULL,related_name='subtasks')
+ description=models.TextField(blank=True)
+ status=models.CharField(max_length=50,default='todo')
+ priority=models.CharField(max_length=10,default='Srednji')
+ label=models.CharField(max_length=40,blank=True)
+ appearance=models.JSONField(default=dict)
+ due=models.DateField(null=True,blank=True)
+ checklist=models.JSONField(default=list)
+ comments=models.JSONField(default=list)
+ activity=models.JSONField(default=list)
+ deleted_at=models.DateTimeField(null=True,blank=True)
+ archived=models.BooleanField(default=False)
+ revision=models.PositiveIntegerField(default=1)
+ created_at=models.DateTimeField(auto_now_add=True)
+ updated_at=models.DateTimeField(auto_now=True)
+
+class WorkAttachment(models.Model):
+ id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+ task=models.ForeignKey(WorkTask,on_delete=models.CASCADE,related_name='attachments')
+ uploader=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+ name=models.CharField(max_length=180)
+ content=models.BinaryField()
+ size=models.PositiveIntegerField()
+ created_at=models.DateTimeField(auto_now_add=True)
+
+class WorkNotification(models.Model):
+ recipient=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+ task=models.ForeignKey(WorkTask,on_delete=models.CASCADE)
+ text=models.CharField(max_length=300)
+ read=models.BooleanField(default=False)
+ created_at=models.DateTimeField(auto_now_add=True)
+
+class WorkImport(models.Model):
+ token=models.UUIDField()
+ user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+ created_at=models.DateTimeField(auto_now_add=True)
+ class Meta:
+  constraints=[models.UniqueConstraint(fields=['token','user'],name='unique_work_import')]
 
 class AnalyticsVisit(models.Model):
  token = models.UUIDField(primary_key=True)
@@ -65,7 +125,8 @@ class ChatMessage(models.Model):
  def __str__(self): return f'{self.conversation.name}: {self.message[:45]}'
 
 class AdminEmail(models.Model):
- uid=models.CharField(max_length=80,unique=True)
+ uid=models.CharField(max_length=80)
+ mailbox=models.CharField(max_length=40,default='primary',db_index=True)
  message_id=models.CharField(max_length=255,blank=True)
  sender_name=models.CharField(max_length=180,blank=True)
  sender_email=models.EmailField()
@@ -77,6 +138,7 @@ class AdminEmail(models.Model):
  replied_at=models.DateTimeField(null=True,blank=True)
  created_at=models.DateTimeField(auto_now_add=True)
  class Meta:
+  constraints=[models.UniqueConstraint(fields=['mailbox','uid'],name='unique_mailbox_uid')]
   ordering=['-received_at']
   verbose_name='Email poruka'
   verbose_name_plural='Email poruke'

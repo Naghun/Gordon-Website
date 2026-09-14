@@ -18,6 +18,7 @@ DirectoryIndex index.html
 
   # Django API, admin, statika i mediji imaju vlastitu aplikacijsku konfiguraciju.
   RewriteRule ^backend(?:/|$) - [L]
+  RewriteRule ^dashboard/work(?:/.*)?$ index.html [L]
 
   # Svaka javna React ruta dobija vlastiti HTML, H1, meta podatke i tekst i bez JavaScripta.
   RewriteRule ^(ai-automatizacija|softver-rjesenja|marketing|kripto|konsulting|kontakt|blog|faq)/?$ seo-pages/$1.html [L]

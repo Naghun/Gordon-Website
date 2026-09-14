@@ -10,6 +10,8 @@ ROOT_URLCONF='config.urls'; WSGI_APPLICATION='config.wsgi.application'
 TEMPLATES=[{'BACKEND':'django.template.backends.django.DjangoTemplates','DIRS':[BASE_DIR/'templates'],'APP_DIRS':True,'OPTIONS':{'context_processors':['django.template.context_processors.request','django.contrib.auth.context_processors.auth','django.contrib.messages.context_processors.messages']}}]
 CORS_ALLOWED_ORIGINS=[x.strip() for x in os.getenv('CORS_ALLOWED_ORIGINS','http://localhost:5173,http://127.0.0.1:5173').split(',') if x.strip()]
 CSRF_TRUSTED_ORIGINS=[x.strip() for x in os.getenv('CSRF_TRUSTED_ORIGINS','').split(',') if x.strip()]
+if DEBUG:
+ CSRF_TRUSTED_ORIGINS=list(set(CSRF_TRUSTED_ORIGINS+['http://127.0.0.1:5173','http://localhost:5173']))
 if os.getenv('DB_NAME'):
  DATABASES={'default':{'ENGINE':'django.db.backends.mysql','NAME':os.getenv('DB_NAME'),'USER':os.getenv('DB_USER'),'PASSWORD':os.getenv('DB_PASSWORD'),'HOST':os.getenv('DB_HOST','localhost'),'PORT':os.getenv('DB_PORT','3306'),'OPTIONS':{'charset':'utf8mb4'}}}
 else: DATABASES={'default':{'ENGINE':'django.db.backends.sqlite3','NAME':BASE_DIR/'db.sqlite3'}}
@@ -18,6 +20,7 @@ APP_BASE_PATH=os.getenv('APP_BASE_PATH','').strip('/')
 URL_PREFIX=f'/{APP_BASE_PATH}' if APP_BASE_PATH else ''
 STATIC_URL=f'{URL_PREFIX}/static/'; STATIC_ROOT=BASE_DIR/'staticfiles'; DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
 MEDIA_URL=f'{URL_PREFIX}/media/'; MEDIA_ROOT=BASE_DIR/'media'
+DATA_UPLOAD_MAX_MEMORY_SIZE=8*1024*1024
 
 # Sigurne produkcijske vrijednosti aktiviraju se kada je DEBUG=False.
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -38,11 +41,12 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
 EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() == 'true'
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER or 'web@gordondm.local')
-CONTACT_RECIPIENT = os.getenv('CONTACT_RECIPIENT', '')
+CONTACT_RECIPIENT = os.getenv('CONTACT_RECIPIENT', 'kontakt@gordondm.com')
 
 IMAP_HOST = os.getenv('IMAP_HOST', '')
 IMAP_PORT = int(os.getenv('IMAP_PORT', '993'))
 IMAP_USER = os.getenv('IMAP_USER', '')
 IMAP_PASSWORD = os.getenv('IMAP_PASSWORD', '')
 IMAP_USE_SSL = os.getenv('IMAP_USE_SSL', 'True').lower() == 'true'
+CONTACT_MAIL_PASSWORD = os.getenv('CONTACT_MAIL_PASSWORD', '')
 GEOIP_PATH = os.getenv('GEOIP_PATH', '')

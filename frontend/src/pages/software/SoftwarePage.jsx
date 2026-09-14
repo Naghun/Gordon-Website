@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { API } from "../../config/site";
 import { trackLead } from "../../utils/analytics";
+import ContactOptions from '../../components/ContactOptions';
 import "./software.css";
 
 export function SoftwarePage() {
@@ -678,6 +679,7 @@ export function SoftwareContact() {
             Pošaljite softverski upit <ArrowRight />
           </button>
           <small>{status}</small>
+          <ContactOptions />
         </div>
       </form>
     </section>

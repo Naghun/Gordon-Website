@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { heroSlides, pages } from "../../config/site";
 import ContactForm from "../../components/ContactForm";
+import ClientReviews from '../../components/ClientReviews';
 import { HomeBlogSection } from "../blog/BlogPage";
 import "./home.css";
 
@@ -258,6 +259,7 @@ export function Home() {
           </Link>
         </div>
       </section>
+      <ClientReviews/>
       <section className="home-contact" id="kontakt">
         <div className="home-contact-copy">
           <h2>Hajde da vaš poslovni izazov pretvorimo u rješenje.</h2>

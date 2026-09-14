@@ -1,0 +1,8 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<section style="max-width:560px;background:#fff;border:1px solid #dfe7e7;border-radius:12px;padding:28px;color:#23383a">
+  <h2 style="color:#23383a;background:none;padding:0">Uspješno ste odjavljeni.</h2>
+  <p style="color:#506466">Hvala na radu. Ponovo se prijavite kada želite nastaviti upravljanje stranicom.</p>
+  <a href="{% url 'admin:login' %}" style="display:inline-block;margin-top:12px;background:#113e40;color:#fff;padding:11px 18px;border-radius:6px">Ponovna prijava →</a>
+</section>
+{% endblock %}

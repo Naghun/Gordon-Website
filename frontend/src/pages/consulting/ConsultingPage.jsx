@@ -13,6 +13,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { API } from "../../config/site";
+import ContactOptions from "../../components/ContactOptions";
 import { trackLead } from "../../utils/analytics";
 import "./consulting.css";
 
@@ -106,7 +107,7 @@ function ConsultingDiagnostic() {
           </motion.section>
         </AnimatePresence>
         <AnimatePresence>
-          {modalOpen && <motion.div className="consulting-modal" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><motion.form className="consulting-modal-card" onSubmit={send} initial={{ opacity: 0, y: 28, scale: .985 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15 }}><button className="consulting-modal-close" type="button" onClick={() => setModalOpen(false)} aria-label="Zatvori">×</button><small>VAŠ CONSULTING BRIEF</small><h3>Imamo početni smjer.</h3><div className="consulting-summary"><span><small>CILJ</small>{goal}</span><span><small>PODRUČJE</small>{focus}</span><span><small>VRIJEME</small>{timing}</span></div><div className="consulting-fields"><input required name="name" placeholder="Ime i prezime" /><input required type="email" name="email" placeholder="Email adresa" /><input name="company" placeholder="Kompanija" /><textarea required name="message" rows="2" placeholder="Šta vas trenutno najviše koči?" /></div><button className="consulting-next" type="submit">Pošalji consulting brief <ArrowRight /></button><p className="consulting-status">{status}</p></motion.form></motion.div>}
+          {modalOpen && <motion.div className="consulting-modal" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><motion.form className="consulting-modal-card" onSubmit={send} initial={{ opacity: 0, y: 28, scale: .985 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15 }}><button className="consulting-modal-close" type="button" onClick={() => setModalOpen(false)} aria-label="Zatvori">×</button><small>VAŠ CONSULTING BRIEF</small><h3>Imamo početni smjer.</h3><div className="consulting-summary"><span><small>CILJ</small>{goal}</span><span><small>PODRUČJE</small>{focus}</span><span><small>VRIJEME</small>{timing}</span></div><div className="consulting-fields"><input required name="name" placeholder="Ime i prezime" /><input required type="email" name="email" placeholder="Email adresa" /><input name="company" placeholder="Kompanija" /><textarea required name="message" rows="2" placeholder="Šta vas trenutno najviše koči?" /></div><button className="consulting-next" type="submit">Pošalji consulting brief <ArrowRight /></button><p className="consulting-status">{status}</p><ContactOptions /></motion.form></motion.div>}
         </AnimatePresence>
       </div>
     </>

@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .mailbox import sync_mailbox
+from .mail_accounts import accounts
+from urllib.parse import urlencode
 from .models import AdminEmail, ChatConversation, ChatMessage, ContactMessage
 from .email_filters import suspected_sales_or_scam_q
 
@@ -40,7 +42,10 @@ def unread_notification_counts():
     return counts
 
 
-def notification_items(limit=40, kind=None):
+def notification_items(limit=40, kind=None, mailbox=None, show_read=False):
+    emails=AdminEmail.objects.exclude(suspected_sales_or_scam_q())
+    if mailbox: emails=emails.filter(mailbox=mailbox)
+    if not show_read: emails=emails.filter(is_read=False)
     contact_items = [
         {
             "kind": "contact",
@@ -72,7 +77,7 @@ def notification_items(limit=40, kind=None):
             "created_at": message.received_at,
             "url": reverse("admin_notification_open", args=("email", message.pk)),
         }
-        for message in AdminEmail.objects.filter(is_read=False).exclude(suspected_sales_or_scam_q())[:limit]
+        for message in emails[:limit]
     ]
     if kind == "contact":
         items = contact_items
@@ -87,14 +92,17 @@ def notification_items(limit=40, kind=None):
 
 @admin.site.admin_view
 def notifications_page(request):
-    sync_result = sync_mailbox(force=True)
-    active_type = request.POST.get("type") or request.GET.get("type", "chat")
+    mailbox = request.POST.get('mailbox') or request.GET.get('mailbox','primary')
+    if mailbox not in accounts(): mailbox='primary'
+    emails_page = request.path.rstrip('/').endswith('/emails')
+    sync_result = sync_mailbox(force=request.GET.get('refresh')=='1',mailbox=mailbox)
+    active_type = request.POST.get("type") or request.GET.get("type", "email" if emails_page else "chat")
     if active_type not in {"chat", "contact", "email"}:
         active_type = "chat"
     if request.method == "POST" and request.POST.get("action") == "read_all_emails":
-        AdminEmail.objects.filter(is_read=False).exclude(suspected_sales_or_scam_q()).update(is_read=True)
-        return redirect(f'{reverse("admin_notifications")}?type=email')
-    items = notification_items(40, active_type)
+        AdminEmail.objects.filter(mailbox=mailbox,is_read=False).exclude(suspected_sales_or_scam_q()).update(is_read=True)
+        return redirect(request.path+"?"+urlencode({"type":"email","mailbox":mailbox}))
+    items = notification_items(100 if emails_page else 40, active_type, mailbox, show_read=emails_page)
     counts = unread_notification_counts()
     sync_error = sync_result.get("error", "")
     if sync_result.get("ok"):
@@ -104,7 +112,11 @@ def notifications_page(request):
     else:
         sync_warning = "Email sandučić nije dostupan. Provjerite IMAP server i pristupne podatke."
     return render(request, "admin/notifications.html", {
-        "title": "Notifikacije",
+        **admin.site.each_context(request),
+        "title": "Emails" if emails_page else "Notifikacije",
+        "emails_page":emails_page,
+        "mailboxes":[{"id":key,"label":config["label"]} for key,config in accounts().items()],
+        "selected_mailbox":mailbox,
         "notifications": items,
         "notification_count": counts["total"],
         "active_type": active_type,
@@ -115,7 +127,8 @@ def notifications_page(request):
 
 @admin.site.admin_view
 def notifications_feed(request):
-    sync_mailbox()
+    for mailbox in accounts():
+        sync_mailbox(mailbox=mailbox)
     items = notification_items(20)
     counts = unread_notification_counts()
     return JsonResponse({

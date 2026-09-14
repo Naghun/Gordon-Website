@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from rest_framework.test import APIClient
+from unittest.mock import patch
+from django.core import mail
 
 from .models import ContactMessage
 
@@ -37,3 +39,17 @@ class PublicContactTests(TestCase):
         response = self.client.post('/api/contact/', {}, format='json')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(ContactMessage.objects.count(), 0)
+
+    @override_settings(CONTACT_RECIPIENT='kontakt@gordondm.com', EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend')
+    def test_submission_notifies_new_contact_mailbox(self):
+        response = self.client.post('/api/contact/', self.payload, format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(mail.outbox[0].to, ['kontakt@gordondm.com'])
+        self.assertEqual(mail.outbox[0].reply_to, ['test@example.com'])
+
+    @override_settings(CONTACT_RECIPIENT='kontakt@gordondm.com')
+    @patch('website.views.EmailMessage.send', side_effect=OSError('SMTP unavailable'))
+    def test_mail_failure_preserves_inquiry_and_success_response(self, mocked_send):
+        response = self.client.post('/api/contact/', self.payload, format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(ContactMessage.objects.count(), 1)

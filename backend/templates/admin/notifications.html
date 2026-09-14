@@ -11,7 +11,7 @@
     <header>
       <div>
         <p>GORDONDM / ADMIN CENTAR</p>
-        <h1>Notifikacije</h1>
+        <h1>{{ title }}</h1>
       </div>
       <span><b>{{ notification_count }}</b> novih stavki</span>
     </header>
@@ -32,11 +32,16 @@
         <div class="notifications-list-title">
           <span>{% if active_type == 'chat' %}Chat poruke{% elif active_type == 'contact' %}Kontakt poruke{% else %}Email poruke{% endif %}</span>
           <div>
-            <a class="notifications-refresh" href="?type={{ active_type }}&refresh=1">Osvježi</a>
+            {% if active_type == 'email' %}
+            <form method="get"><input type="hidden" name="type" value="email"><label for="email-account">Sandučić</label>
+              <select id="email-account" name="mailbox" onchange="this.form.submit()">{% for box in mailboxes %}<option value="{{ box.id }}" {% if box.id == selected_mailbox %}selected{% endif %}>{{ box.label }}</option>{% endfor %}</select>
+              <noscript><button>Prikaži</button></noscript></form>
+            {% endif %}
+            <a class="notifications-refresh" href="?type={{ active_type }}&mailbox={{ selected_mailbox }}&refresh=1">Osvježi</a>
             {% if active_type == 'email' and notifications %}
               <form method="post">
                 {% csrf_token %}
-                <input type="hidden" name="type" value="email">
+                <input type="hidden" name="mailbox" value="{{ selected_mailbox }}"><input type="hidden" name="type" value="email">
                 <input type="hidden" name="action" value="read_all_emails">
                 <button type="submit">Označi sve pročitano</button>
               </form>
