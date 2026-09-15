@@ -47,6 +47,29 @@ class CollaborationTests(TestCase):
         self.client.patch(f'/api/work/projects/{p.pk}/',{'teamVisible':True},format='json')
         self.assertTrue(p.members.filter(pk=late.pk).exists())
 
+    def test_delete_project_removes_it_and_content_from_work(self):
+        url=f'/api/work/projects/{self.project.pk}/'
+        self.client.force_login(self.editor)
+        self.assertEqual(self.client.delete(url).status_code,403)
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.patch(url,{'name':'Renamed'},format='json').status_code,200)
+        self.assertEqual(self.client.delete(url).status_code,200)
+        self.assertFalse(WorkProject.objects.filter(pk=self.project.pk).exists())
+        self.client.force_login(self.editor)
+        state=self.client.get('/api/work/state/').json()
+        self.assertEqual(state['projects'],[]);self.assertEqual(state['tasks'],[])
+        self.assertEqual(self.client.get(url+'chat/').status_code,404)
+        self.assertEqual(self.client.patch(f'/api/work/tasks/{self.task.pk}/',{'revision':1,'title':'No'},format='json').status_code,404)
+        self.assertEqual(self.client.patch(url,{'name':'No'},format='json').status_code,404)
+
+    def test_default_team_does_not_return_after_deletion(self):
+        from .work_api import ADMIN_TEAM_ID
+        self.owner.is_staff=True;self.owner.save()
+        self.client.get('/api/work/state/')
+        self.assertEqual(self.client.delete(f'/api/work/projects/{ADMIN_TEAM_ID}/').status_code,200)
+        ids=[p['id'] for p in self.client.get('/api/work/state/').json()['projects']]
+        self.assertNotIn(str(ADMIN_TEAM_ID),ids)
+
     def test_chat_persists_for_members_and_blocks_outsiders(self):
         url=f'/api/work/projects/{self.project.pk}/chat/'
         self.assertEqual(self.client.post(url,{'text':'Prva poruka'},format='json').status_code,201)

@@ -30,8 +30,8 @@ def sync_admin_team(user):
     if not user.is_active or not (user.is_staff or user.is_superuser): return
     admins = list(get_user_model().objects.filter(is_active=True).filter(Q(is_staff=True)|Q(is_superuser=True)).order_by('pk'))
     with transaction.atomic():
-        p, _ = WorkProject.objects.get_or_create(pk=ADMIN_TEAM_ID, defaults={'name':'Gordon tim','owner':admins[0],'team_visible':True})
-        if p.team_visible: p.members.add(*admins)
+        p, _ = WorkProject.all_objects.get_or_create(pk=ADMIN_TEAM_ID, defaults={'name':'Gordon tim','owner':admins[0],'team_visible':True})
+        if not p.deleted_at and p.team_visible: p.members.add(*admins)
         for shared in WorkProject.objects.filter(team_visible=True):
             shared.members.add(*admins)
 
@@ -88,7 +88,7 @@ def sign_out(request):
     return Response({'user':None,'csrf':get_token(request._request)})
 
 def visible_tasks(user):
-    return WorkTask.objects.filter(Q(project__members=user)|Q(project__isnull=True,creator=user)).distinct()
+    return WorkTask.objects.filter(Q(project__members=user,project__deleted_at__isnull=True)|Q(project__isnull=True,creator=user)).distinct()
 
 def project_data(p):
     return {'id':str(p.pk),'name':p.name,'owner':p.owner_id,'members':[person(u) for u in p.members.filter(is_active=True)],'columns':p.columns,'background':p.background,'roles':p.roles,'teamVisible':p.team_visible}
@@ -153,13 +153,17 @@ def projects(request):
     p=create_team_project(text(request.data.get('name',''),100,True),request.user,request.data.get('teamVisible',True))
     return Response(project_data(p),status=201)
 
-@api_view(['PATCH','POST'])
+@api_view(['PATCH','POST','DELETE'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def project(request,pk):
     with transaction.atomic():
         p=get_object_or_404(WorkProject.objects.select_for_update(),pk=pk,members=request.user)
         if p.owner_id!=request.user.pk and not is_work_admin(request.user): raise PermissionDenied('Samo vlasnik uređuje projekat i članove.')
+        if request.method=='DELETE':
+            p.deleted_at=timezone.now()
+            p.save(update_fields=['deleted_at'])
+            return Response({'ok':True,'deleted':str(p.pk)})
         if request.method=='POST':
             username=text(request.data.get('username',''),150,True)
             u=get_user_model().objects.filter(username=username,is_active=True).first()

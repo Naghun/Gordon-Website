@@ -7,7 +7,13 @@ from django.conf import settings
 def work_columns():
  return [{'id':'ideas','name':'Ideje','color':'#aa8cff'}, {'id':'todo','name':'Za uraditi','color':'#5ca9ff'}, {'id':'doing','name':'U toku','color':'#ffbc57'}, {'id':'review','name':'Na pregledu','color':'#f087c9'}]
 
+class ActiveWorkProjects(models.Manager):
+ def get_queryset(self): return super().get_queryset().filter(deleted_at__isnull=True)
+
 class WorkProject(models.Model):
+ deleted_at=models.DateTimeField(null=True,blank=True)
+ objects=ActiveWorkProjects()
+ all_objects=models.Manager()
  id=models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
  name=models.CharField(max_length=100)
  owner=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='owned_work_projects')

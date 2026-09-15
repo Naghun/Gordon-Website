@@ -88,6 +88,8 @@ function Modal({ title, children, close, wide = false }) {
 }
 export default function WorkSpace() {
   const navigate = useNavigate();
+  const [projectEdit, setProjectEdit] = useState(null);
+  const [confirmProjectDelete, setConfirmProjectDelete] = useState(false);
   const [alignLists, setAlignLists] = useState(false);
   const [newProjectShared, setNewProjectShared] = useState(true);
   const [taskColorsOpen, setTaskColorsOpen] = useState(false);
@@ -855,6 +857,7 @@ export default function WorkSpace() {
               </span>
             ))}
           </div>
+          <button disabled={!project || allProjects || !owner} onClick={() => {setProjectEdit({name:project.name,teamVisible:!!project.teamVisible});setConfirmProjectDelete(false);setError("");setModal("edit-project");}}>Uredi projekat</button>
           <button onClick={() => setModal("members")} disabled={!project || allProjects}>
             <Users size={16} />
             Članovi
@@ -1689,6 +1692,25 @@ export default function WorkSpace() {
                 {busy ? "Čuvamo…" : "Sačuvaj"}
               </button>
             </div>
+          </form>
+        </Modal>
+      )}
+      {modal === "edit-project" && project && projectEdit && (
+        <Modal title="Uredi projekat" close={()=>!busy && setModal(null)}>
+          <form className="gw-modal-body" onSubmit={async e=>{e.preventDefault();const values={name:projectEdit.name.trim()};if(mode==="demo" || project.owner===user.id) {if(projectEdit.teamVisible!==!!project.teamVisible) values.teamVisible=projectEdit.teamVisible;}if(await run(()=>patchProject(values)))setModal(null);}}>
+            <label>Naziv projekta<input autoFocus required maxLength={100} value={projectEdit.name} onChange={e=>setProjectEdit({...projectEdit,name:e.target.value})}/></label>
+            <label>Vidljivost<select disabled={mode!=="demo" && project.owner!==user.id} value={projectEdit.teamVisible ? "team":"private"} onChange={e=>setProjectEdit({...projectEdit,teamVisible:e.target.value==="team"})}><option value="team">Javno · dostupno timu</option><option value="private">Privatno · samo vlasnik</option></select></label>
+            {project.teamVisible && !projectEdit.teamVisible && <p>Skrivanjem uklanjaš pristup drugim članovima i njihove dodjele zadataka.</p>}
+            <div className="gw-project-edit-actions"><button type="button" className="gw-danger" disabled={busy} onClick={()=>setConfirmProjectDelete(v=>!v)}><Trash2 size={16}/>Obriši projekat</button><button className="gw-primary" disabled={busy || !projectEdit.name.trim()}>Sačuvaj izmjene</button></div>
+            {confirmProjectDelete && <section className="gw-project-delete-confirm"><strong>Obrisati „{project.name}“?</strong><p>Projekat i svi njegovi zadaci, podzadaci, prilozi i chat nestat će iz Worka za sve članove.</p><button type="button" disabled={busy} className="gw-danger" onClick={async ()=>{
+              const id=project.id;
+              if(await run(async ()=>{
+                if(mode==="team") {await request(`projects/${id}/`,"DELETE",{});setData(await request("state/"));}
+                else setData(d=>({...d,projects:d.projects.filter(p=>p.id!==id),tasks:d.tasks.filter(t=>t.project!==id)}));
+                setProjectId("");setAllProjects(true);setView("board");
+              })) {setModal(null);setNotice("Projekat je obrisan.");}
+            }}>Potvrdi brisanje projekta</button><button type="button" onClick={()=>setConfirmProjectDelete(false)}>Odustani</button></section>}
+            {error && <p role="alert">{error}</p>}
           </form>
         </Modal>
       )}

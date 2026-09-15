@@ -2201,3 +2201,6 @@
 .gw-app .gw-list-save-footer .gw-primary { padding:12px 24px; box-shadow:0 4px 18px #9be5c91a; }
 @media(max-width:800px) { .gw-color-editors.gw-compact-color-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:460px) { .gw-color-editors.gw-compact-color-grid { grid-template-columns:1fr; } .gw-app .gw-new-project { flex-wrap:wrap; } }
+
+.gw-project-edit-actions { display:flex; justify-content:space-between; gap:12px; margin-top:24px; }
+.gw-project-delete-confirm { padding:16px; margin-top:20px; border:1px solid #ef8d8d55; background:#ef8d8d08; border-radius:10px; font-size:12px; }
