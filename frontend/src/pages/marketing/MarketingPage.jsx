@@ -304,7 +304,6 @@ export function MarketingPage() {
                 ease: [0.16, 1, 0.3, 1],
               }}
             >
-              <span>0{index + 1}</span>
               <Icon />
               <small>{label}</small>
               <h3>{title}</h3>

@@ -47,6 +47,24 @@ class CollaborationTests(TestCase):
         self.client.patch(f'/api/work/projects/{p.pk}/',{'teamVisible':True},format='json')
         self.assertTrue(p.members.filter(pk=late.pk).exists())
 
+    def test_clear_lists_preserves_project_and_other_projects(self):
+        url=f'/api/work/projects/{self.project.pk}/'
+        other=WorkProject.objects.create(name='Other',owner=self.owner)
+        other_task=WorkTask.objects.create(project=other,creator=self.owner,title='Keep')
+        columns=self.project.columns
+        self.client.force_login(self.editor)
+        self.assertEqual(self.client.patch(url,{'clear_lists':True},format='json').status_code,403)
+        self.client.force_login(self.owner)
+        self.assertEqual(self.client.patch(url,{'clear_lists':True},format='json').status_code,200)
+        self.project.refresh_from_db();self.task.refresh_from_db();other_task.refresh_from_db()
+        self.assertIsNone(self.project.deleted_at)
+        self.assertEqual(self.project.columns,columns)
+        self.assertIsNotNone(self.task.deleted_at)
+        self.assertIsNone(other_task.deleted_at)
+        response=self.client.patch(f'/api/work/tasks/{self.task.pk}/',{'revision':self.task.revision,'deleted':False},format='json')
+        self.assertEqual(response.status_code,200)
+        self.task.refresh_from_db();self.assertIsNone(self.task.deleted_at)
+
     def test_delete_project_removes_it_and_content_from_work(self):
         url=f'/api/work/projects/{self.project.pk}/'
         self.client.force_login(self.editor)
@@ -69,6 +87,47 @@ class CollaborationTests(TestCase):
         self.assertEqual(self.client.delete(f'/api/work/projects/{ADMIN_TEAM_ID}/').status_code,200)
         ids=[p['id'] for p in self.client.get('/api/work/state/').json()['projects']]
         self.assertNotIn(str(ADMIN_TEAM_ID),ids)
+
+    def test_general_chat_mentions_are_shared_and_read_per_recipient(self):
+        url='/api/work/chat/'
+        r=self.client.post(url,{'text':'@editor @outside @owner provjerite plan'},format='json')
+        self.assertEqual(r.status_code,201)
+        mid=r.json()['id']
+        self.assertEqual({m['id'] for m in r.json()['mentions']},{self.editor.pk,self.outside.pk})
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['total'],0)
+        self.client.force_login(self.editor)
+        self.assertEqual(self.client.get(url).json()['messages'][0]['text'],'@editor @outside @owner provjerite plan')
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json(),{'total':1,'rooms':{'general':1}})
+        self.client.get(url)  # Polling alone must not clear the badge.
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['total'],1)
+        self.assertEqual(self.client.post('/api/work/chat/read/',{'messages':[mid]},format='json').status_code,200)
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['total'],0)
+        self.client.force_login(self.outside)
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['total'],1)
+        self.client.logout()
+        self.assertEqual(self.client.get(url).status_code,403)
+        self.assertEqual(self.client.get('/api/work/chat/summary/').status_code,403)
+
+    def test_project_mentions_do_not_notify_outsiders_or_other_rooms(self):
+        url=f'/api/work/projects/{self.project.pk}/chat/'
+        r=self.client.post(url,{'text':'@editor @editor @outside'},format='json')
+        self.assertEqual(len(r.json()['mentions']),1)
+        general=self.client.post('/api/work/chat/',{'text':'@editor opci'},format='json')
+        self.client.force_login(self.editor)
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['total'],2)
+        self.client.post('/api/work/chat/read/',{'messages':[general.json()['id']]},format='json')
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['rooms'],{str(self.project.pk):1})
+        self.project.members.remove(self.editor)
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['total'],0)
+        self.client.force_login(self.outside)
+        self.assertEqual(self.client.get('/api/work/chat/summary/').json()['total'],0)
+
+    def test_mentions_match_complete_usernames(self):
+        short=get_user_model().objects.create_user('ann')
+        full=get_user_model().objects.create_user('ann.smith')
+        r=self.client.post('/api/work/chat/',{'text':'@ann.smith, molim. email@ann nije tag.'},format='json')
+        self.assertEqual([m['id'] for m in r.json()['mentions']],[full.pk])
+        self.assertEqual(self.client.post('/api/work/chat/read/',{'messages':['bad']},format='json').status_code,400)
 
     def test_chat_persists_for_members_and_blocks_outsiders(self):
         url=f'/api/work/projects/{self.project.pk}/chat/'

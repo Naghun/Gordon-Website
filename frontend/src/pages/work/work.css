@@ -2204,3 +2204,46 @@
 
 .gw-project-edit-actions { display:flex; justify-content:space-between; gap:12px; margin-top:24px; }
 .gw-project-delete-confirm { padding:16px; margin-top:20px; border:1px solid #ef8d8d55; background:#ef8d8d08; border-radius:10px; font-size:12px; }
+
+.gw-dialog textarea.gw-task-title { resize:none; overflow:hidden; white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.4; min-height:48px; max-height:none; }
+.gw-card h3, .gw-card-compact h3 { white-space:normal; overflow:visible; overflow-wrap:anywhere; text-overflow:clip; }
+.gw-chat[hidden] { display:none !important; }
+.gw-app .gw-chat-badge { display:inline-flex; align-items:center; justify-content:center; min-width:19px; height:19px; padding:0 5px; border-radius:12px; background:#e34b5b; color:white; font-size:10px; font-weight:700; line-height:1; }
+.gw-chat-mention-options { max-height:165px; overflow:auto; border:1px solid #ffffff25; border-radius:8px; background:#151e2e; }
+.gw-chat-mention-options button { display:flex; width:100%; justify-content:space-between; gap:8px; padding:9px; }
+.gw-chat-mention-options small { color:#93b5c8; }
+.gw-chat-compose-actions { display:flex; justify-content:space-between; gap:8px; }
+.gw-chat-messages .gw-mentioned-message { border-left:3px solid #ed8390; }
+.gw-chat-messages mark { color:#bdf8e5; background:#3a645b; padding:1px 3px; border-radius:3px; }
+.gw-app .gw-chat-unread-room { justify-content:flex-start; margin:3px 12px; font-size:11px; padding:7px; background:#e34b5b18; }
+
+.gw-project-heading-actions { display:inline-flex; align-items:center; gap:8px; margin-left:12px; vertical-align:middle; }
+.gw-visibility-control { position:relative; display:inline-flex; }
+.gw-app .gw-visibility-trigger { font-size:12px; padding:8px 10px; gap:6px; border:1px solid #ffffff22; background:#192232; color:#bdccdf; }
+.gw-visibility-menu { position:absolute; top:calc(100% + 6px); left:0; z-index:50; width:190px; padding:5px; background:#202c3e; border:1px solid #ffffff28; border-radius:9px; box-shadow:0 12px 30px #0007; }
+.gw-app .gw-visibility-menu button { display:flex; width:100%; justify-content:space-between; padding:10px; font-size:12px; color:#e4edf7; }
+.gw-visibility-menu button:hover { background:#ffffff14; }
+.gw-app .gw-project-trash { padding:9px; color:#f2a1a8; background:#eb556416; border:1px solid #ed839033; }
+.gw-calendar-full { flex:1; min-width:0; width:100%; display:flex; flex-direction:column; background:#151e2ee8; border:1px solid #ffffff20; border-radius:14px; overflow:hidden; }
+.gw-calendar-toolbar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:14px; border-bottom:1px solid #ffffff20; }
+.gw-calendar-toolbar > div { margin-right:auto; }
+.gw-calendar-toolbar strong { font-size:18px; text-transform:capitalize; }
+.gw-calendar-toolbar small { display:block; color:#9babbe; font-size:10px; margin-top:4px; }
+.gw-calendar-toolbar input { width:145px; }
+.gw-calendar-layout { display:flex; flex:1; min-height:0; }
+.gw-calendar-scroll { flex:1; overflow:auto; min-width:0; }
+.gw-calendar-weekdays,.gw-calendar-grid { display:grid; grid-template-columns:repeat(7,minmax(110px,1fr)); }
+.gw-calendar-weekdays { position:sticky; top:0; background:#202c3d; z-index:1; }
+.gw-calendar-weekdays b { font-size:11px; padding:10px; color:#aabbce; }
+.gw-calendar-day { min-height:125px; padding:6px; border-right:1px solid #ffffff13; border-bottom:1px solid #ffffff13; }
+.gw-calendar-day.outside-month { background:#0002; }
+.gw-calendar-day.today { background:#9be5c90d; outline:1px solid #9be5c96b; outline-offset:-1px; }
+.gw-calendar-day-head { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#9fbbce; margin-bottom:5px; }
+.gw-calendar-week .gw-calendar-day { min-height:360px; }
+.gw-app .gw-calendar-task { display:block; width:100%; text-align:left; border-left:3px solid #9be5c9; padding:7px; margin:4px 0; background:#283548; font-size:11px; white-space:normal; overflow-wrap:anywhere; }
+.gw-calendar-task small { display:block; font-size:9px; color:#9fb1c8; margin-top:3px; }
+.gw-calendar-task.is-done > span { text-decoration:line-through; opacity:.65; }
+.gw-calendar-unscheduled { width:220px; flex-shrink:0; padding:12px; border-left:1px solid #ffffff20; overflow:auto; }
+.gw-calendar-unscheduled h3 { font-size:13px; }
+.gw-calendar-unscheduled p { font-size:11px; color:#98acc4; }
+@media(max-width:800px) { .gw-calendar-layout { flex-direction:column; overflow:auto; } .gw-calendar-scroll { flex:none; max-height:70vh; } .gw-calendar-unscheduled { width:100%; max-height:240px; } }

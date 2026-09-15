@@ -69,3 +69,12 @@ Dokumentacija integracije: https://developers.openai.com/api/docs/guides/structu
 
 - Novi projekti (i projekti iz uvoza) otvoreni su svim aktivnim administratorima. Vlasnik može odabrati skriven projekat pri kreiranju ili kroz Članovi → Vidljivost projekta. Skrivanjem se uklanjaju članovi i njihove dodjele; privatni projekti nastali prije ove izmjene ostaju privatni. Gordon tim zadržava automatsko članstvo dok je otvoren.
 - Podzadaci i koraci su odmah prošireni na kartici. Poravnaj liste izjednačava visine i poziciju unosa novih kartica; dodjela članu ponovo je u detaljima zadatka.
+
+
+## Opći chat i spominjanja
+- Opći chat koristi poruke bez projekta i dostupan je prijavljenim korisnicima. Projektni razgovori i stara historija ostaju odvojeni.
+- @ otvara izbor kolege; server prepoznaje potpuno korisničko ime i kreira zasebnu obavijest za svakog spomenutog člana, osim pošiljaoca. Projektne poruke mogu obavijestiti samo članove tog projekta.
+- Crveni broj na Live chat predstavlja nepročitana spominjanja. Provjerava se svake 3 sekunde i dok je panel zatvoren; čitanje se potvrđuje samo za prikazane poruke u otvorenom razgovoru kada je preglednik vidljiv i razgovor skrolan do dna.
+- WorkTitle automatski raste prema naslovu, a nazivi kartica se prelamaju u više redova.
+- Samostalni Planer prikazuje mjesečni/sedmični kalendar pune širine, dodavanje na datum i premještanje rokova povlačenjem.
+- Kantica uz vidljivost briše cijeli projekat. Obriši zadatke prazni sve liste odabranog projekta uz potvrdu; Vrati obrisane otvara oporavak zadataka.

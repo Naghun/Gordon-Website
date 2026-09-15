@@ -266,9 +266,17 @@ class BlogPostImage(models.Model):
 
 
 class WorkChatMessage(models.Model):
- project=models.ForeignKey(WorkProject,on_delete=models.CASCADE,related_name='chat_messages')
+ project=models.ForeignKey(WorkProject,on_delete=models.CASCADE,related_name='chat_messages',null=True,blank=True)
  author=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.SET_NULL,null=True)
  text=models.TextField(max_length=4000)
  created_at=models.DateTimeField(auto_now_add=True)
  class Meta:
   ordering=['id']
+
+
+class WorkChatMention(models.Model):
+ message=models.ForeignKey(WorkChatMessage,on_delete=models.CASCADE,related_name='mentions')
+ recipient=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='work_chat_mentions')
+ read=models.BooleanField(default=False)
+ class Meta:
+  constraints=[models.UniqueConstraint(fields=['message','recipient'],name='unique_work_chat_mention')]

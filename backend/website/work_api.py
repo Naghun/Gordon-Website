@@ -174,6 +174,9 @@ def project(request,pk):
             if u.pk!=p.owner_id: p.roles[str(u.pk)]=role
             p.save()
         else:
+            if request.data.get('clear_lists') is True:
+                from django.db.models import F
+                p.tasks.filter(deleted_at__isnull=True).update(deleted_at=timezone.now(),revision=F('revision')+1)
             if 'teamVisible' in request.data:
                 if p.owner_id!=request.user.pk: raise PermissionDenied('Samo vlasnik mijenja vidljivost projekta.')
                 shared=request.data['teamVisible']
@@ -320,16 +323,6 @@ def task(request,pk=None):
 @api_view(['GET','POST'])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
-def chat(request,pk):
-    from .models import WorkChatMessage
-    p=get_object_or_404(WorkProject,pk=pk,members=request.user)
-    def serialize(m):
-        return {'id':m.pk,'text':m.text,'author':person(m.author) if m.author else {'id':None,'name':'Bivši član'},'time':m.created_at.isoformat()}
-    if request.method=='POST':
-        m=WorkChatMessage.objects.create(project=p,author=request.user,text=text(request.data.get('text',''),4000,True))
-        return Response(serialize(m),status=201)
-    try: limit=max(1,int(request.query_params.get('limit',100)))
-    except (ValueError,TypeError): raise ValidationError('Neispravan broj poruka.')
-    limit=min(limit,10000)
-    messages=list(p.chat_messages.select_related('author').order_by('-id')[:limit+1])
-    return Response({'messages':[serialize(m) for m in reversed(messages[:limit])],'more':len(messages)>limit})
+def chat(request,pk=None):
+    from .work_chat import room
+    return room(request,pk)

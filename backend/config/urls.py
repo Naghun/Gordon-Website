@@ -22,7 +22,7 @@ from django.views.static import serve
 from website.admin_notifications import notification_open, notifications_feed, notifications_page
 from website import first_party_analytics
 from website import work_api
-from website import work_collaboration, work_import
+from website import work_collaboration, work_import, work_chat
 
 def home(request):
     return JsonResponse({
@@ -46,6 +46,9 @@ urlpatterns = [
     path('api/work/login/', work_api.sign_in),
     path('api/work/logout/', work_api.sign_out),
     path('api/work/state/', work_api.state),
+    path('api/work/chat/', work_api.chat),
+    path('api/work/chat/summary/', work_chat.summary),
+    path('api/work/chat/read/', work_chat.mark_read),
     path('api/work/projects/<uuid:pk>/chat/', work_api.chat),
     path('api/work/projects/', work_api.projects),
     path('api/work/projects/<uuid:pk>/', work_api.project),

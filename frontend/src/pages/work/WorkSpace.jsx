@@ -38,6 +38,8 @@ import {
   imageData,
 } from "./work-data";
 import "./work.css";
+import WorkCalendar from "./WorkCalendar";
+import WorkTitle from "./WorkTitle";
 import WorkChat from "./WorkChat";
 import ListColorPopover from "./ListColorPopover";
 import useListDrag from "./use-list-drag";
@@ -88,6 +90,16 @@ function Modal({ title, children, close, wide = false }) {
 }
 export default function WorkSpace() {
   const navigate = useNavigate();
+  const [visibilityOpen,setVisibilityOpen] = useState(false);
+  useEffect(() => {
+    if (!visibilityOpen) return;
+    const outside = e => { if (!e.target.closest('.gw-visibility-control')) setVisibilityOpen(false); };
+    const escape = e => { if (e.key === 'Escape') setVisibilityOpen(false); };
+    document.addEventListener('pointerdown', outside);
+    document.addEventListener('keydown', escape);
+    return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape); };
+  }, [visibilityOpen]);
+  const [chatUnread, setChatUnread] = useState(0);
   const [projectEdit, setProjectEdit] = useState(null);
   const [confirmProjectDelete, setConfirmProjectDelete] = useState(false);
   const [alignLists, setAlignLists] = useState(false);
@@ -504,6 +516,7 @@ export default function WorkSpace() {
   }
   function selectProject(p) {
     setAllProjects(false);
+    setVisibilityOpen(false);
     setProjectId(p.id);
     setView("board");
     setSearch("");
@@ -841,12 +854,13 @@ export default function WorkSpace() {
           <span className="gw-eyebrow">MALO PO MALO. VELIKE STVARI.</span>
           <h1>
             {allProjects ? "Svi projekti" : project?.name || "Dobro došao u Gordon Work"}
-            {!allProjects && project && <label className="gw-visibility-badge" title={project.owner === user.id ? "Promijeni vidljivost projekta" : "Vidljivost mijenja vlasnik projekta"}>
-              <LockKeyhole size={13}/>
-              <select aria-label="Javnost projekta" disabled={busy || (mode !== "demo" && project.owner !== user.id)} value={project.teamVisible ? "team" : "private"} onChange={e=>run(()=>patchProject({teamVisible:e.target.value === "team"}))}>
-                <option value="team">Javno</option><option value="private">Privatno</option>
-              </select>
-            </label>}
+            {!allProjects && project && <span className="gw-project-heading-actions">
+              <span className="gw-visibility-control"><button className="gw-visibility-trigger" aria-expanded={visibilityOpen} disabled={busy || (mode!=="demo" && project.owner!==user.id)} onClick={()=>setVisibilityOpen(v=>!v)}><LockKeyhole size={13}/>{project.teamVisible?"Javno":"Privatno"}<ChevronDown size={13}/></button>
+                {visibilityOpen && <span className="gw-visibility-menu">{[[true,"Javno · cijeli tim"],[false,"Privatno · samo ja"]].map(([value,label])=><button key={label} disabled={busy} onClick={async()=>{if(await run(()=>patchProject({teamVisible:value})))setVisibilityOpen(false);}}>{label}{project.teamVisible===value&&<Check size={14}/>}</button>)}
+                </span>}
+              </span>
+              {owner && <button className="gw-project-trash" aria-label="Obriši cijeli projekat" title="Obriši cijeli projekat" onClick={()=>{setError("");setModal("delete-project");}}><Trash2 size={17}/></button>}
+            </span>}
           </h1>
         </div>
         <div className="gw-project-actions">
@@ -894,7 +908,6 @@ export default function WorkSpace() {
             ["board", "Aktivni", LayoutGrid],
             ["done", `Završeni · ${done.length}`, CheckCheck],
             ["archive", "Arhiva", Archive],
-            ["trash", "Korpa", Trash2],
           ].map(([id, label, Icon]) => (
             <button
               key={id}
@@ -908,10 +921,12 @@ export default function WorkSpace() {
               {label}
             </button>
           ))}
+          {!allProjects && project && owner && <button onClick={()=>{setError("");setModal("clear-project");}}><Trash2 size={15}/>Obriši zadatke</button>}
         </div>
         <button className="gw-progress-label" onClick={() => { setView("done"); setPanels((p) => ({...p, board:true})); }}>
           {done.length}/{active.length} završeno
         </button>
+        <button title="Vrati ranije obrisane zadatke" onClick={()=>{setView("trash");setPanels(p=>({...p,board:true}));}}>Vrati obrisane</button>
         <button aria-pressed={alignLists} onClick={()=>setAlignLists(v=>!v)}>{alignLists ? "Prirodna visina" : "Poravnaj liste"}</button>
         <button aria-label="Izvezi dostupne projekte" onClick={exportData}>
           <Download size={16} />
@@ -933,8 +948,8 @@ export default function WorkSpace() {
         </div>
       )}
       <div className="gw-panels">
-        {panels.inbox && <WorkChat key={`${mode}:${user.id}`} projects={data.projects} projectId={project?.id} user={user} mode={mode} close={() => toggle("inbox")} />}
-        {panels.planner && (
+        <WorkChat key={`${mode}:${user.id}`} projects={data.projects} user={user} mode={mode} visible={panels.inbox} onUnread={setChatUnread} close={() => toggle("inbox")} />
+        {panels.planner && !panels.board && !panels.inbox ? <WorkCalendar tasks={data.tasks.filter(t=>!t.deleted&&!t.archived&&matches(t))} projects={data.projects} openTask={openTask} editable={editable} busy={busy} reschedule={(task,due)=>run(()=>writeTask({...task,due}))} addTask={due=>openTask({...blankTask(project?.id||null,project?.columns[0]?.id||"inbox"),creator:user.id,due})} close={()=>setPanels(p=>({...p,board:true}))}/> : panels.planner && (
           <aside className="gw-planner gw-panel">
             <div className="gw-panel-title">
               <h2>
@@ -1247,6 +1262,7 @@ export default function WorkSpace() {
           >
             <Icon size={18} />
             <span>{label}</span>
+            {id === "inbox" && chatUnread > 0 && <span className="gw-chat-badge" aria-label={`${chatUnread} nepročitanih spominjanja`}>{chatUnread > 99 ? "99+" : chatUnread}</span>}
           </button>
         ))}
         <span />
@@ -1283,7 +1299,7 @@ export default function WorkSpace() {
           <form onSubmit={saveTask}>
             <div className="gw-task-layout">
               <div className="gw-task-details">
-                <input
+                <WorkTitle
                   className="gw-task-title"
                   aria-label="Naziv zadatka"
                   required
@@ -1695,6 +1711,17 @@ export default function WorkSpace() {
           </form>
         </Modal>
       )}
+      {(modal === "delete-project" || modal === "clear-project") && project && <Modal title={modal === "delete-project" ? "Obriši cijeli projekat" : "Obriši zadatke"} close={()=>!busy&&setModal(null)}><div className="gw-modal-body">
+        <h3>{project.name}</h3><p>{modal === "delete-project" ? "Projekat, svi njegovi zadaci, prilozi i chat nestat će iz Worka za sve članove." : "Svi zadaci projekta prelaze u Obrisane zadatke, odakle ih možeš vratiti. Projekat, liste i chat ostaju."}</p>
+        <div className="gw-project-edit-actions"><button disabled={busy} onClick={()=>setModal(null)}>Odustani</button><button className="gw-danger" disabled={busy} onClick={async()=>{
+          const deleting=modal === "delete-project", id=project.id;
+          if(await run(async()=>{
+            if(mode === "team") {await request(`projects/${id}/`,deleting?"DELETE":"PATCH",deleting?{}:{clear_lists:true});setData(await request("state/"));}
+            else setData(d=>({...d,projects:deleting?d.projects.filter(p=>p.id!==id):d.projects,tasks:deleting?d.tasks.filter(t=>t.project!==id):d.tasks.map(t=>t.project===id?{...t,deleted:true}:t)}));
+            if(deleting){setProjectId("");setAllProjects(true);}setView("board");
+          })){setModal(null);setNotice(deleting?"Projekat je obrisan.":"Sve liste su ispražnjene.");}
+        }}>{modal === "delete-project" ? "Potvrdi brisanje projekta" : "Potvrdi pražnjenje lista"}</button></div>{error&&<p role="alert">{error}</p>}
+      </div></Modal>}
       {modal === "edit-project" && project && projectEdit && (
         <Modal title="Uredi projekat" close={()=>!busy && setModal(null)}>
           <form className="gw-modal-body" onSubmit={async e=>{e.preventDefault();const values={name:projectEdit.name.trim()};if(mode==="demo" || project.owner===user.id) {if(projectEdit.teamVisible!==!!project.teamVisible) values.teamVisible=projectEdit.teamVisible;}if(await run(()=>patchProject(values)))setModal(null);}}>
