@@ -97,15 +97,6 @@
   margin-left: auto;
   color: #64cbb5;
 }
-.reviews-preview {
-  color: #cddbd6;
-  background: #254238;
-  border: 1px dashed #72b795;
-  padding: 13px 17px;
-  border-radius: 8px;
-  font-size: 12px;
-  margin-bottom: 20px;
-}
 @media (max-width: 900px) {
   .reviews-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -128,3 +119,6 @@
     padding: 24px;
   }
 }
+
+.review-avatar{background:hsl(var(--avatar-hue,158) 28% 24%);color:hsl(var(--avatar-hue,158) 65% 80%);border:1px solid hsl(var(--avatar-hue,158) 30% 38%);flex-shrink:0}
+.review-card{box-shadow:0 14px 40px #00000012}

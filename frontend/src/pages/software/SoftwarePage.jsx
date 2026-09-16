@@ -1,3 +1,4 @@
+import { ServiceCards } from "../services/ServiceDetail";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -33,32 +34,6 @@ import ContactOptions from '../../components/ContactOptions';
 import "./software.css";
 
 export function SoftwarePage() {
-  const solutions = [
-    {
-      icon: Code2,
-      title: "Izrada web aplikacija",
-      text: "Razvoj brzih i sigurnih web aplikacija po mjeri, dostupnih timu i klijentima na svakom uređaju.",
-      tags: ["React", "Django", "API"],
-    },
-    {
-      icon: Workflow,
-      title: "SaaS i enterprise sistemi",
-      text: "Razvoj SaaS platformi, enterprise rješenja, CRM sistema i dashboarda prilagođenih stvarnom toku vašeg posla.",
-      tags: ["SaaS", "Enterprise", "CRM"],
-    },
-    {
-      icon: BrainCircuit,
-      title: "API integracije",
-      text: "Povezujemo postojeće alate kako informacije više ne bi ostajale u odvojenim sistemima.",
-      tags: ["REST API", "Automation", "Data"],
-    },
-    {
-      icon: MessageSquareText,
-      title: "Korisnički portali",
-      text: "Jedno mjesto za upite, dokumente, statuse, komunikaciju i samostalnu podršku klijentima.",
-      tags: ["Portal", "Support", "UX"],
-    },
-  ];
   const process = [
     [
       "01",
@@ -199,27 +174,7 @@ export function SoftwarePage() {
             koji već postoje u vašoj kompaniji.
           </p>
         </div>
-        <div className="software-solution-grid">
-          {solutions.map(({ icon: Icon, title, text, tags }, i) => (
-            <motion.article
-              key={title}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-            >
-              <span>0{i + 1}</span>
-              <Icon />
-              <h3>{title}</h3>
-              <p>{text}</p>
-              <div>
-                {tags.map((tag) => (
-                  <i key={tag}>{tag}</i>
-                ))}
-              </div>
-            </motion.article>
-          ))}
-        </div>
+        <ServiceCards category="softver-rjesenja"/>
       </section>
       <section className="software-build">
         <div className="software-build-title">

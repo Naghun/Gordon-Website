@@ -1,3 +1,4 @@
+import { ServiceCards } from "../services/ServiceDetail";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -138,36 +139,6 @@ export function MarketingContact() {
 }
 
 export function MarketingPage() {
-  const channels = [
-    {
-      icon: Lightbulb,
-      label: "SEO OPTIMIZACIJA",
-      title: "SEO optimizacija za veću vidljivost.",
-      text: "Tehnički SEO, lokalni SEO u Sarajevu, sadržaj i struktura stranice usmjereni na relevantne ključne riječi i organski rast.",
-      tags: ["Tehnički SEO", "Ključne riječi", "Content"],
-    },
-    {
-      icon: ChartNoAxesCombined,
-      label: "GOOGLE SEARCH ADS",
-      title: "Pojavite se kada postoji namjera kupovine.",
-      text: "Search kampanje koje povezuju pravu pretragu, jasnu poruku i odredišnu stranicu koja konvertuje.",
-      tags: ["Search", "Remarketing", "Konverzije"],
-    },
-    {
-      icon: Sparkles,
-      label: "GOOGLE DISPLAY",
-      title: "Ostanite vidljivi kroz cijeli put kupca.",
-      text: "Vizuelne kampanje, remarketing i pametna publika za prepoznatljivost i povratak zainteresovanih korisnika.",
-      tags: ["Display", "YouTube", "Publike"],
-    },
-    {
-      icon: MessageSquareText,
-      label: "SADRŽAJ I DRUŠTVENE MREŽE",
-      title: "Gradite povjerenje prije prodajnog razgovora.",
-      text: "Sadržaj i kampanje za Meta platforme koje vašem brendu daju dosljedan glas i stvaraju potražnju.",
-      tags: ["Meta Ads", "Sadržaj", "Community"],
-    },
-  ];
   const stages = [
     ["01", "Privlačimo", "SEO, oglasi i sadržaj dovode relevantnu publiku."],
     ["02", "Pretvaramo", "Poruka i landing stranica pretvaraju pažnju u upit."],
@@ -291,31 +262,7 @@ export function MarketingPage() {
             povezuje ulaganje s poslovnim rezultatom.
           </p>
         </div>
-        <div className="marketing-channel-grid">
-          {channels.map(({ icon: Icon, label, title, text, tags }, index) => (
-            <motion.article
-              key={label}
-              initial={{ opacity: 0, y: 45, rotate: -3 }}
-              whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={{
-                duration: 0.75,
-                delay: index * 0.12,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <Icon />
-              <small>{label}</small>
-              <h3>{title}</h3>
-              <p>{text}</p>
-              <div>
-                {tags.map((tag) => (
-                  <i key={tag}>{tag}</i>
-                ))}
-              </div>
-            </motion.article>
-          ))}
-        </div>
+        <ServiceCards category="marketing"/>
       </section>
       <section className="marketing-funnel">
         <div className="marketing-funnel-copy">

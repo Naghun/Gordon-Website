@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MessageSquare, X, Send, AtSign } from "lucide-react";
 import { request, uid } from "./work-data";
 
@@ -25,6 +25,13 @@ export default function WorkChat({
     generation = useRef(0),
     reading = useRef(false),
     summaryVersion = useRef(0);
+  const lastLoad = useRef({}), scrollPlan = useRef(null);
+  useLayoutEffect(() => {
+    const box = scroll.current, plan = scrollPlan.current;
+    if (!visible || !box || !plan) return;
+    box.scrollTop = plan.kind === 'bottom' ? box.scrollHeight : plan.top + box.scrollHeight - plan.height;
+    scrollPlan.current = null;
+  }, [messages, visible]);
   const storageKey = `gordon-work-chat-demo:${user.id}:${room}`;
   const path = room === "general" ? "chat/" : `projects/${room}/chat/`;
   async function refreshUnread() {
@@ -54,8 +61,12 @@ export default function WorkChat({
     const current = ++generation.current;
     let stopped = false,
       pending = false;
-    setMessages([]);
-    setMembers([]);
+    const previous = lastLoad.current;
+    const opening = visible && (!previous.visible || previous.room !== room || previous.mode !== mode || previous.user !== user.id);
+    const loadingOlder = !opening && previous.limit !== limit;
+    lastLoad.current = { visible, room, mode, user: user.id, limit };
+    let firstResult = true;
+    if (opening) { setMessages([]); setMembers([]); }
     setError("");
     async function refresh() {
       if (!visible || pending) return;
@@ -85,14 +96,16 @@ export default function WorkChat({
             scroll.current.scrollTop -
             scroll.current.clientHeight <
             80;
+        const box = scroll.current;
+        scrollPlan.current = firstResult && opening ? { kind: 'bottom' }
+          : firstResult && loadingOlder && box ? { kind: 'preserve', top: box.scrollTop, height: box.scrollHeight }
+          : bottom ? { kind: 'bottom' } : null;
+        firstResult = false;
         setMessages(result.messages);
         setMembers(result.members);
         setMore(result.more);
         setError("");
-        if (bottom)
-          requestAnimationFrame(() =>
-            scroll.current?.scrollTo({ top: scroll.current.scrollHeight }),
-          );
+
       } catch (e) {
         if (!stopped) setError(e.message);
       } finally {
@@ -172,14 +185,13 @@ export default function WorkChat({
           ]),
         );
       if (current === generation.current) {
+        scrollPlan.current = { kind: "bottom" };
         setMessages((old) =>
           old.some((m) => m.id === message.id) ? old : [...old, message],
         );
         setText("");
         setCursor(0);
-        requestAnimationFrame(() =>
-          scroll.current?.scrollTo({ top: scroll.current.scrollHeight }),
-        );
+
       }
     } catch (e) {
       setError(e.message);

@@ -26,6 +26,10 @@ DirectoryIndex index.html
   RewriteCond %{DOCUMENT_ROOT}/seo-pages/blog/$1.html -f
   RewriteRule ^blog/([a-z0-9-]+)/?$ seo-pages/blog/$1.html [L]
 
+  # Dedicated service pages; unknown service slugs remain 404.
+  RewriteCond %{DOCUMENT_ROOT}/seo-pages/$1/$2.html -f
+  RewriteRule ^(marketing|softver-rjesenja)/([a-z0-9-]+)/?$ seo-pages/$1/$2.html [L]
+
   # Postojeće datoteke i generisani direktoriji prolaze bez prepisivanja.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d

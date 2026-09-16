@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { businessSchema } from '../src/config/business.js';
 import { faqs } from '../src/config/faqs.js';
+import { services, serviceSections } from '../src/content/services.js';
 const read = p => readFile(new URL(p, import.meta.url), 'utf8');
 const posts = JSON.parse(await read('../../content/published-blog.json'));
 const xml = await read('../dist/sitemap.xml');
@@ -39,3 +40,24 @@ for (const url of urls) {
   }
 }
 console.log(`SEO checks passed: ${urls.length} URLs, ${posts.length} complete articles, shared business data and ${faqs.length} FAQs.`);
+assert.equal(services.length, 12);
+for (const category of ['marketing', 'softver-rjesenja']) {
+  const group = services.filter(s=>s.category===category);
+  assert.equal(group.length, 6);
+  const parent = await read(`../dist/seo-pages/${category}.html`);
+  for (const service of group) assert.ok(parent.includes(`href="${service.path}"`), `Missing category link: ${service.path}`);
+}
+for (const service of services) {
+  const html = await read(`../dist/seo-pages${service.path}.html`);
+  const count = [...service.sections.flatMap(s=>s.paragraphs), ...service.faqs.map(f=>f.answer)].join(' ').trim().split(/\s+/u).length;
+  assert.ok(count >= 1000, `${service.path}: only ${count} words`);
+  assert.equal((html.match(/<h1>/g)||[]).length, 1);
+  assert.ok(html.includes(`<h1>${escape(service.title)}</h1>`));
+  assert.ok(urls.includes(`https://gordon.ba${service.path}`));
+  for (const [, paragraph] of serviceSections(service)) assert.ok(html.includes(escape(paragraph)), `Incomplete service content: ${service.path}`);
+  const graph = JSON.parse(html.match(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/s)[1])['@graph'];
+  assert.equal(graph.find(s=>s['@type']==='Service').name, service.title);
+  assert.equal(graph.find(s=>s['@type']==='BreadcrumbList').itemListElement.length, 3);
+  assert.ok(!graph.some(s=>s['@type']==='Product'), 'Services must not invent product offers');
+}
+console.log('Service checks passed: 12 complete pages, 6 per category, 1000+ words each, category links and Service schema.');

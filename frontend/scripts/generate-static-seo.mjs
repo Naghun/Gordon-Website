@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { business, businessSchema, publicImageUrl } from '../src/config/business.js';
+import { services, serviceSections, serviceGraph } from '../src/content/services.js';
 import { faqs } from '../src/config/faqs.js';
 
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -128,6 +129,11 @@ const pages = [
   },
 ];
 
+for (const service of services) pages.push({
+  path: service.path, title: service.metaTitle, description: service.description,
+  eyebrow: 'GORDONDM · USLUGE', h1: service.title, intro: service.summary,
+  sections: serviceSections(service), service,
+});
 // The same published article text feeds the HTML and sitemap. Never silently fall back
 // to a shorter manual list when the export is missing or invalid.
 const publishedPosts = JSON.parse(await readFile(join(projectRoot, '..', 'content', 'published-blog.json'), 'utf8'));
@@ -160,8 +166,10 @@ function escapeHtml(value) { return String(value)
 function staticBody(page, notFound = false) {
   const inline = text => escapeHtml(text).replace(/\[([^\]]+)\]\((\/[a-z0-9/-]*)\)/g, '<a href="$2">$1</a>');
   const sections = page.content ? page.content.split(/\n\n+/).filter(Boolean).map(block => block.startsWith('## ') ? `<h2>${escapeHtml(block.slice(3))}</h2>` : `<p>${inline(block)}</p>`).join('') : page.sections.map(([heading, text], index) => `<section>${index && page.sections[index-1][0] === heading ? '' : `<h2>${escapeHtml(heading)}</h2>`}<p>${inline(text)}</p></section>`).join("");
+  const serviceLinks = notFound ? '' : `<section><h2>${page.service ? 'Povezane usluge' : 'Konkretne usluge'}</h2><ul>${services.filter(s => page.service ? s.category === page.service.category && s.path !== page.path : ['/'+s.category, '/'].includes(page.path)).map(s => `<li><a href="${s.path}">${escapeHtml(s.title)}</a><p>${escapeHtml(s.summary)}</p></li>`).join('')}</ul></section>`;
+  const serviceContact = page.service ? '<section><h2>Šta želite postići?</h2><p>Opišite cilj i trenutno stanje. Zajedno ćemo odrediti obim, prioritete i sljedeći korak.</p><a href="/kontakt">Pošaljite upit</a></section>' : '';
   const blogSection = notFound ? "" : `<section class="static-blog-links"><h2>Izdvojeno iz GordonDM bloga</h2><p>Pročitajte priče o partnerstvima, događajima, tehnologiji i ljudima koji povezuju Sarajevo i Balkan s globalnim Web3 ekosistemom.</p>${staticBlogLinks}</section>`;
-  return `<main class="static-seo-shell" data-static-seo="true"><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.h1)}</h1><p>${escapeHtml(page.intro)}</p>${sections}${page.path === '/kontakt' ? `<p><a href="mailto:${business.email}">${business.email}</a> · <a href="tel:${business.phone}">${business.phoneDisplay}</a></p>` : ''}${blogSection}<nav aria-label="Glavne stranice"><h2>${notFound ? "Nastavite pregled stranice" : "Istražite GordonDM usluge"}</h2><p><a href="/">Početna</a> · <a href="/ai-automatizacija">AI automatizacija</a> · <a href="/softver-rjesenja">Softver rješenja</a> · <a href="/marketing">Marketing</a> · <a href="/kripto">Web3</a> · <a href="/konsulting">Konsulting</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a> · <a href="/kontakt">Kontakt</a></p></nav></main>`;
+  return `<main class="static-seo-shell" data-static-seo="true"><p>${escapeHtml(page.eyebrow)}</p><h1>${escapeHtml(page.h1)}</h1><p>${escapeHtml(page.intro)}</p>${sections}${serviceLinks}${serviceContact}${page.path === '/kontakt' ? `<p><a href="mailto:${business.email}">${business.email}</a> · <a href="tel:${business.phone}">${business.phoneDisplay}</a></p>` : ''}${blogSection}<nav aria-label="Glavne stranice"><h2>${notFound ? "Nastavite pregled stranice" : "Istražite GordonDM usluge"}</h2><p><a href="/">Početna</a> · <a href="/ai-automatizacija">AI automatizacija</a> · <a href="/softver-rjesenja">Softver rješenja</a> · <a href="/marketing">Marketing</a> · <a href="/kripto">Web3</a> · <a href="/konsulting">Konsulting</a> · <a href="/blog">Blog</a> · <a href="/faq">FAQ</a> · <a href="/kontakt">Kontakt</a></p></nav></main>`;
 }
 
 function renderDocument(page, { noindex = false, notFound = false } = {}) {
@@ -196,6 +204,7 @@ function renderDocument(page, { noindex = false, notFound = false } = {}) {
       dateModified: page.updatedAt, image: new URL(page.image, 'https://gordon.ba').href,
       mainEntityOfPage: { '@id': canonical }, author: { '@id': organizationId } });
   }
+  if (page.service) Object.assign(pageSchema, { mainEntity: { "@id": `${canonical}#service` }, breadcrumb: { "@id": `${canonical}#breadcrumbs` } });
   if (page.path === "/faq") {
     pageSchema.mainEntity = page.sections.map(([question, answer]) => ({
       "@type": "Question",
@@ -218,6 +227,7 @@ function renderDocument(page, { noindex = false, notFound = false } = {}) {
         publisher: { "@id": organizationId },
       },
       pageSchema,
+      ...(page.service ? serviceGraph(page.service) : []),
     ],
   };
   html = html.replace("</head>", `<script id="gordondm-static-schema" type="application/ld+json">${JSON.stringify(schema).replaceAll("<", "\\u003c")}</script></head>`);

@@ -69,12 +69,6 @@ export default function ClientReviews() {
           Najbolji dio svakog projekta je povjerenje koje izgradimo kroz rad.
         </p>
       </div>
-      {preview && (
-        <p className="reviews-preview">
-          Lokalni prijedlog izgleda · imena, izjave i ocjene ispod su izmišljeni
-          primjeri. Nisu uključeni u javnu verziju.
-        </p>
-      )}
       <div className="reviews-grid">
         {reviews.map((r, i) => (
           <figure className="review-card" key={i}>
@@ -88,7 +82,7 @@ export default function ClientReviews() {
             </div>
             <blockquote>{r.text}</blockquote>
             <figcaption>
-              <b className="review-avatar">{r.name[0]}</b>
+              <b className="review-avatar" aria-hidden="true" style={{"--avatar-hue": [158, 195, 265, 330, 32, 215][i % 6]}}>{r.name[0]}</b>
               <span>
                 <strong>{r.name}</strong>
                 <small>{r.service}</small>

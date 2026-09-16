@@ -1,3 +1,5 @@
+import ServiceDetail from "./pages/services/ServiceDetail";
+import { services, findService, serviceGraph } from "./content/services";
 import CopyEmail from "./components/CopyEmail";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
@@ -114,7 +116,8 @@ function SEO({ path, language = "bs" }) {
 
   useEffect(() => {
     const route = path.startsWith("/kripto/event/") ? "/kripto" : path.startsWith("/blog/") ? "/blog" : path;
-    const fallback = seoPages[route] || seoPages["/404"];
+    const service = findService(path);
+    const fallback = service ? { title: service.metaTitle, description: service.description } : seoPages[route] || seoPages["/404"];
     const managed = managedPages[route];
     const languageKey = ["bs", "en", "de"].includes(language) ? language : "bs";
     const managedTitle = managed?.[`title_${languageKey}`] || managed?.title_bs;
@@ -228,9 +231,11 @@ function SEO({ path, language = "bs" }) {
           description,
           isPartOf: { "@id": websiteId },
           publisher: { "@id": organizationId },
+          ...(service ? { mainEntity: { "@id": `${canonical}#service` }, breadcrumb: { "@id": `${canonical}#breadcrumbs` } } : {}),
           ...(article ? { headline: article.title, datePublished: article.published_at,
             image: ogImage, mainEntityOfPage: { '@id': canonical }, author: { '@id': organizationId } } : {}),
         },
+        ...(service ? serviceGraph(service) : []),
       ],
     });
   }, [path, language, managedPages, article]);
@@ -664,6 +669,7 @@ function Shell() {
                 }
               />
             ))}
+            {services.map(service => <Route key={service.path} path={service.path} element={<ServiceDetail service={service} />} />)}
             <Route path="/kripto/event/:slug" element={<CryptoEventPage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
