@@ -124,7 +124,7 @@ function SEO({ path, language = "bs" }) {
     const managedDescription = managed?.[`description_${languageKey}`] || managed?.description_bs;
     const title = article ? `${article.title} | GordonDM` : managedTitle || translatePhrase(fallback.title, language);
     const description = article?.excerpt || managedDescription || translatePhrase(fallback.description, language);
-    const defaultCanonical = `https://gordon.ba${path === "/" ? "" : path}`;
+    const defaultCanonical = `https://gordon.ba${service ? service.path : path === "/" ? "" : path}`;
     const canonical = path.startsWith("/kripto/event/") || path.startsWith('/blog/')
       ? defaultCanonical
       : managed?.canonical_url || defaultCanonical;

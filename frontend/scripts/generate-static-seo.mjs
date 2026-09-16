@@ -237,9 +237,14 @@ function renderDocument(page, { noindex = false, notFound = false } = {}) {
 for (const page of pages) {
   const output = page.path === "/"
     ? join(distRoot, "index.html")
-    : join(distRoot, "seo-pages", `${page.path.slice(1)}.html`);
+    : join(distRoot, "seo-pages", `${page.path.slice(1).replace(/\/$/, "")}.html`);
   await mkdir(dirname(output), { recursive: true });
   await writeFile(output, renderDocument(page), "utf8");
+  if (page.service) {
+    const directOutput = join(distRoot, page.path.slice(1), 'index.html');
+    await mkdir(dirname(directOutput), { recursive: true });
+    await writeFile(directOutput, renderDocument(page), 'utf8');
+  }
 }
 
 const notFound = {

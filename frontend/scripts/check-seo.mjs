@@ -13,7 +13,7 @@ assert.ok(!urls.some(url=>url.includes('dashboard') || url.endsWith('/404')));
 const escape = text => text.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 for (const url of urls) {
   const path = new URL(url).pathname;
-  const html = await read(path === '/' ? '../dist/index.html' : `../dist/seo-pages${path}.html`);
+  const html = await read(path === '/' ? '../dist/index.html' : `../dist/seo-pages${path.replace(/\/$/, "")}.html`);
   const blocks = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs)];
   assert.equal(blocks.length,1, `Schema count: ${path}`);
   const graph = JSON.parse(blocks[0][1])['@graph'];
@@ -48,7 +48,8 @@ for (const category of ['marketing', 'softver-rjesenja']) {
   for (const service of group) assert.ok(parent.includes(`href="${service.path}"`), `Missing category link: ${service.path}`);
 }
 for (const service of services) {
-  const html = await read(`../dist/seo-pages${service.path}.html`);
+  const html = await read(`../dist/seo-pages${service.path.replace(/\/$/, "")}.html`);
+  assert.equal(await read(`../dist${service.path}index.html`), html, 'Direct service entry must match generated HTML');
   const count = [...service.sections.flatMap(s=>s.paragraphs), ...service.faqs.map(f=>f.answer)].join(' ').trim().split(/\s+/u).length;
   assert.ok(count >= 1000, `${service.path}: only ${count} words`);
   assert.equal((html.match(/<h1>/g)||[]).length, 1);

@@ -75,7 +75,7 @@
         "answer": "Ne morate imati gotove tekstove prije prvog razgovora. Potrebne su nam tačne informacije o uslugama, publici i načinu rada, a pisanje možemo uključiti u dogovoreni opseg. Vaš tim potvrđuje stručne detalje i poslovne tvrdnje prije objave. Ako tekstove već imate, pregledamo treba li ih urediti za web. Fotografije, reference i opisi projekata također se dogovaraju unaprijed, kako bi dizajn imao stvaran sadržaj i kako biste znali šta trebate dostaviti u svakoj fazi."
       }
     ],
-    "path": "/softver-rjesenja/izrada-web-stranica",
+    "path": "/softver-rjesenja/izrada-web-stranica/",
     "metaTitle": "Izrada modernih web stranica | GordonDM",
     "description": "Web stranice po mjeri vašeg brenda: jasan sadržaj, prilagođen dizajn, mobilni prikaz i jednostavno uređivanje. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -160,7 +160,7 @@
         "answer": "To može raditi vaš tim kroz dogovorenu administraciju, uz upute za unos slika, opisa, cijena i varijanti. Ako želite da unos vodi GordonDM, definišemo poseban obim rada i način dostavljanja podataka. Važno je odrediti ko odgovara za tačnost cijena i dostupnosti. Čak i kada postoji automatizovan prijenos iz drugog sistema, potrebno je pratiti eventualne greške. Jasna odgovornost za katalog pomaže da online prodavnica ostane ažurna i da kupci dobiju pouzdanu informaciju prije naručivanja."
       }
     ],
-    "path": "/softver-rjesenja/izrada-web-shopova",
+    "path": "/softver-rjesenja/izrada-web-shopova/",
     "metaTitle": "Izrada web shopova | GordonDM",
     "description": "Online prodavnica s preglednim katalogom, jednostavnom kupovinom i administracijom narudžbi prilagođenom vašem timu. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -245,7 +245,7 @@
         "answer": "Kontrolu gradimo kroz dogovoreni opseg, redovne demonstracije i jasnu evidenciju novih zahtjeva. Vlasništvo isporuke, pristupi, dokumentacija i uslovi podrške definišu se ugovorom i ponudom. Ne morate unaprijed predvidjeti svaku buduću ideju, ali trebate znati kako se ona procjenjuje. Nakon lansiranja prioriteti mogu doći iz stvarne upotrebe. Važno je imati pregled šta je održavanje postojećeg ponašanja, a šta razvoj nove funkcije, kako bi budžet i odgovornosti ostali razumljivi tokom cijelog životnog vijeka sistema."
       }
     ],
-    "path": "/softver-rjesenja/izrada-web-aplikacija",
+    "path": "/softver-rjesenja/izrada-web-aplikacija/",
     "metaTitle": "Izrada web aplikacija po mjeri | GordonDM",
     "description": "Poslovne web aplikacije, klijentski portali i SaaS proizvodi koji prate vaše procese, korisnike i podatke. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -330,7 +330,7 @@
         "answer": "Nakon objave treba pratiti tehničke probleme, povratne informacije i promjene platformi. Dogovaramo obim podrške i način prijave grešaka, kao i odgovornost za naloge i serverske troškove. Nove verzije prolaze pripremu i postupak objave, pa izmjena nije uvijek odmah vidljiva svim korisnicima. Ako se planira veća funkcija, prvo procjenjujemo njen uticaj na postojeće tokove. Tako održavanje ostaje organizovano, a razvoj prati stvarnu potrebu umjesto da se aplikacija nakon prvog lansiranja prepusti bez jasnog vlasnika procesa."
       }
     ],
-    "path": "/softver-rjesenja/izrada-mobilnih-aplikacija",
+    "path": "/softver-rjesenja/izrada-mobilnih-aplikacija/",
     "metaTitle": "Izrada mobilnih aplikacija | GordonDM",
     "description": "Mobilne aplikacije za vaše korisnike i tim, od prototipa do pripreme za objavu i daljeg razvoja. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -415,7 +415,7 @@
         "answer": "Izvještaj je tačan samo u odnosu na podatke i pravila na kojima se zasniva. Ako prilike nisu ažurirane ili se isti klijent vodi više puta, rezultat može biti pogrešno protumačen. Zbog toga definišemo značenje pokazatelja i obavezne korake evidencije. Testiramo izvještaje na poznatim primjerima i objašnjavamo ograničenja. Vaš tim treba znati koji podaci nedostaju i kako to utiče na pregled. Dobar dashboard pomaže odluci, ali ne može sam zamijeniti dosljedno vođenje informacija kroz svakodnevni rad."
       }
     ],
-    "path": "/softver-rjesenja/crm-poslovni-sistemi",
+    "path": "/softver-rjesenja/crm-poslovni-sistemi/",
     "metaTitle": "CRM i poslovni sistemi po mjeri | GordonDM",
     "description": "Povežite prodajne prilike, klijente, zadatke i izvještaje u sistem prilagođen načinu rada vašeg tima. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -500,7 +500,7 @@
         "answer": "Dogovaramo pregled aktivnosti i obavijesti za važne greške. Odsustvo prigovora nije dovoljno ako podaci tiho prestanu stizati. Za kritične tokove može biti potrebno praćenje posljednje uspješne obrade i poređenje izvora s odredištem. Obim zavisi od poslovnog rizika i učestalosti prijenosa. Dokumentacija treba objasniti šta tim provjerava i kome se obraća kada nešto nije u redu. Vanjske promjene mogu zahtijevati prilagodbu, pa je plan održavanja dio razgovora prije nego što integracija postane važan dio svakodnevnog rada."
       }
     ],
-    "path": "/softver-rjesenja/api-integracije",
+    "path": "/softver-rjesenja/api-integracije/",
     "metaTitle": "API integracije i automatizacija | GordonDM",
     "description": "Povežite web shop, CRM, obrasce i druge poslovne alate kako biste smanjili ručno prepisivanje podataka. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -585,7 +585,7 @@
         "answer": "Da, početna mapa tema i zasebne stranice stvaraju osnovu za dalju analizu. Semrush može pomoći pri istraživanju i praćenju, a podatke upoređujemo sa Search Consoleom i poslovnim rezultatima. Preporuke alata nisu automatska lista izmjena: svaku procjenjujemo prema korisnosti i stvarnom stanju stranice. Ako se pokaže nova namjera pretrage, možemo dopuniti postojeću sekciju ili opravdano dodati novu stranicu. Važno je izbjeći da kasnije optimizacije naruše jasnoću teksta samo radi boljeg rezultata u jednom izvještaju alata."
       }
     ],
-    "path": "/marketing/seo-optimizacija",
+    "path": "/marketing/seo-optimizacija/",
     "metaTitle": "SEO optimizacija web stranica | GordonDM",
     "description": "Tehnički SEO, istraživanje pretraga i sadržaj za bolju organsku vidljivost konkretnih usluga i proizvoda. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -670,7 +670,7 @@
         "answer": "Pregledamo cijeli put korisnika: stvarne pretrage, poruku oglasa, sadržaj stranice i ispravnost kontakta. Problem može biti u nerelevantnoj publici, nejasnoj ponudi ili pogrešnom mjerenju. Potrebno je provjeriti i da li upiti nastaju drugim putem koji nije evidentiran. Ne zaključujemo odmah da treba veći budžet. Prvo tražimo gdje se gubi interes i predlažemo konkretan test. Povratne informacije vašeg tima važne su da bismo razlikovali tehnički problem od poslovne prepreke koju oglas sam ne može ukloniti."
       }
     ],
-    "path": "/marketing/google-ads",
+    "path": "/marketing/google-ads/",
     "metaTitle": "Google Ads oglašavanje | GordonDM",
     "description": "Kampanje koje povezuju relevantne Google pretrage, jasnu ponudu i odredišne stranice usmjerene na upit ili kupovinu. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -755,7 +755,7 @@
         "answer": "Dobar upit ima relevantnu potrebu i mogućnost da postane smislen razgovor. Niska cijena sama po sebi nije dovoljna ako kontakti nisu odgovarajući. Zajedno definišemo jednostavne oznake ishoda i način povratne informacije iz prodaje. Možemo prilagoditi poruku ili pitanja u obrascu da bolje objasnimo kome ponuda odgovara. To ponekad smanji broj prijava, ali poboljša njihovu korisnost. Odluke donosimo prema poslovnom cilju, a ne isključivo prema pokazatelju koji najljepše izgleda na početnoj stranici oglasnog izvještaja."
       }
     ],
-    "path": "/marketing/meta-oglasavanje",
+    "path": "/marketing/meta-oglasavanje/",
     "metaTitle": "Facebook i Instagram oglašavanje | GordonDM",
     "description": "Meta kampanje s jasnom publikom, kreativama i praćenjem rezultata za vaše usluge, proizvode ili prodajne akcije. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -840,7 +840,7 @@
         "answer": "To se može uključiti u dogovoreni obim, uz jasna pravila i okvir dostupnosti. Potrebni su odgovori na česta pitanja i postupak preusmjeravanja složenijih zahtjeva vašem timu. Ne možemo samostalno potvrditi specifičnu cijenu ili rješavati reklamaciju bez odgovarajućih informacija i ovlaštenja. Zato razlikujemo osnovno informisanje od prodajne ili korisničke podrške. U ponudi navodimo šta pratimo i kako se predaju otvoreni razgovori, kako korisnik ne bi ostao bez odgovora između osobe koja vodi profil i osobe koja stvarno realizuje uslugu."
       }
     ],
-    "path": "/marketing/vodjenje-drustvenih-mreza",
+    "path": "/marketing/vodjenje-drustvenih-mreza/",
     "metaTitle": "Vođenje društvenih mreža | GordonDM",
     "description": "Planiranje, priprema i objavljivanje sadržaja koji jasno predstavlja vaš brend i gradi odnos s publikom. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -925,7 +925,7 @@
         "answer": "Ne. Dogovoreni obim pomaže planiranju isporuke, ali kvalitet se procjenjuje kroz korisnost i potpunost odgovora. Dugačak tekst koji ponavlja istu poruku ne postaje bolji samo zato što ima više riječi. Zato sadržaj dijelimo na cjeline koje donose različite informacije: obim, proces, pripremu i česte nedoumice. Ključne riječi uključujemo prirodno, uz očuvanje jasnoće. Nakon objave možemo pratiti relevantne posjete i upite, pa dopunjavati pitanja koja se pokažu važnim umjesto mehaničkog povećavanja dužine svake stranice."
       }
     ],
-    "path": "/marketing/content-marketing",
+    "path": "/marketing/content-marketing/",
     "metaTitle": "Content marketing i pisanje sadržaja | GordonDM",
     "description": "Tekstovi za usluge, blog i kampanje koji objašnjavaju vašu ponudu i pomažu korisniku da napravi sljedeći korak. GordonDM Sarajevo, BiH.",
     "keywords": [
@@ -1010,7 +1010,7 @@
         "answer": "Može podržati prodajni proces i kroz objašnjenje vrijednosti, odgovore na pitanja ili korisne primjere. Popust nije jedini razlog da osoba pročita poruku. Za usluge koje traže razmišljanje često je važnije izgraditi razumijevanje i olakšati naredni razgovor. Rezultat zavisi od publike i ponude, pa ne obećavamo isti ishod svakoj kampanji. Testiramo sadržaj prema cilju i pratimo relevantne radnje. Tako komunikacija može ostati korisna i između promotivnih perioda, bez navikavanja publike da reaguje samo kada se cijena smanji."
       }
     ],
-    "path": "/marketing/email-marketing",
+    "path": "/marketing/email-marketing/",
     "metaTitle": "Email marketing i newsletter kampanje | GordonDM",
     "description": "Newsletteri i automatizovane email poruke koje povezuju relevantan sadržaj, publiku i jasan poziv na radnju. GordonDM Sarajevo, BiH.",
     "keywords": [

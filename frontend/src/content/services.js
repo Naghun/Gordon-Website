@@ -2,7 +2,7 @@ import catalog from './services.json' with { type: 'json' };
 
 export const services = catalog;
 export const categories = { marketing: 'Marketing', 'softver-rjesenja': 'Softver rješenja' };
-export const findService = path => services.find(service => service.path === path.replace(/\/$/, ''));
+export const findService = path => services.find(service => service.path.replace(/\/$/, '') === path.replace(/\/$/, ''));
 export const serviceSections = service => [
   ['Šta dobijate', service.deliverables.join(' · ')],
   ...service.sections.flatMap(section => section.paragraphs.map(text => [section.heading, text])),
