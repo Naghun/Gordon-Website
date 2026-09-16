@@ -757,7 +757,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/dashboard/work/*" element={<Suspense fallback={<div style={{padding:32}}>Otvaram Gordon Work…</div>}><WorkApp /></Suspense>} />
+        <Route path="/dashboard/work/*" element={<Suspense fallback={<div style={{padding:32}}>Otvaram Radišu…</div>}><WorkApp /></Suspense>} />
         <Route path="*" element={<><FirstPartyAnalytics /><FrontendTranslator /><Shell /></>} />
       </Routes>
     </BrowserRouter>

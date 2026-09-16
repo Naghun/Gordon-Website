@@ -131,6 +131,16 @@
   font-weight: 400;
   color: #96a3b8;
 }
+.gw-brand .gw-mascot {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+@media (max-width: 600px) {
+  .gw-brand .gw-mascot { width: 38px; height: 38px; }
+}
 .gw-divider {
   height: 23px;
   width: 1px;

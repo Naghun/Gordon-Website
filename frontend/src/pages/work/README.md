@@ -1,4 +1,4 @@
-# Gordon Work
+# Radiša
 
 Lokalni pregled: http://127.0.0.1:5173/dashboard/work
 Demo: http://127.0.0.1:5173/dashboard/work?demo=1

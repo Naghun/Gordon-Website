@@ -181,7 +181,7 @@ export default function WorkSpace() {
     setError("");
   }
   useEffect(() => {
-    document.title = "Gordon Work · Tvoj radni prostor";
+    document.title = "Radiša · Tvoj radni prostor";
     let active = true;
     if (new URLSearchParams(location.search).get("demo") === "1") {
       startDemo();
@@ -486,6 +486,32 @@ export default function WorkSpace() {
       setNotice("Zadatak je sačuvan.");
     }
   }
+  async function addStep() {
+    if (operation.current || !checkText.trim() || draft.checklist.length >= 100 || !editable(draft.project)) return;
+    if (!draft.title.trim()) {
+      setError("Prvo unesi naziv zadatka, pa dodaj korake.");
+      return;
+    }
+    const step = { id: uid(), title: checkText.trim(), done: false };
+    const submittedText = checkText;
+    await run(async () => {
+      const saved = await writeTask({
+        ...draft,
+        title: draft.title.trim(),
+        checklist: [...draft.checklist, step],
+      });
+      setDraft((current) => current?.id === draft.id ? {
+        ...current,
+        id: saved.id,
+        revision: saved.revision,
+        status: saved.status,
+        checklist: saved.checklist,
+        activity: saved.activity,
+      } : current);
+      setCheckText((current) => current === submittedText ? "" : current);
+      setNotice("Korak je dodan i sačuvan.");
+    });
+  }
   async function move(t, status) {
     await run(async () => {
       await writeTask({ ...t, status });
@@ -761,7 +787,7 @@ export default function WorkSpace() {
     );
     const a = document.createElement("a");
     a.href = url;
-    a.download = "gordon-work.json";
+    a.download = "radisa.json";
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
@@ -772,7 +798,7 @@ export default function WorkSpace() {
       <div className="gw-login">
         <div className="gw-login-card">
           <Link to={mode === "demo" ? "/dashboard/work?demo=1" : "/dashboard/work"} className="gw-brand">
-            <b>g.</b>gordon <span>work</span>
+            <img className="gw-mascot" src="/radisa-mascot.png" alt="" width="48" height="48" />Radiša
           </Link>
           <LockKeyhole size={30} />
           <h1>
@@ -827,7 +853,7 @@ export default function WorkSpace() {
     >
       <header className="gw-topbar">
         <Link to={mode === "demo" ? "/dashboard/work?demo=1" : "/dashboard/work"} className="gw-brand">
-          <b>g.</b>gordon <span>work</span>
+          <img className="gw-mascot" src="/radisa-mascot.png" alt="" width="48" height="48" />Radiša
         </Link>
         <span className="gw-divider" />
         <button
@@ -853,7 +879,7 @@ export default function WorkSpace() {
         <div>
           <span className="gw-eyebrow">MALO PO MALO. VELIKE STVARI.</span>
           <h1>
-            {allProjects ? "Svi projekti" : project?.name || "Dobro došao u Gordon Work"}
+            {allProjects ? "Svi projekti" : project?.name || "Dobro došao u Radišu"}
             {!allProjects && project && <span className="gw-project-heading-actions">
               <span className="gw-visibility-control"><button className="gw-visibility-trigger" aria-expanded={visibilityOpen} disabled={busy || (mode!=="demo" && project.owner!==user.id)} onClick={()=>setVisibilityOpen(v=>!v)}><LockKeyhole size={13}/>{project.teamVisible?"Javno":"Privatno"}<ChevronDown size={13}/></button>
                 {visibilityOpen && <span className="gw-visibility-menu">{[[true,"Javno · cijeli tim"],[false,"Privatno · samo ja"]].map(([value,label])=><button key={label} disabled={busy} onClick={async()=>{if(await run(()=>patchProject({teamVisible:value})))setVisibilityOpen(false);}}>{label}{project.teamVisible===value&&<Check size={14}/>}</button>)}
@@ -1426,22 +1452,20 @@ export default function WorkSpace() {
                     maxLength={300}
                     value={checkText}
                     onChange={(e) => setCheckText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+                        e.preventDefault();
+                        addStep();
+                      }
+                    }}
                   />
                   <button
                     type="button"
                     disabled={
-                      !checkText.trim() || draft.checklist.length >= 100
+                      busy || !checkText.trim() || draft.checklist.length >= 100
                     }
-                    onClick={() => {
-                      setDraft({
-                        ...draft,
-                        checklist: [
-                          ...draft.checklist,
-                          { id: uid(), title: checkText.trim(), done: false },
-                        ],
-                      });
-                      setCheckText("");
-                    }}
+                    aria-label="Dodaj i sačuvaj korak"
+                    onClick={addStep}
                   >
                     <Plus size={17} />
                   </button>

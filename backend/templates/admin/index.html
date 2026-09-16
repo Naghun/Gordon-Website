@@ -11,9 +11,9 @@
   </div>
       {% if request.get_host == '127.0.0.1:8000' or request.get_host == 'localhost:8000' %}
       <section class="dashboard-blog-tools">
-        <h2>Gordon Work / Projekti</h2>
+        <h2>Radiša / Projekti</h2>
         <p>Izdvojen prostor za projekte, timske zadatke i privatni Inbox. Prijava postojećim korisničkim računom.</p>
-        <div><a href="{% url 'gordon_work' %}">Otvori Gordon Work →</a></div>
+        <div><a href="{% url 'gordon_work' %}">Otvori Radišu →</a></div>
       </section>
       {% endif %}
       {% if perms.website.view_blogpost %}
