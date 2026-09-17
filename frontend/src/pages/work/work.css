@@ -2348,3 +2348,6 @@
 .gw-column-expanded .gw-column-cards { overflow:visible; flex-shrink:0; }
 
 .gw-card h3, .gw-card-compact h3, .gw-calendar-task > span { white-space:pre-wrap; }
+
+.gw-quick textarea { min-height:34px; height:34px; resize:none; line-height:18px; padding:7px 9px; max-height:140px; }
+.gw-task-author { display:inline-block; color:#14202b; border-radius:4px; padding:0 5px; font-size:10px; font-weight:700; vertical-align:1px; line-height:18px; white-space:nowrap; }

@@ -42,6 +42,7 @@ import {
 import "./work.css";
 import WorkCalendar from "./WorkCalendar";
 import WorkTitle from "./WorkTitle";
+import { userColor } from "./user-colors";
 import { parseTaskEntry } from "./task-entry";
 import WorkChat from "./WorkChat";
 import ListColorPopover from "./ListColorPopover";
@@ -155,6 +156,19 @@ export default function WorkSpace() {
     [mine, setMine] = useState(false),
     [quick, setQuick] = useState(null),
     [quickText, setQuickText] = useState("");
+  const quickDrafts = useRef({});
+  useEffect(() => {
+    if (!quick) return;
+    const dismiss = e => {
+      if (!e.target.closest('.gw-quick')) setQuick(null);
+    };
+    document.addEventListener('pointerdown', dismiss);
+    return () => document.removeEventListener('pointerdown', dismiss);
+  }, [quick]);
+  function startQuick(key) {
+    setQuick(key);
+    setQuickText(quickDrafts.current[key] || "");
+  }
   const [projectName, setProjectName] = useState(""),
     [memberName, setMemberName] = useState(""),
     [columnName, setColumnName] = useState(""),
@@ -558,13 +572,16 @@ export default function WorkSpace() {
       }),
     );
     if (ok) {
+      quickDrafts.current[form.dataset.quickKey] = "";
       setQuickText("");
-      form.querySelector("textarea")?.focus();
+      const input = form.querySelector("textarea");
+      if (input) { input.style.height = "34px"; input.focus(); }
     }
   }
   function toggle(id) {
     setPanels((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
+      if (id === "planner") return prev.planner ? {inbox:false, planner:false, board:true} : {inbox:false, planner:true, board:false};
+      const next = { ...prev, planner:false, [id]: !prev[id] };
       return Object.values(next).some(Boolean) ? next : prev;
     });
   }
@@ -635,7 +652,7 @@ export default function WorkSpace() {
         onDragStart={(e) => e.dataTransfer.setData("text/plain", t.id)}
       >
         <button className="gw-card-open" onClick={() => openTask(t)}>
-          <h3>{t.title}</h3>
+          <h3>{member(t.creator, p) && <><span className="gw-task-author" style={{background:userColor(t.creator)}} title={`Dodao/la: ${member(t.creator, p).name}`}>{member(t.creator, p).name.split(" ")[0]}</span>{" "}</>}{t.title}</h3>
           {t.parent && (
             <small className="gw-parent-label">
               ↳{" "}
@@ -760,13 +777,14 @@ export default function WorkSpace() {
   function quickForm(key, p, status) {
     if (!editable(p)) return null;
     return quick === key ? (
-      <form className="gw-quick" onSubmit={(e) => quickAdd(e, p, status)}>
+      <form className="gw-quick" data-quick-key={key} onSubmit={(e) => quickAdd(e, p, status)}>
         <textarea
+          rows={1}
           autoFocus
           aria-label="Naziv novog zadatka"
           placeholder="Šta treba uraditi?"
           value={quickText}
-          onChange={(e) => setQuickText(e.target.value)}
+          onChange={(e) => { setQuickText(e.target.value); quickDrafts.current[key] = e.target.value; e.target.style.height = "auto"; e.target.style.height = `${Math.min(140,e.target.scrollHeight)}px`; }}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
               e.preventDefault();
@@ -796,8 +814,7 @@ export default function WorkSpace() {
       <button
         className="gw-add-card"
         onClick={() => {
-          setQuick(key);
-          setQuickText("");
+          startQuick(key);
         }}
       >
         <Plus size={16} />
@@ -892,7 +909,7 @@ export default function WorkSpace() {
           <span className={`gw-mode ${mode === "demo" ? "demo" : ""}`}>
             {mode === "demo" ? "DEMO · LOKALNO" : "TIMSKI PROSTOR"}
           </span>
-          <span className="gw-avatar">{initials(user.name)}</span>
+          <span className="gw-avatar" style={{background:userColor(user.id),color:"#14202b"}}>{initials(user.name)}</span>
           <span className="gw-user-name">{user.name}</span>
           <button aria-label="Odjavi se" onClick={leave}>
             <LogOut size={17} />
@@ -916,7 +933,7 @@ export default function WorkSpace() {
         <div className="gw-project-actions">
           <div className="gw-members">
             {projectPeople.slice(0, 4).map((p) => (
-              <span key={p.id} title={p.name} className="gw-avatar">
+              <span key={p.id} title={p.name} className="gw-avatar" style={{background:userColor(p.id),color:"#14202b"}}>
                 {initials(p.name)}
               </span>
             ))}
@@ -999,7 +1016,7 @@ export default function WorkSpace() {
       )}
       <div className="gw-panels">
         <WorkChat key={`${mode}:${user.id}`} projects={data.projects} user={user} mode={mode} visible={panels.inbox} onUnread={setChatUnread} close={() => toggle("inbox")} />
-        {panels.planner && !panels.board && !panels.inbox ? <WorkCalendar tasks={plannerTasks} scopeLabel={plannerScope} projects={data.projects} openTask={openTask} editable={editable} busy={busy} reschedule={(task,due)=>run(()=>writeTask({...task,due}))} addTask={due=>openTask({...blankTask(project?.id||null,project?.columns[0]?.id||"inbox"),creator:user.id,due})} close={()=>setPanels(p=>({...p,board:true}))}/> : panels.planner && (
+        {panels.planner && !panels.board && !panels.inbox ? <WorkCalendar tasks={plannerTasks} scopeLabel={plannerScope} projects={data.projects} openTask={openTask} editable={editable} busy={busy} reschedule={(task,due)=>run(()=>writeTask({...task,due}))} addTask={due=>openTask({...blankTask(project?.id||null,project?.columns[0]?.id||"inbox"),creator:user.id,due})} close={()=>setPanels({inbox:false,planner:false,board:true})}/> : panels.planner && (
           <aside className="gw-planner gw-panel">
             <div className="gw-panel-title">
               <h2>
@@ -1202,8 +1219,7 @@ export default function WorkSpace() {
                       <button
                         aria-label={`Dodaj u ${col.name}`}
                         onClick={() => {
-                          setQuick(col.id);
-                          setQuickText("");
+                          startQuick(col.id);
                         }}
                       >
                         <Plus size={17} />
