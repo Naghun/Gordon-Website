@@ -252,6 +252,33 @@ class CollaborationTests(TestCase):
         r=self.client.patch(f'/api/work/projects/{self.project.pk}/',{'columns':cols},format='json')
         self.assertEqual(r.status_code,200);self.assertEqual(r.json()['columns'][0]['card'],'#abcdef')
 
+    def test_list_rows_persist_and_reject_invalid_layout(self):
+        cols=self.project.columns
+        cols[1]['rowBreak']=True
+        url=f'/api/work/projects/{self.project.pk}/'
+        r=self.client.patch(url,{'columns':cols},format='json')
+        self.assertEqual(r.status_code,200)
+        self.project.refresh_from_db()
+        self.assertTrue(self.project.columns[1]['rowBreak'])
+        self.assertEqual([c['id'] for c in self.project.columns],[c['id'] for c in cols])
+        cols[1]['rowBreak']='invalid'
+        self.assertEqual(self.client.patch(url,{'columns':cols},format='json').status_code,400)
+
+    def test_stacked_lists_persist_through_reset_and_validate_lane(self):
+        cols=self.project.columns
+        for index,c in enumerate(cols): c['lane']=max(0,index-1)
+        url=f'/api/work/projects/{self.project.pk}/'
+        self.assertEqual(self.client.patch(url,{'columns':cols},format='json').status_code,200)
+        self.project.refresh_from_db()
+        expected=[c['lane'] for c in cols]
+        self.assertEqual([c['lane'] for c in self.project.columns],expected)
+        self.assertEqual(self.client.patch(url,{'reset_display':True},format='json').status_code,200)
+        self.project.refresh_from_db()
+        self.assertEqual([c['lane'] for c in self.project.columns],expected)
+        for invalid in [-1,12,True,'1',None]:
+            cols[0]['lane']=invalid
+            self.assertEqual(self.client.patch(url,{'columns':cols},format='json').status_code,400)
+
     def test_children_and_checklist_complete_parent_and_reopen(self):
         self.task.checklist=[{'id':'check','title':'Finalna provjera','done':False}];self.task.save()
         child=WorkTask.objects.create(project=self.project,creator=self.owner,parent=self.task,title='Child')

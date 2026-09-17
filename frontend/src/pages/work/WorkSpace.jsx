@@ -43,6 +43,8 @@ import WorkTitle from "./WorkTitle";
 import WorkChat from "./WorkChat";
 import ListColorPopover from "./ListColorPopover";
 import useListDrag from "./use-list-drag";
+import BoardNavigation from "./BoardNavigation";
+import { listLanes, placeList } from "./list-layout";
 import { syncTaskCompletion } from "./task-completion";
 import {
   WorkToolbar,
@@ -119,6 +121,8 @@ export default function WorkSpace() {
       board: true,
     }),
     [view, setView] = useState("board");
+  const project =
+    data.projects.find((p) => p.id === projectId) || data.projects[0];
   const [modal, setModal] = useState(null),
     [draft, setDraft] = useState(null),
     [error, setError] = useState(""),
@@ -127,10 +131,14 @@ export default function WorkSpace() {
   const [listEdit, setListEdit] = useState(null),
     [listTarget, setListTarget] = useState("");
   const [listColors, setListColors] = useState(null);
-  const listSort = useListDrag(async (order) => {
+  const listSort = useListDrag(project?.columns || [], async (lanes) => {
     const ok = await run(() =>
       patchProject({
-        columns: order.map((id) => project.columns.find((c) => c.id === id)),
+        columns: lanes.flatMap((lane, laneIndex) => lane.map((id) => ({
+          ...project.columns.find((c) => c.id === id),
+          rowBreak: false,
+          lane: laneIndex,
+        }))),
       }),
     );
     if (ok) setNotice("Raspored lista je sačuvan.");
@@ -164,8 +172,6 @@ export default function WorkSpace() {
       else robots.remove();
     };
   }, []);
-  const project =
-    data.projects.find((p) => p.id === projectId) || data.projects[0];
   const projectPeople = project?.members || [];
   const owner = mode === "demo" || user?.isAdmin || project?.owner === user?.id;
   const editable = (projectId) =>
@@ -413,6 +419,8 @@ export default function WorkSpace() {
                   columns: p.columns.map((c) => ({
                     id: c.id,
                     name: c.name,
+                    rowBreak: !!c.rowBreak,
+                    ...(Number.isInteger(c.lane) ? {lane:c.lane} : {}),
                     color:
                       defaults.find((x) => x.id === c.id)?.color || "#aa8cff",
                   })),
@@ -461,9 +469,10 @@ export default function WorkSpace() {
       from = next.findIndex((c) => c.id === id),
       to = next.findIndex((c) => c.id === target);
     if (from < 0 || to < 0) return;
-    const [col] = next.splice(from, 1);
-    next.splice(to, 0, col);
-    await run(() => patchProject({ columns: next }));
+    const lanes = placeList(listLanes(next), id, target, from > to ? 'before' : 'after');
+    await run(() => patchProject({ columns: lanes.flatMap((lane, laneIndex) => lane.map(cid => ({
+      ...next.find(c => c.id === cid), lane: laneIndex, rowBreak: false,
+    }))) }));
   }
   function newTask() {
     openTask({
@@ -1110,7 +1119,9 @@ export default function WorkSpace() {
                 })}
               </div>
             ) : view === "board" ? (
-              <div className={`gw-board ${alignLists ? "gw-aligned" : ""}`}>
+              <>
+              <div ref={listSort.boardRef} className={`gw-board gw-stacked-board ${listSort.preview ? "gw-sorting-rows" : ""} ${alignLists ? "gw-aligned" : ""}`}>
+                <div className="gw-board-stage" style={listSort.stageStyle}>
                 {project.columns.map((col, columnIndex) => (
                   <section
                     key={col.id}
@@ -1143,7 +1154,7 @@ export default function WorkSpace() {
                       role="button"
                       aria-label={`Prevuci listu ${col.name}`}
                       data-sortable={owner}
-                      title="Povuci za promjenu rasporeda"
+                      title="Povuci ispod druge liste za slaganje ili uz njen rub za novu kolonu"
                       {...listSort.handlers(col.id, owner && !busy)}
                     >
                       <span />
@@ -1209,6 +1220,7 @@ export default function WorkSpace() {
                 {owner && (
                   <button
                     className="gw-add-list"
+                    style={listSort.addStyle}
                     onClick={() => setModal("column")}
                   >
                     <Plus size={17} />
@@ -1216,6 +1228,9 @@ export default function WorkSpace() {
                   </button>
                 )}
               </div>
+              </div>
+              <BoardNavigation board={listSort.board} columns={project.columns} preview={listSort.preview} />
+              </>
             ) : (
               <div className="gw-task-list">
                 {boardTasks.map((t) => (

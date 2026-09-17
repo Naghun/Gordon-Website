@@ -1,9 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { listLanes, placeList, stackPositions } from "./list-layout";
 
 // Keep DOM slots stable during pointer capture; translate columns into preview slots.
-export default function useListDrag(commit) {
+export default function useListDrag(columns, commit) {
   const active = useRef(null);
   const [preview, setPreview] = useState(null);
+  const [board, setBoard] = useState(null);
+  const [heights, setHeights] = useState({});
+  useLayoutEffect(() => {
+    if (!board) return;
+    const nodes = [...board.querySelectorAll('[data-list-id]')];
+    const measure = () => {
+      const next = Object.fromEntries(nodes.map(n => [n.dataset.listId, n.offsetHeight]));
+      setHeights(old => JSON.stringify(old) === JSON.stringify(next) ? old : next);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    nodes.forEach(n => observer.observe(n));
+    return () => observer.disconnect();
+  }, [board, columns]);
+  const lanes = preview?.lanes || listLanes(columns);
+  const layout = stackPositions(lanes, heights);
   function cancel() {
     const s = active.current;
     if (s) {
@@ -31,28 +48,28 @@ export default function useListDrag(commit) {
     const r = s.board.getBoundingClientRect();
     if (s.x < r.left + 45) s.board.scrollLeft -= 12;
     if (s.x > r.right - 45) s.board.scrollLeft += 12;
+    if (s.y < r.top + 35) s.board.scrollTop -= 10;
+    if (s.y > r.bottom - 35) s.board.scrollTop += 10;
     const valid =
       s.x >= r.left - 25 &&
       s.x <= r.right + 25 &&
       s.y >= r.top - 45 &&
       s.y <= r.bottom + 45;
-    const index = Math.max(
-      0,
-      Math.min(
-        s.ids.length - 1,
-        Math.floor((s.x - r.left + s.board.scrollLeft) / s.step),
-      ),
-    );
-    s.order = s.ids.filter((id) => id !== s.id);
-    s.order.splice(index, 0, s.id);
+    const x = s.x - r.left + s.board.scrollLeft;
+    const y = s.y - r.top + s.board.scrollTop;
+    const distance = box => Math.hypot(Math.max(box.left - x, 0, x - box.right), Math.max(box.top - y, 0, y - box.bottom));
+    const target = [...s.slots].sort((a, b) => distance(a) - distance(b))[0];
+    const placement = x < target.left + 32 ? "before" : x > target.right - 32 ? "after" : y >= (target.top + target.bottom) / 2 ? "below" : "above";
+    s.lanes = placeList(s.lanesStart, s.id, target.id, placement);
+    s.order = s.lanes.flat();
     s.valid = valid;
     s.ghost.style.left = `${s.x - s.dx}px`;
     s.ghost.style.top = `${s.y - s.dy}px`;
     setPreview((previous) =>
       previous?.valid === valid &&
-      previous?.order.join("|") === s.order.join("|")
+      JSON.stringify(previous?.lanes) === JSON.stringify(s.lanes)
         ? previous
-        : { id: s.id, order: s.order, step: s.step, valid },
+        : { id: s.id, order: s.order, lanes: s.lanes, valid },
     );
     s.frame = requestAnimationFrame(() => update(s));
   }
@@ -60,14 +77,20 @@ export default function useListDrag(commit) {
     onPointerDown(e) {
       if (!enabled || e.button !== 0) return;
       const column = e.currentTarget.closest("[data-list-id]"),
-        board = column.parentElement,
+        board = column.closest('.gw-board'),
         r = column.getBoundingClientRect();
-      const nodes = [...board.querySelectorAll(":scope > [data-list-id]")];
+      const nodes = [...board.querySelectorAll("[data-list-id]")];
+      const boardRect = board.getBoundingClientRect();
       active.current = {
         id,
         column,
         board,
         ids: nodes.map((n) => n.dataset.listId),
+        lanesStart: listLanes(columns),
+        slots: nodes.map(n => {
+          const box = n.getBoundingClientRect();
+          return { id: n.dataset.listId, left: box.left - boardRect.left + board.scrollLeft, right: box.right - boardRect.left + board.scrollLeft, top: box.top - boardRect.top + board.scrollTop, bottom: box.bottom - boardRect.top + board.scrollTop };
+        }),
         step: r.width + parseFloat(getComputedStyle(board).columnGap || 0),
         dx: e.clientX - r.left,
         dy: e.clientY - r.top,
@@ -99,12 +122,12 @@ export default function useListDrag(commit) {
     async onPointerUp() {
       const s = active.current;
       const order = s?.ghost && s.valid ? s.order : null;
-      if (order && order.some((id, i) => id !== s.ids[i])) {
+      if (order && JSON.stringify(s.lanes) !== JSON.stringify(s.lanesStart)) {
         cancelAnimationFrame(s.frame);
         s.ghost.remove();
         active.current = null;
         try {
-          await commit(order);
+          await commit(s.lanes);
         } finally {
           setPreview(null);
         }
@@ -118,12 +141,13 @@ export default function useListDrag(commit) {
   return {
     handlers,
     preview,
-    style(id, index) {
-      return preview
-        ? {
-            transform: `translateX(${(preview.order.indexOf(id) - index) * preview.step}px)`,
-          }
-        : {};
+    board,
+    boardRef: setBoard,
+    stageStyle: { width: layout.width, height: layout.height + 40 },
+    addStyle: { transform: `translate(${layout.addX}px, 0)` },
+    style(id) {
+      const p = layout.positions[id] || { x: 0, y: 0 };
+      return { transform: `translate(${p.x}px, ${p.y}px)` };
     },
   };
 }

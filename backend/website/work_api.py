@@ -194,7 +194,7 @@ def project(request,pk):
             if request.data.get('reset_display') is True:
                 defaults={c['id']:c['color'] for c in work_columns()}
                 p.background='aurora'
-                p.columns=[{'id':c['id'],'name':c['name'],'color':defaults.get(c['id'],'#aa8cff')} for c in p.columns]
+                p.columns=[{'id':c['id'],'name':c['name'],'color':defaults.get(c['id'],'#aa8cff'),**({key:c[key] for key in ('rowBreak','lane') if key in c})} for c in p.columns]
                 from django.db.models import F
                 p.tasks.update(appearance={},revision=F('revision')+1)
             if 'remove_column' in request.data:
@@ -216,6 +216,12 @@ def project(request,pk):
                     color=c.get('color','')
                     if cid in ('done','inbox') or not isinstance(color,str) or not __import__('re').fullmatch(r'#[0-9a-fA-F]{6}',color): raise ValidationError('Neispravna boja ili oznaka liste.')
                     checked.append({'id':cid,'name':text(c.get('name',''),50,True),'color':color})
+                    if 'rowBreak' in c:
+                        if not isinstance(c['rowBreak'],bool): raise ValidationError('Neispravan raspored liste.')
+                        checked[-1]['rowBreak']=c['rowBreak']
+                    if 'lane' in c:
+                        if type(c['lane']) is not int or not 0 <= c['lane'] <= 11: raise ValidationError('Neispravna kolona liste.')
+                        checked[-1]['lane']=c['lane']
                     for key in ('fill','card','border'):
                         val=c.get(key,'')
                         if val and (not isinstance(val,str) or not __import__('re').fullmatch(r'#[0-9a-fA-F]{6}',val)): raise ValidationError('Neispravna boja.')
