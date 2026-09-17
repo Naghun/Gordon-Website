@@ -586,13 +586,9 @@ export default function WorkSpace() {
             !t.deleted &&
             (view === "done" ? t.status === "done" : t.status !== "done")),
   );
-  const personal = data.tasks.filter(
-    (t) =>
-      !t.deleted &&
-      !t.archived &&
-      t.status !== "done" &&
-      (t.person === user?.id || (!t.project && t.creator === user?.id)),
-  );
+  const plannerTasks = active.filter(matches);
+  const plannerActiveTasks = plannerTasks.filter(t => t.status !== "done");
+  const plannerScope = allProjects ? "Svi projekti" : project?.name || "Izaberi projekat";
   function taskCard(t, compact = false) {
     const children = data.tasks.filter(
       (c) => c.parent === t.id && !c.deleted && !c.archived,
@@ -990,7 +986,7 @@ export default function WorkSpace() {
       )}
       <div className="gw-panels">
         <WorkChat key={`${mode}:${user.id}`} projects={data.projects} user={user} mode={mode} visible={panels.inbox} onUnread={setChatUnread} close={() => toggle("inbox")} />
-        {panels.planner && !panels.board && !panels.inbox ? <WorkCalendar tasks={data.tasks.filter(t=>!t.deleted&&!t.archived&&matches(t))} projects={data.projects} openTask={openTask} editable={editable} busy={busy} reschedule={(task,due)=>run(()=>writeTask({...task,due}))} addTask={due=>openTask({...blankTask(project?.id||null,project?.columns[0]?.id||"inbox"),creator:user.id,due})} close={()=>setPanels(p=>({...p,board:true}))}/> : panels.planner && (
+        {panels.planner && !panels.board && !panels.inbox ? <WorkCalendar tasks={plannerTasks} scopeLabel={plannerScope} projects={data.projects} openTask={openTask} editable={editable} busy={busy} reschedule={(task,due)=>run(()=>writeTask({...task,due}))} addTask={due=>openTask({...blankTask(project?.id||null,project?.columns[0]?.id||"inbox"),creator:user.id,due})} close={()=>setPanels(p=>({...p,board:true}))}/> : panels.planner && (
           <aside className="gw-planner gw-panel">
             <div className="gw-panel-title">
               <h2>
@@ -1013,13 +1009,13 @@ export default function WorkSpace() {
               />
               <button onClick={() => setPlannerDay(day())}>Danas</button>
             </div>
-            <p className="gw-panel-note">Tvoji rokovi iz svih projekata.</p>
+            <p className="gw-panel-note">{plannerScope}</p>
             <div className="gw-panel-scroll">
               {Array.from({ length: 7 }, (_, i) => {
                 const d = new Date(`${plannerDay}T12:00:00`);
                 d.setDate(d.getDate() + i);
                 const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
-                  items = personal.filter((t) => t.due === key && matches(t));
+                  items = plannerActiveTasks.filter((t) => t.due === key);
                 return (
                   <section
                     className="gw-planner-day"
@@ -1027,10 +1023,10 @@ export default function WorkSpace() {
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={(e) => {
                       e.preventDefault();
-                      const t = personal.find(
+                      const t = plannerActiveTasks.find(
                         (t) => t.id === e.dataTransfer.getData("text/plain"),
                       );
-                      if (t) run(() => writeTask({ ...t, due: key }));
+                      if (t && editable(t.project) && !busy) run(() => writeTask({ ...t, due: key }));
                     }}
                   >
                     <h3>
@@ -1056,8 +1052,8 @@ export default function WorkSpace() {
               })}
               <section className="gw-planner-day">
                 <h3>Bez roka</h3>
-                {personal
-                  .filter((t) => !t.due && matches(t))
+                {plannerActiveTasks
+                  .filter((t) => !t.due)
                   .map((t) => taskCard(t, true))}
               </section>
             </div>

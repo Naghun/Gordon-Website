@@ -7,6 +7,7 @@ const iso = (d) =>
 export default function WorkCalendar({
   tasks,
   projects,
+  scopeLabel,
   openTask,
   addTask,
   reschedule,
@@ -62,7 +63,7 @@ export default function WorkCalendar({
       <div className="gw-calendar-toolbar">
         <div>
           <strong>{`${["Januar", "Februar", "Mart", "April", "Maj", "Juni", "Juli", "August", "Septembar", "Oktobar", "Novembar", "Decembar"][anchor.getMonth()]} ${anchor.getFullYear()}`}</strong>
-          <small>Rokovi zadataka iz svih dostupnih projekata</small>
+          <small>{scopeLabel}</small>
         </div>
         <button aria-label="Prethodni period" onClick={() => navigate(-1)}>
           <ChevronLeft size={18} />
