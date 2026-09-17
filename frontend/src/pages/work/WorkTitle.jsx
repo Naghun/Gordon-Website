@@ -25,7 +25,7 @@ export default function WorkTitle(props) {
       ref={ref}
       rows={1}
       onKeyDown={(e) => {
-        if (e.key === "Enter") e.preventDefault();
+        props.onKeyDown?.(e);
       }}
     />
   );

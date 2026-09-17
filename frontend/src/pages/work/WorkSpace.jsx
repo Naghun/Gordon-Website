@@ -42,6 +42,7 @@ import {
 import "./work.css";
 import WorkCalendar from "./WorkCalendar";
 import WorkTitle from "./WorkTitle";
+import { parseTaskEntry } from "./task-entry";
 import WorkChat from "./WorkChat";
 import ListColorPopover from "./ListColorPopover";
 import useListDrag from "./use-list-drag";
@@ -489,18 +490,22 @@ export default function WorkSpace() {
       creator: user.id,
     });
   }
-  async function saveTask(e) {
+  async function saveTask(e, createNext = false) {
     e.preventDefault();
-    if (!editable(draft.project)) return;
-    if (!draft.title.trim()) return;
+    if (operation.current || !editable(draft.project)) return;
+    const entry = parseTaskEntry(draft.title);
+    if (!entry.title) return;
+    if (draft.checklist.length + entry.steps.length > 100) { setError("Kartica može imati najviše 100 koraka."); return; }
     const ok = await run(() =>
       writeTask(
-        { ...draft, title: draft.title.trim() },
+        { ...draft, title: entry.title, checklist:[...draft.checklist, ...entry.steps.map(title => ({id:uid(),title,done:false}))] },
         { ...(comment.trim() ? { comment: comment.trim() } : {}) },
       ),
     );
     if (ok) {
-      setModal(null);
+      if (createNext) {
+        openTask({...blankTask(draft.project, draft.status), creator:user.id});
+      } else setModal(null);
       setNotice("Zadatak je sačuvan.");
     }
   }
@@ -539,17 +544,22 @@ export default function WorkSpace() {
   }
   async function quickAdd(e, p, status) {
     e.preventDefault();
-    if (!quickText.trim()) return;
+    const form = e.currentTarget;
+    if (operation.current || !quickText.trim()) return;
+    const entry = parseTaskEntry(quickText);
+    if (!entry.title) return;
+    if (entry.steps.length > 100) { setError("Kartica može imati najviše 100 koraka."); return; }
     const ok = await run(() =>
       writeTask({
         ...blankTask(p, status),
-        title: quickText.trim(),
+        title: entry.title,
+        checklist: entry.steps.map(title => ({id:uid(),title,done:false})),
         creator: user.id,
       }),
     );
     if (ok) {
       setQuickText("");
-      setQuick(null);
+      form.querySelector("textarea")?.focus();
     }
   }
   function toggle(id) {
@@ -758,7 +768,7 @@ export default function WorkSpace() {
           value={quickText}
           onChange={(e) => setQuickText(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
+            if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
               e.preventDefault();
               e.currentTarget.form.requestSubmit();
             }
@@ -1358,7 +1368,14 @@ export default function WorkSpace() {
             <div className="gw-task-layout">
               <div className="gw-task-details">
                 <WorkTitle
+                  key={draft.id || "new-task"}
                   className="gw-task-title"
+                  onKeyDown={e => {
+                    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                      e.preventDefault();
+                      saveTask(e, true);
+                    }
+                  }}
                   aria-label="Naziv zadatka"
                   required
                   maxLength={180}

@@ -2346,3 +2346,5 @@
 .gw-app .gw-expand-list:hover, .gw-app .gw-expand-list[aria-expanded="true"] { opacity:1; background:#ffffff12; }
 .gw-board-stage > .gw-column.gw-column-expanded { max-height:none; height:auto; }
 .gw-column-expanded .gw-column-cards { overflow:visible; flex-shrink:0; }
+
+.gw-card h3, .gw-card-compact h3, .gw-calendar-task > span { white-space:pre-wrap; }
