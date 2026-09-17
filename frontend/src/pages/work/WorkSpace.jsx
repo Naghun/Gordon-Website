@@ -24,6 +24,8 @@ import {
   Flag,
   Download,
   LockKeyhole,
+  Maximize2,
+  Minimize2,
 } from "lucide-react";
 import {
   uid,
@@ -107,6 +109,7 @@ export default function WorkSpace() {
   const [projectEdit, setProjectEdit] = useState(null);
   const [confirmProjectDelete, setConfirmProjectDelete] = useState(false);
   const [alignLists, setAlignLists] = useState(false);
+  const [expandedLists, setExpandedLists] = useState({});
   const [newProjectShared, setNewProjectShared] = useState(true);
   const [taskColorsOpen, setTaskColorsOpen] = useState(false);
   const taskColorsRef = useRef(null);
@@ -1128,7 +1131,7 @@ export default function WorkSpace() {
                   <section
                     key={col.id}
                     data-list-id={col.id}
-                    className={`gw-column ${listSort.preview?.id === col.id ? "gw-list-placeholder" : ""}`}
+                    className={`gw-column ${expandedLists[`${project.id}:${col.id}`] ? "gw-column-expanded" : ""} ${listSort.preview?.id === col.id ? "gw-list-placeholder" : ""}`}
                     style={{
                       ...listSort.style(col.id, columnIndex),
                       "--status": col.color,
@@ -1216,7 +1219,19 @@ export default function WorkSpace() {
                         .filter((t) => t.status === col.id && (!t.parent || !boardTasks.some(p=>p.id===t.parent)))
                         .map((t) => taskCard(t))}
                     </div>
-                    {quickForm(col.id, project.id, col.id)}
+                    <div className="gw-column-footer">
+                      <div>{quickForm(col.id, project.id, col.id)}</div>
+                      <button
+                        type="button"
+                        className="gw-expand-list"
+                        aria-label={`${expandedLists[`${project.id}:${col.id}`] ? "Skupi" : "Proširi"} listu ${col.name}`}
+                        aria-expanded={!!expandedLists[`${project.id}:${col.id}`]}
+                        title={expandedLists[`${project.id}:${col.id}`] ? "Vrati visinu liste" : "Prikaži sve zadatke u listi"}
+                        onClick={() => setExpandedLists(previous => ({...previous, [`${project.id}:${col.id}`]: !previous[`${project.id}:${col.id}`]}))}
+                      >
+                        {expandedLists[`${project.id}:${col.id}`] ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
+                      </button>
+                    </div>
                   </section>
                 ))}
                 {owner && (

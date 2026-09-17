@@ -2339,3 +2339,10 @@
   .gw-scroll-side { flex-wrap:wrap; justify-content:flex-end; }
   .gw-scroll-side > span { width:100%; height:14px; }
 }
+
+.gw-column-footer { display:grid; grid-template-columns:minmax(0,1fr) 32px; align-items:end; gap:4px; flex-shrink:0; margin-top:4px; }
+.gw-column-footer > div { min-width:0; }
+.gw-app .gw-expand-list { width:32px; height:32px; padding:8px; color:var(--list-text, #aab7cb); opacity:.75; }
+.gw-app .gw-expand-list:hover, .gw-app .gw-expand-list[aria-expanded="true"] { opacity:1; background:#ffffff12; }
+.gw-board-stage > .gw-column.gw-column-expanded { max-height:none; height:auto; }
+.gw-column-expanded .gw-column-cards { overflow:visible; flex-shrink:0; }
