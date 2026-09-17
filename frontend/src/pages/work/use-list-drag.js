@@ -19,6 +19,53 @@ export default function useListDrag(columns, commit) {
     nodes.forEach(n => observer.observe(n));
     return () => observer.disconnect();
   }, [board, columns]);
+  useLayoutEffect(() => {
+    if (!board) return;
+    const resize = () => board.style.setProperty('--board-height', `${Math.max(120, board.clientHeight - 12)}px`);
+    const observer = new ResizeObserver(resize);
+    observer.observe(board);
+    resize();
+    let pan = null;
+    const stop = () => {
+      pan = null;
+      board.classList.remove('gw-panning');
+    };
+    const down = e => {
+      if (e.button !== 0 || e.pointerType === 'touch') return;
+      // Pan from list backgrounds and gaps too, without taking over task/list dragging.
+      if (e.target.closest('button, a, input, textarea, select, label, [role=button], [contenteditable=true], [draggable=true], .gw-card, .gw-list-grip')) return;
+      const r = board.getBoundingClientRect();
+      if (e.clientX >= r.left + board.clientWidth || e.clientY >= r.top + board.clientHeight) return;
+      pan = { id:e.pointerId, x:e.clientX, left:board.scrollLeft };
+      board.setPointerCapture(e.pointerId);
+      board.classList.add('gw-panning');
+      e.preventDefault();
+    };
+    const move = e => {
+      if (!pan || e.pointerId !== pan.id) return;
+      board.scrollLeft = pan.left - (e.clientX - pan.x);
+    };
+    const up = e => {
+      if (!pan || e.pointerId !== pan.id) return;
+      if (board.hasPointerCapture(e.pointerId)) board.releasePointerCapture(e.pointerId);
+      stop();
+    };
+    board.addEventListener('pointerdown', down);
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', up);
+    window.addEventListener('blur', stop);
+    board.addEventListener('lostpointercapture', stop);
+    return () => {
+      stop(); observer.disconnect();
+      board.removeEventListener('pointerdown', down);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', up);
+      window.removeEventListener('blur', stop);
+      board.removeEventListener('lostpointercapture', stop);
+    };
+  }, [board]);
   const lanes = preview?.lanes || listLanes(columns);
   const layout = stackPositions(lanes, heights);
   function cancel() {

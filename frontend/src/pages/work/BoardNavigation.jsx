@@ -42,9 +42,9 @@ export default function BoardNavigation({ board, columns, preview }) {
     {controls(-1)}
     <span className="gw-scroll-spacer" aria-hidden="true" />
     {controls(1)}
-    {(info.above > 0 || info.below > 0) && <div className="gw-board-vertical-nav">
-      {info.above > 0 && <button onClick={() => move(0,-board.clientHeight * .7)} aria-label="Prikaži liste iznad" title="Liste iznad">↑ {info.above}</button>}
-      {info.below > 0 && <button onClick={() => move(0,board.clientHeight * .7)} aria-label="Prikaži liste ispod" title="Liste ispod">↓ {info.below}</button>}
-    </div>}
+    <div className="gw-board-vertical-nav">
+      <button style={{visibility:info.above > 0 ? "visible" : "hidden"}} disabled={!info.above} onClick={() => move(0,-board.clientHeight * .7)} aria-label="Prikaži liste iznad" title="Liste iznad">↑ {info.above}</button>
+      <button style={{visibility:info.below > 0 ? "visible" : "hidden"}} disabled={!info.below} onClick={() => move(0,board.clientHeight * .7)} aria-label="Prikaži liste ispod" title="Liste ispod">↓ {info.below}</button>
+    </div>
   </nav>;
 }
