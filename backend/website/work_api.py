@@ -127,8 +127,11 @@ def text(value, limit, required=False):
     return value.strip()
 
 def validate_background(value):
-    presets={'aurora','midnight','ocean','sunset','forest','plum','copper','lagoon','cosmos','photo-mountain','photo-lake','photo-forest'}
+    presets={'aurora','midnight','ocean','sunset','forest','plum','copper','lagoon','cosmos','photo-mountain','photo-lake','photo-forest','white','pearl','mint-day','sky-day','rose-day','lavender-day','photo-dunes','photo-tetons','photo-mist'}
     if isinstance(value,str) and value in presets: return value
+    if isinstance(value,str) and __import__('re').fullmatch(r'color:#[0-9a-fA-F]{6}',value): return value
+    gradient=__import__('re').fullmatch(r'gradient:(\d{1,3}):(#[0-9a-fA-F]{6}):(#[0-9a-fA-F]{6})',value) if isinstance(value,str) else None
+    if gradient and int(gradient[1])<=360: return value
     if not isinstance(value,str) or len(value)>2000000 or not value.startswith('data:image/jpeg;base64,'): raise ValidationError('Pozadina mora biti slika do 1,5 MB.')
     try:
         content=base64.b64decode(value.split(',',1)[1],validate=True)

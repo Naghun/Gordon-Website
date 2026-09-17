@@ -158,6 +158,12 @@ export async function request(path, method = "GET", body) {
   return data;
 }
 export const backgrounds = [
+  { id: "white", name: "Bijela", css: "#ffffff", light: true },
+  { id: "pearl", name: "Biserna", css: "#f1f4f6", light: true },
+  { id: "mint-day", name: "Mint jutro", css: "linear-gradient(135deg,#e9fff5,#c5eade)", light: true },
+  { id: "sky-day", name: "Vedro nebo", css: "linear-gradient(135deg,#f4fbff,#c5e4fa)", light: true },
+  { id: "rose-day", name: "Breskva", css: "linear-gradient(135deg,#fff4e8,#f6d5dc)", light: true },
+  { id: "lavender-day", name: "Lavanda", css: "linear-gradient(135deg,#f8f5ff,#dcd8f4)", light: true },
   {
     id: "copper",
     name: "Bakar",
@@ -206,6 +212,9 @@ export const backgrounds = [
     author: "Paul Earle",
     source: "https://unsplash.com/photos/xJ2tjuUHD9M",
   },
+  { id: "photo-dunes", name: "Zlatne dine", image: "/work-backgrounds/dunes.jpg", author: "Zetong Li", source: "https://unsplash.com/photos/HEf0fKgJA1Q" },
+  { id: "photo-tetons", name: "Mirno planinsko jezero", image: "/work-backgrounds/tetons.jpg", author: "Miles Farnsworth", source: "https://unsplash.com/photos/LXGKvnff7SQ" },
+  { id: "photo-mist", name: "Šuma u magli", image: "/work-backgrounds/mist.jpg", author: "Austin Schmid", source: "https://unsplash.com/photos/zQ-y4Gj8194" },
   {
     id: "photo-lake",
     name: "Planinski pejzaž",
@@ -222,11 +231,23 @@ export const backgrounds = [
   },
 ];
 export function backdrop(value) {
+  if (/^color:#[0-9a-f]{6}$/i.test(value || "")) return value.slice(6);
+  const gradient = /^gradient:(\d{1,3}):(#[0-9a-f]{6}):(#[0-9a-f]{6})$/i.exec(value || "");
+  if (gradient && Number(gradient[1]) <= 360) return `linear-gradient(${gradient[1]}deg,${gradient[2]},${gradient[3]})`;
   const b = backgrounds.find((p) => p.id === value);
   return (
     b?.css ||
     `linear-gradient(#080c14b3,#080c144d),url("${b?.image || (value?.startsWith("data:image/jpeg;base64,") ? value : "")}") center/cover`
   );
+}
+export function lightBackground(value) {
+  const preset = backgrounds.find(b => b.id === value);
+  if (preset) return !!preset.light;
+  const colors = (value || '').match(/#[0-9a-f]{6}/gi) || [];
+  return colors.length > 0 && colors.reduce((sum, hex) => {
+    const channels = [1,3,5].map(i => parseInt(hex.slice(i,i+2),16));
+    return sum + channels[0]*.299 + channels[1]*.587 + channels[2]*.114;
+  },0) / colors.length > 165;
 }
 export async function imageData(file) {
   if (

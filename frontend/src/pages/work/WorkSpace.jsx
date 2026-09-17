@@ -44,6 +44,8 @@ import WorkChat from "./WorkChat";
 import ListColorPopover from "./ListColorPopover";
 import useListDrag from "./use-list-drag";
 import BoardNavigation from "./BoardNavigation";
+import BackgroundControls from "./BackgroundControls";
+import { lightBackground } from "./work-data";
 import { listLanes, placeList } from "./list-layout";
 import { syncTaskCompletion } from "./task-completion";
 import {
@@ -62,7 +64,7 @@ const initials = (name) =>
     .slice(0, 2)
     .join("")
     .toUpperCase();
-function Modal({ title, children, close, wide = false }) {
+function Modal({ title, children, close, wide = false, className = "" }) {
   const ref = useRef();
   useEffect(() => {
     const old = document.activeElement;
@@ -72,7 +74,7 @@ function Modal({ title, children, close, wide = false }) {
   return (
     <dialog
       ref={ref}
-      className={`gw-dialog ${wide ? "gw-wide" : ""}`}
+      className={`gw-dialog ${wide ? "gw-wide" : ""} ${className}`}
       aria-label={title}
       onCancel={(e) => {
         e.preventDefault();
@@ -132,6 +134,7 @@ export default function WorkSpace() {
     [listTarget, setListTarget] = useState("");
   const [listColors, setListColors] = useState(null);
   const listSort = useListDrag(project?.columns || [], async (lanes) => {
+    setNotice("");
     const ok = await run(() =>
       patchProject({
         columns: lanes.flatMap((lane, laneIndex) => lane.map((id) => ({
@@ -448,6 +451,9 @@ export default function WorkSpace() {
       mode === "team"
         ? await request(`projects/${project.id}/`, "PATCH", values)
         : { ...project, ...values, ...(values.teamVisible !== undefined ? {members:values.teamVisible ? people : [user]} : {}) };
+    if (values.columns && JSON.stringify(listLanes(result.columns || [])) !== JSON.stringify(listLanes(values.columns))) {
+      throw new Error("Server nije potvrdio raspored lista. Osvježi stranicu i pokušaj ponovo.");
+    }
     setData((d) => ({
       ...d,
       projects: d.projects.map((p) => (p.id === result.id ? result : p)),
@@ -857,7 +863,7 @@ export default function WorkSpace() {
     );
   return (
     <div
-      className="gw-app"
+      className={`gw-app ${lightBackground(project?.background) ? "gw-light-background" : ""}`}
       style={{ background: backdrop(project?.background || "aurora") }}
     >
       <header className="gw-topbar">
@@ -1869,12 +1875,13 @@ export default function WorkSpace() {
         </Modal>
       )}
       {modal === "background" && (
-        <Modal title="Pozadina projekta" close={() => setModal(null)}>
+        <Modal title="Pozadina projekta" className="gw-background-dialog" close={() => setModal(null)}>
           <div className="gw-modal-body">
             <p>Izaberi atmosferu za svoj projekat.</p>
             {!owner && (
               <p>Samo vlasnik projekta može promijeniti zajedničku pozadinu.</p>
             )}
+            <BackgroundControls value={project.background} disabled={!owner || busy} save={background=>run(()=>patchProject({background}))}/>
             <h3>Boje i gradijenti</h3>
             <div className="gw-bg-colors">
               {backgrounds
@@ -1885,7 +1892,7 @@ export default function WorkSpace() {
                     key={b.id}
                     title={b.name}
                     aria-label={`Pozadina ${b.name}`}
-                    style={{ background: b.css }}
+                    style={{ background: b.css, color: b.light ? '#213b36' : '#e7f3ef' }}
                     onClick={() =>
                       run(() => patchProject({ background: b.id }))
                     }
@@ -1920,7 +1927,7 @@ export default function WorkSpace() {
                         run(() => patchProject({ background: b.id }))
                       }
                     >
-                      <img src={b.image} alt={b.name} />
+                      <img src={b.image} alt={b.name} loading="lazy" />
                       {project.background === b.id && <Check size={20} />}
                     </button>
                     <a href={b.source} target="_blank" rel="noreferrer">

@@ -26,16 +26,25 @@ export default function BoardNavigation({ board, columns, preview }) {
     return () => { cancelAnimationFrame(frame); observer.disconnect(); board.removeEventListener('scroll', schedule); board.removeEventListener('transitionend', schedule); };
   }, [board, columns, preview]);
   const move = (x, y = 0) => board?.scrollBy({ left: x, top: y, behavior: 'smooth' });
+  const end = direction => board?.scrollTo({left:direction < 0 ? 0 : info.max,behavior:'smooth'});
+  const arrow = direction => direction < 0 ? '‹' : '›';
+  const controls = direction => {
+    const count = direction < 0 ? info.left : info.right;
+    const enabled = direction < 0 ? info.x > 2 : info.x < info.max - 2;
+    const word = direction < 0 ? 'lijevo' : 'desno';
+    return <div className="gw-scroll-side" style={{visibility:enabled ? 'visible' : 'hidden'}}>
+      <span>{count ? `Još ${count} ${word}` : direction > 0 ? 'Dodaj listu' : ''}</span>
+      <button disabled={!enabled} onClick={() => move(direction * 294)} aria-label={`Jedna kolona ${word}`} title={`Pomjeri jednu kolonu ${word}`}><i aria-hidden="true">{arrow(direction)}</i></button>
+      <button disabled={!enabled} onClick={() => end(direction)} aria-label={`Skroz ${word}`} title={`Pomjeri do kraja ${word}`}><i className="gw-triple-arrow" aria-hidden="true">{arrow(direction).repeat(3)}</i></button>
+    </div>;
+  };
   return <nav className="gw-board-navigation" aria-label="Pomjeranje table">
-    <button disabled={info.x <= 2} onClick={() => move(-294)} title="Pomjeri tablu lijevo">← <span>{info.left ? `${info.left} lijevo` : 'Početak'}</span></button>
-    <div className="gw-board-scroll-track">
-      <label htmlFor="gw-board-scroll">Pregled table <span>{columns.length} lista</span></label>
-      <input id="gw-board-scroll" type="range" min="0" max={info.max || 1} value={info.x} disabled={!info.max} aria-label="Vodoravno pomjeranje table" style={{'--board-progress': `${info.max ? info.x / info.max * 100 : 100}%`}} onChange={e => board?.scrollTo({left: Number(e.target.value), behavior:'instant'})} />
-    </div>
-    <button className={info.right ? 'gw-more-lists' : ''} disabled={info.x >= info.max - 2} onClick={() => move(294)} title="Pomjeri tablu desno"><span>{info.right ? `Još ${info.right} desno` : info.x < info.max - 2 ? 'Dalje' : 'Kraj'}</span> →</button>
+    {controls(-1)}
+    <input className="gw-board-scroll" type="range" min="0" max={info.max || 1} value={info.x} disabled={!info.max} aria-label="Vodoravno pomjeranje table" style={{'--board-progress': `${info.max ? info.x / info.max * 100 : 100}%`}} onChange={e => board?.scrollTo({left:Number(e.target.value),behavior:'instant'})} />
+    {controls(1)}
     {(info.above > 0 || info.below > 0) && <div className="gw-board-vertical-nav">
-      <button disabled={!info.above} onClick={() => move(0, -board.clientHeight * .7)} aria-label="Prikaži liste iznad">↑</button>
-      <button disabled={!info.below} className={info.below ? 'gw-more-lists' : ''} onClick={() => move(0, board.clientHeight * .7)}><span>{info.below ? `Još ${info.below} ispod` : 'Dno'}</span> ↓</button>
+      {info.above > 0 && <button onClick={() => move(0,-board.clientHeight * .7)} aria-label="Prikaži liste iznad" title="Liste iznad">↑ {info.above}</button>}
+      {info.below > 0 && <button onClick={() => move(0,board.clientHeight * .7)} aria-label="Prikaži liste ispod" title="Liste ispod">↓ {info.below}</button>}
     </div>}
   </nav>;
 }

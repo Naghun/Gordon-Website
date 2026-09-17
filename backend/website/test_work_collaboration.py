@@ -252,6 +252,16 @@ class CollaborationTests(TestCase):
         r=self.client.patch(f'/api/work/projects/{self.project.pk}/',{'columns':cols},format='json')
         self.assertEqual(r.status_code,200);self.assertEqual(r.json()['columns'][0]['card'],'#abcdef')
 
+    def test_custom_backgrounds_round_trip_and_reject_css(self):
+        url=f'/api/work/projects/{self.project.pk}/'
+        for value in ['white','mint-day','photo-dunes','photo-tetons','photo-mist','color:#ffffff','gradient:135:#e7fff4:#d5def9']:
+            response=self.client.patch(url,{'background':value},format='json')
+            self.assertEqual(response.status_code,200)
+            self.project.refresh_from_db()
+            self.assertEqual(self.project.background,value)
+        for value in ['gradient:361:#ffffff:#ffffff','color:red','color:#ffffff;url(https://example.com)','gradient:90:#fff:#000']:
+            self.assertEqual(self.client.patch(url,{'background':value},format='json').status_code,400)
+
     def test_list_rows_persist_and_reject_invalid_layout(self):
         cols=self.project.columns
         cols[1]['rowBreak']=True
