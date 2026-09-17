@@ -40,7 +40,7 @@ export default function BoardNavigation({ board, columns, preview }) {
   };
   return <nav className="gw-board-navigation" aria-label="Pomjeranje table">
     {controls(-1)}
-    <input className="gw-board-scroll" type="range" min="0" max={info.max || 1} value={info.x} disabled={!info.max} aria-label="Vodoravno pomjeranje table" style={{'--board-progress': `${info.max ? info.x / info.max * 100 : 100}%`}} onChange={e => board?.scrollTo({left:Number(e.target.value),behavior:'instant'})} />
+    <span className="gw-scroll-spacer" aria-hidden="true" />
     {controls(1)}
     {(info.above > 0 || info.below > 0) && <div className="gw-board-vertical-nav">
       {info.above > 0 && <button onClick={() => move(0,-board.clientHeight * .7)} aria-label="Prikaži liste iznad" title="Liste iznad">↑ {info.above}</button>}
