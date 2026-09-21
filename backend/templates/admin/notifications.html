@@ -17,6 +17,10 @@
     </header>
     <div class="notifications-workspace">
       <aside class="notifications-sidebar">
+        {% if emails_page %}
+        <p>EMAIL SANDUČIĆI</p>
+        {% for box in mailboxes %}<a href="?mailbox={{ box.id }}" class="{% if box.id == selected_mailbox %}active{% endif %}"><span>{{ box.label }}</span></a>{% endfor %}
+        {% else %}
         <p>VRSTA OBAVIJESTI</p>
         <a href="?type=chat" class="{% if active_type == 'chat' %}active{% endif %}">
           <span>Chat poruke</span><b>{{ notification_counts.chat }}</b>
@@ -27,6 +31,7 @@
         <a href="?type=email" class="{% if active_type == 'email' %}active{% endif %}">
           <span>Email poruke</span><b>{{ notification_counts.email }}</b>
         </a>
+        {% endif %}
       </aside>
       <section class="notifications-list">
         <div class="notifications-list-title">

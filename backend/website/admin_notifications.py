@@ -96,7 +96,7 @@ def notifications_page(request):
     if mailbox not in accounts(): mailbox='primary'
     emails_page = request.path.rstrip('/').endswith('/emails')
     sync_result = sync_mailbox(force=request.GET.get('refresh')=='1',mailbox=mailbox)
-    active_type = request.POST.get("type") or request.GET.get("type", "email" if emails_page else "chat")
+    active_type = "email" if emails_page else (request.POST.get("type") or request.GET.get("type", "chat"))
     if active_type not in {"chat", "contact", "email"}:
         active_type = "chat"
     if request.method == "POST" and request.POST.get("action") == "read_all_emails":

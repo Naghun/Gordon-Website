@@ -31,3 +31,24 @@ class MailAccountTests(TestCase):
         c.login.assert_called_once_with('kontakt@gordondm.com','test-only')
         self.assertTrue(AdminEmail.objects.filter(mailbox='contact',uid='2').exists())
         self.assertFalse(AdminEmail.objects.filter(mailbox='primary',uid='2').exists())
+
+    @patch('website.admin.sync_mailbox',return_value={'ok':True})
+    def test_email_list_selector_and_refresh_preserve_mailbox(self,sync):
+        response=self.client.get('/admin/website/adminemail/?mailbox__exact=contact')
+        self.assertEqual(response.status_code,200)
+        self.assertContains(response,'id="emails-mailbox"')
+        self.assertEqual([m.mailbox for m in response.context['cl'].result_list],['contact'])
+        sync.assert_called_with(force=True,mailbox='contact')
+        response=self.client.get('/admin/website/adminemail/refresh/?mailbox=contact')
+        self.assertRedirects(response,'/admin/website/adminemail/?mailbox__exact=contact',fetch_redirect_response=False)
+        response=self.client.get('/admin/website/adminemail/?mailbox__exact=invalid')
+        self.assertEqual(response.context['selected_mailbox'],'primary')
+        self.assertEqual([m.mailbox for m in response.context['cl'].result_list],['primary'])
+
+    @patch('website.admin_notifications.sync_mailbox',return_value={'ok':True})
+    def test_emails_always_shows_mailbox_selection(self,sync):
+        response=self.client.get('/admin/emails/?mailbox=contact&type=chat')
+        self.assertEqual(response.context['active_type'],'email')
+        self.assertContains(response,'id="email-account"')
+        self.assertContains(response,'EMAIL SANDUČIĆI')
+        self.assertEqual([i['title'] for i in response.context['notifications']],['contact'])

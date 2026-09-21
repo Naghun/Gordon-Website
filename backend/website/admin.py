@@ -10,7 +10,7 @@ from django.utils import timezone
 from .models import AdminEmail,BlogPost,BlogPostImage,ChatConversation,ChatMessage,ContactMessage,CryptoEvent,CryptoEventImage,CryptoLesson,Project,SEOPage,Service
 from .email_filters import suspected_sales_or_scam_q
 from .mailbox import sync_mailbox
-from .mail_accounts import send_from_mailbox
+from .mail_accounts import send_from_mailbox, accounts
 admin.site.site_header='Studio administracija'
 
 class ConciseChangeListTitleMixin:
@@ -177,17 +177,26 @@ class AdminEmailAdmin(ConciseChangeListTitleMixin,admin.ModelAdmin):
    path('compose/',self.admin_site.admin_view(self.compose_view),name='website_adminemail_compose'),
   ]+super().get_urls()
  def changelist_view(self,request,extra_context=None):
-  result=sync_mailbox(force=True)
+  boxes=accounts()
+  mailbox=request.GET.get('mailbox__exact','primary')
+  if mailbox not in boxes: mailbox='primary'
+  request.GET=request.GET.copy()
+  request.GET['mailbox__exact']=mailbox
+  result=sync_mailbox(force=True,mailbox=mailbox)
   if not result.get('ok'):
    messages.warning(request,'Email sandučić nije osvježen. Provjerite IMAP postavke.')
-  return super().changelist_view(request,extra_context)
+  context={**(extra_context or {}),'mailboxes':[{'id':key,'label':value['label']} for key,value in boxes.items()], 'selected_mailbox':mailbox,
+   'mailbox_filters':[(key,value) for key,values in request.GET.lists() if key not in ('mailbox__exact','p','e') for value in values]}
+  return super().changelist_view(request,context)
  def refresh_view(self,request):
-  result=sync_mailbox(force=True)
+  mailbox=request.GET.get('mailbox','primary')
+  if mailbox not in accounts(): mailbox='primary'
+  result=sync_mailbox(force=True,mailbox=mailbox)
   if result.get('ok'):
    messages.success(request,f'Emailovi su osvježeni. Novih poruka: {result.get("created",0)}.')
   else:
    messages.error(request,'Emailovi nisu osvježeni. Provjerite IMAP vezu i pristupne podatke.')
-  return HttpResponseRedirect(reverse('admin:website_adminemail_changelist'))
+  return HttpResponseRedirect(reverse('admin:website_adminemail_changelist')+'?mailbox__exact='+mailbox)
  def compose_view(self,request):
   form=ComposeEmailForm(request.POST or None)
   if request.method=='POST' and form.is_valid():

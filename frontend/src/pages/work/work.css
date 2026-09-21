@@ -881,13 +881,14 @@
 }
 .gw-task-layout {
   display: grid;
-  grid-template-columns: 1.6fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .gw-task-details {
-  padding: 26px;
+  min-width: 0;
+  padding: 22px;
 }
 .gw-dialog .gw-task-title {
-  font-size: 25px;
+  font-size: 16px;
   font-family: "Manrope", sans-serif;
   font-weight: 600;
   background: none;
@@ -1526,7 +1527,7 @@
     padding: 20px;
   }
   .gw-task-title {
-    font-size: 21px !important;
+    font-size: 16px !important;
   }
   .gw-task-fields {
     gap: 12px;
@@ -2351,3 +2352,16 @@
 
 .gw-quick textarea { min-height:34px; height:34px; resize:none; line-height:18px; padding:7px 9px; max-height:140px; }
 .gw-task-author { display:inline-block; color:#14202b; border-radius:4px; padding:0 5px; font-size:10px; font-weight:700; vertical-align:1px; line-height:18px; white-space:nowrap; }
+
+/* Task dialog fields must not force either grid column wider than its share. */
+.gw-task-layout input, .gw-task-layout textarea, .gw-task-layout select { box-sizing:border-box; min-width:0; max-width:100%; }
+.gw-task-fields { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.gw-task-fields > label, .gw-task-conversation > * { min-width:0; }
+.gw-task-conversation { overflow-wrap:anywhere; }
+.gw-dialog textarea.gw-task-title { font-size:16px; line-height:1.45; min-height:42px; padding:10px 12px; margin:0 0 16px; background:#111722; border:1px solid #ffffff18; border-radius:8px; letter-spacing:normal; }
+.gw-dialog textarea.gw-task-title:focus { border-color:#8be1c1; outline:2px solid #8be1c122; }
+.gw-dialog .gw-card-appearance .gw-extra-actions { gap:16px; align-items:center; flex-wrap:wrap; }
+.gw-dialog .gw-card-appearance input[type="color"] { box-sizing:border-box; appearance:none; display:block; width:30px; min-width:30px; max-width:30px; height:30px; min-height:30px; padding:2px; border:2px solid #ffffff55; border-radius:50%; overflow:hidden; background:transparent; cursor:pointer; flex:none; }
+.gw-dialog .gw-card-appearance input[type="color"]::-webkit-color-swatch-wrapper { padding:0; }
+.gw-dialog .gw-card-appearance input[type="color"]::-webkit-color-swatch { border:0; border-radius:50%; }
+.gw-dialog .gw-card-appearance input[type="color"]::-moz-color-swatch { border:0; border-radius:50%; }
