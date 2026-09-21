@@ -39,6 +39,13 @@ class MailAccountTests(TestCase):
         self.assertContains(response,'id="emails-mailbox"')
         self.assertEqual([m.mailbox for m in response.context['cl'].result_list],['contact'])
         sync.assert_called_with(force=True,mailbox='contact')
+        self.assertContains(response,'class="email-action-row"')
+        self.assertContains(response,'class="email-mailbox-menu"')
+        response=self.client.get('/admin/website/adminemail/?mailbox__exact=contact&q=contact')
+        primary=next(box for box in response.context['mailboxes'] if box['id']=='primary')
+        self.assertIn('q=contact',primary['url'])
+        self.assertIn('mailbox__exact=primary',primary['url'])
+
         response=self.client.get('/admin/website/adminemail/refresh/?mailbox=contact')
         self.assertRedirects(response,'/admin/website/adminemail/?mailbox__exact=contact',fetch_redirect_response=False)
         response=self.client.get('/admin/website/adminemail/?mailbox__exact=invalid')

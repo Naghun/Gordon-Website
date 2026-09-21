@@ -185,8 +185,14 @@ class AdminEmailAdmin(ConciseChangeListTitleMixin,admin.ModelAdmin):
   result=sync_mailbox(force=True,mailbox=mailbox)
   if not result.get('ok'):
    messages.warning(request,'Email sandučić nije osvježen. Provjerite IMAP postavke.')
-  context={**(extra_context or {}),'mailboxes':[{'id':key,'label':value['label']} for key,value in boxes.items()], 'selected_mailbox':mailbox,
-   'mailbox_filters':[(key,value) for key,values in request.GET.lists() if key not in ('mailbox__exact','p','e') for value in values]}
+  choices=[]
+  for key,value in boxes.items():
+   params=request.GET.copy()
+   params['mailbox__exact']=key
+   params.pop('p',None)
+   params.pop('e',None)
+   choices.append({'id':key,'label':value['label'],'url':'?'+params.urlencode()})
+  context={**(extra_context or {}),'mailboxes':choices,'selected_mailbox':mailbox}
   return super().changelist_view(request,context)
  def refresh_view(self,request):
   mailbox=request.GET.get('mailbox','primary')

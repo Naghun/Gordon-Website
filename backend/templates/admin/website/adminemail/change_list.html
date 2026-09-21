@@ -1,20 +1,44 @@
 {% extends "admin/change_list.html" %}
+{% load admin_list %}
+{% block extrastyle %}
+{{ block.super }}
+<style>
+#changelist .email-action-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; background:#0e1213; padding:10px 12px; }
+#changelist .email-action-row .actions { flex:1; margin:0; padding:0; border:0; background:transparent; }
+#changelist .email-mailbox { position:relative; margin-left:auto; min-width:240px; max-width:100%; color:#eaf8f8; }
+#changelist .email-mailbox summary { display:flex; align-items:center; justify-content:space-between; gap:20px; list-style:none; cursor:pointer; padding:10px 12px; border:1px solid #28c9ce; border-radius:7px; background:#172b2d; color:#eaf8f8; font-size:12px; }
+#changelist .email-mailbox summary::-webkit-details-marker { display:none; }
+#changelist .email-mailbox summary:after { content:"⌄"; color:#2bd2d5; }
+#changelist .email-mailbox[open] summary { box-shadow:0 0 0 3px #28c9ce20; }
+#changelist .email-mailbox summary:focus-visible, #changelist .email-mailbox a:focus-visible { outline:2px solid #28c9ce; outline-offset:2px; }
+#changelist .email-mailbox-menu { position:absolute; right:0; top:calc(100% + 6px); min-width:100%; padding:5px; border:1px solid #2c4f52; border-radius:9px; background:#111f21; box-shadow:0 12px 28px #0005; z-index:50; box-sizing:border-box; }
+#changelist .email-mailbox-menu a { display:flex; justify-content:space-between; gap:12px; padding:11px 10px; border-radius:5px; color:#d6e9e9; white-space:nowrap; font-size:12px; text-decoration:none; }
+#changelist .email-mailbox-menu a:hover, #changelist .email-mailbox-menu a:focus { background:#224347; color:#fff; }
+#changelist .email-mailbox-menu a[aria-current="true"] { background:#1e3b3e; color:#44d9dc; }
+</style>
+{% endblock %}
 {% block object-tools-items %}
   <li><a href="{% url 'admin:website_adminemail_refresh' %}?mailbox={{ selected_mailbox }}" class="email-refresh-button">Osvježi emailove</a></li>
   <li><a href="{% url 'admin:website_adminemail_compose' %}" class="addlink">Napiši novi email</a></li>
   {{ block.super }}
 {% endblock %}
-
-{% block search %}
-<div style="clear:both;padding:16px 20px;margin-bottom:12px;background:#101819;border-radius:10px;">
-  <form method="get" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-    {% for key,value in mailbox_filters %}<input type="hidden" name="{{ key }}" value="{{ value }}">{% endfor %}
-    <label for="emails-mailbox" style="color:#fff;font-weight:600;">Email sandučić</label>
-    <select id="emails-mailbox" name="mailbox__exact" onchange="this.form.submit()" style="min-width:240px;max-width:100%;height:40px;border:1px solid #26c6cc;border-radius:6px;background:#172b2d;color:#fff;padding:8px;">
-      {% for box in mailboxes %}<option value="{{ box.id }}" {% if box.id == selected_mailbox %}selected{% endif %}>{{ box.label }}</option>{% endfor %}
-    </select>
-    <noscript><button type="submit">Prikaži</button></noscript>
-  </form>
+{% block result_list %}
+<div class="email-action-row">
+  {% if action_form and actions_on_top and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+  <details class="email-mailbox" id="emails-mailbox">
+    <summary aria-label="Odaberi email sandučić">{% for box in mailboxes %}{% if box.id == selected_mailbox %}{{ box.label }}{% endif %}{% endfor %}</summary>
+    <nav class="email-mailbox-menu" aria-label="Email sandučići">
+      {% for box in mailboxes %}<a href="{{ box.url }}" {% if box.id == selected_mailbox %}aria-current="true"{% endif %}>{{ box.label }}{% if box.id == selected_mailbox %}<span aria-hidden="true">✓</span>{% endif %}</a>{% endfor %}
+    </nav>
+  </details>
 </div>
-{{ block.super }}
+{% result_list cl %}
+{% if action_form and actions_on_bottom and cl.show_admin_actions %}{% admin_actions %}{% endif %}
+<script>
+(() => {
+ const picker=document.getElementById('emails-mailbox');
+ document.addEventListener('pointerdown',event=>{if(!picker.contains(event.target))picker.open=false;});
+ picker.addEventListener('keydown',event=>{if(event.key==='Escape'){picker.open=false;picker.querySelector('summary').focus();}});
+})();
+</script>
 {% endblock %}
